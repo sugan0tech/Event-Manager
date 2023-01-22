@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 @RestController
 @Slf4j
@@ -26,7 +27,8 @@ public class EventCRUDController {
     public List<Event> getEvents(@PathVariable String studentId){
         Student stu = studentRepository.findById(studentId).orElse(new Student());
         log.info(stu.toString());
-        return eventRepository.findAll();
+
+        return eventRepository.findAll().stream().filter(event -> !stu.getEvents().contains(event)).collect(Collectors.toList());
     }
 
     @PostMapping("/update/{studentId}/{eventId}")
