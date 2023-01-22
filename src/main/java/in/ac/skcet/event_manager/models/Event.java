@@ -2,11 +2,9 @@ package in.ac.skcet.event_manager.models;
 
 import lombok.*;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
+import javax.persistence.*;
 import java.util.Date;
+import java.util.Set;
 
 @Entity
 @NoArgsConstructor
@@ -21,4 +19,7 @@ public class Event {
     private String description;
     private Date fromDate;
     private Date endDate;
+    @ManyToMany
+    @ToString.Exclude
+    private Set<Student> studentSet;
 }
