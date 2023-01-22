@@ -12,5 +12,5 @@ import javax.persistence.Entity;
 @Setter
 @ToString
 public class Teacher extends Staff {
-    private String classAndSection;
+    private String classCode;
 }
