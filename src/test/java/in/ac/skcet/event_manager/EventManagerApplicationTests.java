@@ -1,4 +1,4 @@
-package in.ac.skcet.EventManager;
+package in.ac.skcet.event_manager;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
