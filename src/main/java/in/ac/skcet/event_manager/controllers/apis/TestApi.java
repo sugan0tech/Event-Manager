@@ -21,8 +21,8 @@ public class TestApi {
         log.info(id);
         return id;
     }
-    @PostMapping("/event")
-    public Event getSampleEvent(){
+    @PostMapping("/event/{studentId}")
+    public Event getSampleEvent(@PathVariable String studentId){
         return Event.builder()
                 .eventId(1)
                 .description("HourOfPlacement")
