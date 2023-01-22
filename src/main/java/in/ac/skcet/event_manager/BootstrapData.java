@@ -9,7 +9,6 @@ import in.ac.skcet.event_manager.repositories.StudentRepository;
 import in.ac.skcet.event_manager.repositories.TeacherRepository;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.stereotype.Component;
 
@@ -74,18 +73,23 @@ public class BootstrapData implements CommandLineRunner {
                 .mail("20eucs148@skcet.ac.in").build();
 
         Event eventOne = Event.builder()
-                .eventId(1)
                 .description("HourOfPlacement")
                 .fromDate(new Date())
                 .endDate(new Date())
+                .classCodes("III CSE C")
                 .build();
 
         Event eventTwo = Event.builder()
-                .eventId(2)
                 .description("Bootathon")
                 .fromDate(new Date())
                 .endDate(new Date())
+                .classCodes("III CSE C")
                 .build();
+
+        eventRepository.save(eventOne);
+        eventRepository.save(eventTwo);
+
+        studentOne.addEvent(eventOne);
 
 
         teacherRepository.save(teacherOne);
@@ -94,8 +98,6 @@ public class BootstrapData implements CommandLineRunner {
         studentRepository.save(studentTwo);
         studentRepository.save(studentOneB);
         studentRepository.save(studentTwoB);
-        eventRepository.save(eventOne);
-        eventRepository.save(eventTwo);
 
         log.info(studentRepository.findByClassCode("III CSE C").toString());
 

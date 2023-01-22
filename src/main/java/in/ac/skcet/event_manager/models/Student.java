@@ -1,11 +1,9 @@
 package in.ac.skcet.event_manager.models;
 
 import lombok.*;
-
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.ManyToMany;
+import javax.persistence.*;
 import java.util.Date;
+import java.util.HashSet;
 import java.util.Set;
 
 @Entity
@@ -20,11 +18,22 @@ public class Student {
     private String name;
     private String classCode;
     private Date dateOfBirth;
-    private boolean isHosteler;
+    private Boolean isHosteler;
     private String mail;
     private String mobile;
-    @ManyToMany(mappedBy = "studentSet")
-    private Set<Event> eventSet;
+    private String classCodes;
+
+    @OneToMany
+    private Set<Event> events = new HashSet<>();
+
+    public void addEvent(Event event){
+        if(this.events == null){
+            this.events = new HashSet<>();
+            this.events.add(event);
+            return;
+        }
+        this.events.add(event);
+    }
 
     @Override
     public String toString() {
@@ -36,7 +45,6 @@ public class Student {
                 ", isHosteler=" + isHosteler +
                 ", mail='" + mail + '\'' +
                 ", mobile='" + mobile + '\'' +
-                ", eventSet=" + eventSet +
                 '}';
     }
 }
