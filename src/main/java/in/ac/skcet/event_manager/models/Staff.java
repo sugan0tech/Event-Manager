@@ -7,6 +7,7 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import java.io.Serializable;
 
 @Entity
 @Getter
@@ -14,7 +15,8 @@ import javax.persistence.Id;
 @ToString
 @AllArgsConstructor
 @NoArgsConstructor
-public class Staff {
+@Builder
+public class Staff implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private String staffId;
