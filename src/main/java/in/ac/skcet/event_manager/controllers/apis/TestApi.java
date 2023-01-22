@@ -8,7 +8,9 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 @RestController
 @RequestMapping("/apis")
@@ -21,11 +23,34 @@ public class TestApi {
     }
     @PostMapping("/event")
     public Event getSampleEvent(){
-        return new Event(1, "HourOfPlacement", new Date(), new Date());
+        return Event.builder()
+                .eventId(1)
+                .description("HourOfPlacement")
+                .fromDate(new Date())
+                .endDate(new Date())
+                .build();
     }
 
     @PostMapping("/stu")
-    public Student getStu(){
-        return new Student("20eucs147", "sugan", "II CSE C", new Date(), true, "20eucs147@skcet.ac.in", "1234567890");
+    public List<Student> getStu(){
+        List<Student> lst = new ArrayList<>();
+        Student studentOne = Student.builder().rollNo("20eucs147")
+                .name("sugan")
+                .classCode("III CSE C")
+                .dateOfBirth(new Date())
+                .mobile("1234567890")
+                .isHosteler(true)
+                .mail("20eucs147@skcet.ac.in").build();
+        Student studentTwo = Student.builder().rollNo("20eucs148")
+                .name("sujith")
+                .classCode("III CSE C")
+                .dateOfBirth(new Date())
+                .mobile("1234567890")
+                .isHosteler(true)
+                .mail("20eucs148@skcet.ac.in").build();
+
+        lst.add(studentOne);
+        lst.add(studentTwo);
+        return lst;
     }
 }
