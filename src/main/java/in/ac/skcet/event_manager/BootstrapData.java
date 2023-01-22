@@ -89,9 +89,6 @@ public class BootstrapData implements CommandLineRunner {
         eventRepository.save(eventOne);
         eventRepository.save(eventTwo);
 
-        studentOne.addEvent(eventOne);
-
-
         teacherRepository.save(teacherOne);
         teacherRepository.save(teacherTwo);
         studentRepository.save(studentOne);
