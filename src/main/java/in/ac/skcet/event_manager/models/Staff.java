@@ -17,7 +17,7 @@ import javax.persistence.Id;
 public class Staff {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    private String id;
+    private String staffId;
     private String name;
     private String mail;
     private String mobile;
