@@ -23,7 +23,7 @@ public class Student {
     private String mobile;
     private String classCodes;
 
-    @OneToMany
+    @ManyToMany
     private Set<Event> events = new HashSet<>();
 
     public void addEvent(Event event){
