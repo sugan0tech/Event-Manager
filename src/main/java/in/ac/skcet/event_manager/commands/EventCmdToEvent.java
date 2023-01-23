@@ -13,7 +13,6 @@ public class EventCmdToEvent implements Converter<EventCommand, Event> {
         if(eventCommand == null)
             return null;
         return Event.builder()
-                .eventId(eventCommand.getEventId())
                 .classCodes(eventCommand.getClassCode())
                 .description(eventCommand.getDescription())
                 .fromDate(new Date())
