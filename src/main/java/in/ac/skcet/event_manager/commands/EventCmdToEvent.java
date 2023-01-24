@@ -5,18 +5,26 @@ import com.fasterxml.jackson.databind.type.TypeFactory;
 import com.fasterxml.jackson.databind.util.Converter;
 import in.ac.skcet.event_manager.models.Event;
 
-import java.util.Date;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 
 public class EventCmdToEvent implements Converter<EventCommand, Event> {
     @Override
     public Event convert(EventCommand eventCommand) {
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
+
         if(eventCommand == null)
             return null;
-        return Event.builder()
-                .classCodes(eventCommand.getClassCode())
-                .description(eventCommand.getDescription())
-                .fromDate(new Date())
-                .endDate(new Date()).build();
+        try {
+            return Event.builder()
+                    .classCodes(eventCommand.getClassCode())
+                    .description(eventCommand.getDescription())
+                    .fromDate(simpleDateFormat.parse(eventCommand.getFromDate()))
+                    .endDate(simpleDateFormat.parse( eventCommand.getEndDate() )).build();
+        } catch (ParseException e) {
+            throw new RuntimeException(e);
+        }
+
     }
 
     @Override
