@@ -31,6 +31,6 @@ class EventCmdToEventTest {
     void endDateTest() {
         EventCmdToEvent eventCmdToEvent = new EventCmdToEvent();
         Event event = eventCmdToEvent.convert(eventCommand);
-        assertEquals("Tue Dec 01 13:00:01 IST 2020", event.getEndDate().toString() );
+        assertEquals("Tue Dec 01 13:00:01 IST 2020", simpleDateFormat.format(event.getEndDate()) );
     }
 }
