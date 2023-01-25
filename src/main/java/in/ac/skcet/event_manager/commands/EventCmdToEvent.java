@@ -11,7 +11,7 @@ import java.text.SimpleDateFormat;
 public class EventCmdToEvent implements Converter<EventCommand, Event> {
     @Override
     public Event convert(EventCommand eventCommand) {
-        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd z hh:mm:ss");
 
         if(eventCommand == null)
             return null;
