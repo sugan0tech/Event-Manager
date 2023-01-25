@@ -5,12 +5,18 @@ import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
+import java.text.SimpleDateFormat;
+import java.util.TimeZone;
+
 import static org.junit.jupiter.api.Assertions.*;
 @Slf4j
 class EventCmdToEventTest {
     EventCommand eventCommand;
+    SimpleDateFormat simpleDateFormat;
     @BeforeEach
     void setUp() {
+        simpleDateFormat = new SimpleDateFormat("E MMM dd HH:mm:ss z yyyy");
+        simpleDateFormat.setTimeZone(TimeZone.getTimeZone("IST"));
         eventCommand = new EventCommand("Desc", "III CSE C", "2010-01-01 13:00:01", "2020-12-01 13:00:01");
     }
 
@@ -18,7 +24,7 @@ class EventCmdToEventTest {
     void fromDateTest() {
         EventCmdToEvent eventCmdToEvent = new EventCmdToEvent();
         Event event = eventCmdToEvent.convert(eventCommand);
-        assertEquals("Fri Jan 01 13:00:01 IST 2010", event.getFromDate().toString() );
+        assertEquals("Fri Jan 01 13:00:01 IST 2010", simpleDateFormat.format(event.getFromDate() ));
     }
 
     @Test

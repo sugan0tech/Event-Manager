@@ -7,13 +7,11 @@ import in.ac.skcet.event_manager.models.Event;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.TimeZone;
 
 public class EventCmdToEvent implements Converter<EventCommand, Event> {
     @Override
     public Event convert(EventCommand eventCommand) {
         SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
-        simpleDateFormat.setTimeZone(TimeZone.getTimeZone("IST"));
 
         if(eventCommand == null)
             return null;
