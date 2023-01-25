@@ -1,7 +1,7 @@
 # Event-Manager
 ## About The Project
 
-A user friendly mobile app that includes features to manage any kind of event or activity that is performed within an institution. It is a handy all in one manager using which you can assign events to group of people and also keep track of who completed those events, who are all yet to complete and also monitor the past and present activities of the people. 
+A user friendly mobile app that includes features to manage any kind of event or activity that is performed within an institution. It is a handy, all in one manager using which you can assign events to group of people and also keep track of who completed those events, who are all yet to complete and also monitor the past and present activities of the people. 
 
 Here's why:
 * User friendly way of updating the status of the activities.
