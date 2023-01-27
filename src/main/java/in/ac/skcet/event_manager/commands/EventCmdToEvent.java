@@ -4,11 +4,11 @@ import com.fasterxml.jackson.databind.JavaType;
 import com.fasterxml.jackson.databind.type.TypeFactory;
 import com.fasterxml.jackson.databind.util.Converter;
 import in.ac.skcet.event_manager.models.Event;
+import org.springframework.stereotype.Service;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.TimeZone;
-
 public class EventCmdToEvent implements Converter<EventCommand, Event> {
     @Override
     public Event convert(EventCommand eventCommand) {
