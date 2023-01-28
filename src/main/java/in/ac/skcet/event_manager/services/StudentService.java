@@ -16,9 +16,11 @@ import java.util.stream.Collectors;
 @Slf4j
 @AllArgsConstructor
 public class StudentService {
+
     StudentRepository studentRepository;
     EventRepository eventRepository;
-    public List<Event> findById(String studentId) {
+
+    public List<Event> getPendingEvents(String studentId) {
         Student student = studentRepository.findById(studentId).orElse(null);
         if(student == null)
             return new ArrayList<>();
@@ -26,17 +28,17 @@ public class StudentService {
         return eventRepository.findAll().stream().filter(event -> !student.getEvents().contains(event)).collect(Collectors.toList());
     }
 
-    public void save(String studentId, String eventId) {
-        log.info(studentId);
-        log.info(eventId);
+
+    public void updateEvent(String studentId, String eventId){
 
         Event event = eventRepository.findById(Integer.valueOf(eventId)).orElse(null);
-        Student student = studentRepository.findById(studentId).orElse(null);
-        if(student == null || event == null)
+        Student stu = studentRepository.findById(studentId).orElse(null);
+        if(stu == null || event == null)
             return;
 
         log.info(event.toString());
-        student.addEvent(event);
-        studentRepository.save(student);
+        stu.addEvent(event);
+        studentRepository.save(stu);
+
     }
 }
