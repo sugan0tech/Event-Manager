@@ -21,9 +21,9 @@ public class EventService {
         return eventRepository.save(event);
     }
 
-    public Optional<Event> findById(Integer eventid){
-        return eventRepository.findById(eventid);
-    };
+    public Optional<Event> findById(Integer eventId){
+        return eventRepository.findById(eventId);
+    }
 
     public List<Event> findAll(){
         return eventRepository.findAll();
