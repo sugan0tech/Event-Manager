@@ -10,6 +10,7 @@ import in.ac.skcet.event_manager.repositories.TeacherRepository;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.boot.CommandLineRunner;
+import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Component;
 
 import java.util.Date;
@@ -18,7 +19,8 @@ import java.util.Date;
 @Slf4j
 @Component
 @AllArgsConstructor
-public class BootstrapData implements CommandLineRunner {
+@Profile({"default", "dev"})
+public class BootstrapDataDev implements CommandLineRunner {
     private EventRepository eventRepository;
     private StudentRepository studentRepository;
     private TeacherRepository teacherRepository;
