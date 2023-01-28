@@ -23,7 +23,8 @@ public class TeacherService {
         return teacherRepository.findById(staffId);
     }
 
-    public List<Event> findEvents(String teacherClassCode){
+    public List<Event> findEvents(String teacherId){
+        String teacherClassCode = teacherRepository.findById(teacherId).orElse(new Teacher()).getClassCode();
         return eventService.findAll().stream().filter(event -> event.getClassCodes().equals(teacherClassCode)).collect(Collectors.toList());
     }
 }
