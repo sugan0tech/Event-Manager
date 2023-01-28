@@ -2,7 +2,6 @@ package in.ac.skcet.event_manager.services;
 
 import in.ac.skcet.event_manager.models.Event;
 import in.ac.skcet.event_manager.models.Student;
-import in.ac.skcet.event_manager.repositories.EventRepository;
 import in.ac.skcet.event_manager.repositories.StudentRepository;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -18,20 +17,20 @@ import java.util.stream.Collectors;
 public class StudentService {
 
     StudentRepository studentRepository;
-    EventRepository eventRepository;
+    EventService eventService;
 
     public List<Event> getPendingEvents(String studentId) {
         Student student = studentRepository.findById(studentId).orElse(null);
         if(student == null)
             return new ArrayList<>();
         log.info(student.toString());
-        return eventRepository.findAll().stream().filter(event -> !student.getEvents().contains(event)).collect(Collectors.toList());
+        return eventService.findAll().stream().filter(event -> !student.getEvents().contains(event)).collect(Collectors.toList());
     }
 
 
     public void updateEvent(String studentId, String eventId){
 
-        Event event = eventRepository.findById(Integer.valueOf(eventId)).orElse(null);
+        Event event = eventService.findById(Integer.valueOf(eventId)).orElse(null);
         Student stu = studentRepository.findById(studentId).orElse(null);
         if(stu == null || event == null)
             return;
