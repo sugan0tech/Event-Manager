@@ -38,15 +38,6 @@ public class EventCRUDController {
 
     @PostMapping("/update/{studentId}/{eventId}")
     public void updateEventStatus(@PathVariable String studentId, @PathVariable String eventId){
-        log.info(studentId);
-        log.info(eventId);
-        Event event = eventRepository.findById(Integer.valueOf(eventId)).orElse(null);
-        Student stu = studentRepository.findById(studentId).orElse(null);
-        if(stu == null || event == null)
-            return;
-
-        log.info(event.toString());
-        stu.addEvent(event);
-        studentRepository.save(stu);
+        studentService.save(studentId, eventId);
     }
 }

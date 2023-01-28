@@ -25,4 +25,18 @@ public class StudentService {
         log.info(student.toString());
         return eventRepository.findAll().stream().filter(event -> !student.getEvents().contains(event)).collect(Collectors.toList());
     }
+
+    public void save(String studentId, String eventId) {
+        log.info(studentId);
+        log.info(eventId);
+
+        Event event = eventRepository.findById(Integer.valueOf(eventId)).orElse(null);
+        Student student = studentRepository.findById(studentId).orElse(null);
+        if(student == null || event == null)
+            return;
+
+        log.info(event.toString());
+        student.addEvent(event);
+        studentRepository.save(student);
+    }
 }
