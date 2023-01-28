@@ -1,6 +1,7 @@
 package in.ac.skcet.event_manager.controllers.apis;
 
 import in.ac.skcet.event_manager.models.Event;
+import in.ac.skcet.event_manager.models.StudentStat;
 import in.ac.skcet.event_manager.services.EventStatService;
 import in.ac.skcet.event_manager.services.TeacherService;
 import lombok.AllArgsConstructor;
@@ -43,4 +44,8 @@ public class TeacherController {
         return eventStatService.getEventStat(eventId, classCode);
     }
 
+    @PostMapping("/event/stats-list/{eventId}/{classCode}")
+    public List<StudentStat> getStudentWithStats(@PathVariable Integer eventId, @PathVariable  String classCode){
+        return eventStatService.getStudentStatusList(eventId, classCode);
+    }
 }
