@@ -9,6 +9,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 @Service
@@ -38,6 +39,9 @@ public class StudentService {
         log.info(event.toString());
         stu.addEvent(event);
         studentRepository.save(stu);
+    }
 
+    public Set<Student> findByClassCode(String classCode){
+        return studentRepository.findByClassCode(classCode);
     }
 }
