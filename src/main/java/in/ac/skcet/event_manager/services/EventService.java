@@ -3,16 +3,11 @@ package in.ac.skcet.event_manager.services;
 import in.ac.skcet.event_manager.models.Event;
 import in.ac.skcet.event_manager.repositories.EventRepository;
 import lombok.AllArgsConstructor;
-import lombok.Data;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
-import org.springframework.data.querydsl.QPageRequest;
 import org.springframework.stereotype.Service;
 
-import java.awt.print.Pageable;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.*;
 
 
@@ -35,7 +30,7 @@ public class EventService {
         return eventRepository.findAll();
     }
 
-    public List<Event> getPastFiveEvents(String classCode) throws ParseException {
+    public List<Event> getPastFiveEvents(String classCode) {
         return eventRepository.findAllByEndDateBeforeAndClassCodesLike(new Date(), classCode + "%", PageRequest.of(0,5, Sort.by("endDate").descending()));
 
     }

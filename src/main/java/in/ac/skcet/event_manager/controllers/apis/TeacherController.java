@@ -11,8 +11,8 @@ import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.*;
 
-import java.text.ParseException;
 import java.util.List;
+import java.util.Map;
 
 @RestController
 @RequestMapping("/teacher")
@@ -34,13 +34,13 @@ public class TeacherController {
     }
 
     @PostMapping("/events/past-five/{classCode}")
-    public List<Event> getPastFiveEvents(@PathVariable String classCode) throws ParseException {
+    public List<Event> getPastFiveEvents(@PathVariable String classCode) {
         return eventService.getPastFiveEvents(classCode);
     }
 
 
     @PostMapping("/event/stats/{eventId}/{classCode}")
-    public Integer getEventStatus(@PathVariable Integer eventId, @PathVariable String classCode){
+    public Map<String, Integer> getEventStatus(@PathVariable Integer eventId, @PathVariable String classCode){
         log.info(eventId.toString());
         log.info(classCode);
         return eventStatService.getEventStat(eventId, classCode);
