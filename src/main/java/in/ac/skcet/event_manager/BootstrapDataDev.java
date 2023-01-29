@@ -88,6 +88,7 @@ public class BootstrapDataDev implements CommandLineRunner {
                 .classCodes("III CSE C")
                 .build();
 
+
         eventRepository.save(eventOne);
         eventRepository.save(eventTwo);
 
