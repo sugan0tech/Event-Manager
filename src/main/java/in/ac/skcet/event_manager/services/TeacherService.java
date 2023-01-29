@@ -7,6 +7,7 @@ import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -27,4 +28,5 @@ public class TeacherService {
         String teacherClassCode = teacherRepository.findById(teacherId).orElse(new Teacher()).getClassCode();
         return eventService.findAll().stream().filter(event -> event.getClassCodes().equals(teacherClassCode)).collect(Collectors.toList());
     }
+
 }

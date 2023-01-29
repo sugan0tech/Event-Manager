@@ -33,9 +33,9 @@ public class TeacherController {
        return teacherService.findEvents(staffId);
     }
 
-    @PostMapping("/events/past-five")
-    public List<Event> getPastFiveEvents(){
-        return new ArrayList<>();
+    @PostMapping("/events/past-five/{classCode}")
+    public List<Event> getPastFiveEvents(@PathVariable String classCode){
+        return eventService.getPastFiveEvents(classCode);
     }
 
 
