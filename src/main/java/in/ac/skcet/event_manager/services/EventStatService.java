@@ -14,8 +14,10 @@ import java.util.List;
 @Slf4j
 @AllArgsConstructor
 public class EventStatService {
+
     EventService eventService;
     StudentService studentService;
+
     public Integer getEventStat(Integer eventId, String classCode){
         Event  event = eventService.findById(eventId).orElse(new Event());
         List<Student> students = new ArrayList<>(studentService.findByClassCode(classCode));

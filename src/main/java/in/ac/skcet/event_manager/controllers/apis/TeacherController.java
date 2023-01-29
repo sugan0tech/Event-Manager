@@ -1,15 +1,15 @@
 package in.ac.skcet.event_manager.controllers.apis;
 
+import in.ac.skcet.event_manager.commands.EventCmdToEvent;
+import in.ac.skcet.event_manager.commands.EventCommand;
 import in.ac.skcet.event_manager.models.Event;
 import in.ac.skcet.event_manager.models.StudentStat;
+import in.ac.skcet.event_manager.services.EventService;
 import in.ac.skcet.event_manager.services.EventStatService;
 import in.ac.skcet.event_manager.services.TeacherService;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -21,7 +21,9 @@ import java.util.List;
 public class TeacherController {
 
     TeacherService teacherService;
+    EventService eventService;
     EventStatService eventStatService;
+    EventCmdToEvent eventCmdToEvent;
 
     @PostMapping("/events/pending/{staffId}")
     public List<Event> getEvents(@PathVariable String staffId){
@@ -47,5 +49,10 @@ public class TeacherController {
     @PostMapping("/event/stats-list/{eventId}/{classCode}")
     public List<StudentStat> getStudentWithStats(@PathVariable Integer eventId, @PathVariable  String classCode){
         return eventStatService.getStudentStatusList(eventId, classCode);
+    }
+
+    @PostMapping("/event/new")
+    public void createEvent(@ModelAttribute EventCommand eventCommand){
+        log.info(eventService.save(eventCmdToEvent.convert(eventCommand)).toString());
     }
 }
