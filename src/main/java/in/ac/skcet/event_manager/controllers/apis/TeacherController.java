@@ -12,7 +12,6 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.*;
 
 import java.text.ParseException;
-import java.util.ArrayList;
 import java.util.List;
 
 @RestController
@@ -54,6 +53,11 @@ public class TeacherController {
 
     @PostMapping("/event/new")
     public void createEvent(@ModelAttribute EventCommand eventCommand){
-        log.info(eventService.save(eventCmdToEvent.convert(eventCommand)).toString());
+        Event event = eventCmdToEvent.convert(eventCommand);
+        if(event == null) {
+            log.info("Invalid Event!");
+        }
+        else
+            log.info(eventService.save(event).toString());
     }
 }

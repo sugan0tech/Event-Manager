@@ -8,6 +8,7 @@ import org.springframework.stereotype.Component;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.TimeZone;
 
 @Component
@@ -19,12 +20,17 @@ public class EventCmdToEvent implements Converter<EventCommand, Event> {
 
         if(eventCommand == null)
             return null;
+
         try {
+            Date fromDate = simpleDateFormat.parse(eventCommand.getFromDate());
+            Date endDate = simpleDateFormat.parse(eventCommand.getEndDate());
+            if(endDate.compareTo(fromDate) < 0 || endDate.compareTo(new Date()) < 0)
+                return null;
             return Event.builder()
                     .classCodes(eventCommand.getClassCode())
                     .description(eventCommand.getDescription())
-                    .fromDate(simpleDateFormat.parse(eventCommand.getFromDate()))
-                    .endDate(simpleDateFormat.parse( eventCommand.getEndDate() )).build();
+                    .fromDate(fromDate)
+                    .endDate(endDate).build();
         } catch (ParseException e) {
             throw new RuntimeException(e);
         }
