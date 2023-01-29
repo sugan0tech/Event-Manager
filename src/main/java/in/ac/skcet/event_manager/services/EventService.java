@@ -6,6 +6,9 @@ import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+import java.util.Optional;
+
 
 @AllArgsConstructor
 @Slf4j
@@ -16,6 +19,14 @@ public class EventService {
 
     public Event save(Event event) {
         return eventRepository.save(event);
+    }
+
+    public Optional<Event> findById(Integer eventId){
+        return eventRepository.findById(eventId);
+    }
+
+    public List<Event> findAll(){
+        return eventRepository.findAll();
     }
 
 }
