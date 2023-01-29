@@ -11,7 +11,7 @@ import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.ArrayList;
+import java.text.ParseException;
 import java.util.List;
 
 @RestController
@@ -33,9 +33,9 @@ public class TeacherController {
        return teacherService.findEvents(staffId);
     }
 
-    @PostMapping("/events/past-five")
-    public List<Event> getPastFiveEvents(){
-        return new ArrayList<>();
+    @PostMapping("/events/past-five/{classCode}")
+    public List<Event> getPastFiveEvents(@PathVariable String classCode) throws ParseException {
+        return eventService.getPastFiveEvents(classCode);
     }
 
 
@@ -53,6 +53,11 @@ public class TeacherController {
 
     @PostMapping("/event/new")
     public void createEvent(@ModelAttribute EventCommand eventCommand){
-        log.info(eventService.save(eventCmdToEvent.convert(eventCommand)).toString());
+        Event event = eventCmdToEvent.convert(eventCommand);
+        if(event == null) {
+            log.info("Invalid Event!");
+        }
+        else
+            log.info(eventService.save(event).toString());
     }
 }
