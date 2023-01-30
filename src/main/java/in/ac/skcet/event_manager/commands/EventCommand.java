@@ -9,6 +9,7 @@ import lombok.ToString;
 @ToString
 @AllArgsConstructor
 public class EventCommand {
+    private String title;
     private String description;
     private String classCode;
     private String fromDate;

@@ -29,7 +29,7 @@ public class TeacherController {
     public List<Event> getEvents(@PathVariable String staffId){
 
        log.info(staffId);
-       log.info(teacherService.findById("ramesh").toString());
+       log.info(teacherService.findById("srigirit369").toString());
        return teacherService.findEvents(staffId);
     }
 
@@ -53,6 +53,7 @@ public class TeacherController {
 
     @PostMapping("/event/new")
     public void createEvent(@ModelAttribute EventCommand eventCommand){
+        log.info(eventCommand.toString());
         Event event = eventCmdToEvent.convert(eventCommand);
         if(event == null) {
             log.info("Invalid Event!");

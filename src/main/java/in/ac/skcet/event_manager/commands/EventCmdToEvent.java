@@ -27,6 +27,7 @@ public class EventCmdToEvent implements Converter<EventCommand, Event> {
             if(endDate.compareTo(fromDate) < 0 || endDate.compareTo(new Date()) < 0)
                 return null;
             return Event.builder()
+                    .title(eventCommand.getTitle())
                     .classCodes(eventCommand.getClassCode())
                     .description(eventCommand.getDescription())
                     .fromDate(fromDate)

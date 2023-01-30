@@ -16,6 +16,7 @@ public class Event {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Integer eventId;
+    private String title;
     private String description;
     private Date fromDate;
     private Date endDate;

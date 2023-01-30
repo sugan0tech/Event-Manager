@@ -31,32 +31,32 @@ public class BootstrapDataDev implements CommandLineRunner {
         Faker faker = new Faker();
         Teacher teacherOne = Teacher.builder().name("James")
                 .classCode("III CSE C")
-                .mail("james@gmail.com")
+                .mail("srigirit369@gmail.com")
                 .mobile(faker.number().digits(10))
-                .staffId("ramesh")
+                .staffId("srigirit369")
                 .build();
-        Teacher teacherTwo = Teacher.builder().name("Vames")
-                .classCode("III CSE B")
-                .mail("Vames@gmail.com")
+        Teacher teacherTwo = Teacher.builder().name("sugankpms")
+                .classCode("III CSE C")
+                .mail("sugankpms@gmail.com")
                 .mobile(faker.number().digits(10))
-                .staffId("Vames")
+                .staffId("sugankpms")
                 .build();
 
-        Student studentOneB = Student.builder().rollNo("20eucs064")
-                .name("Bala")
-                .classCode("III CSE B")
+        Student studentOneB = Student.builder().rollNo("20eucs152")
+                .name("Sushanthika")
+                .classCode("III CSE C")
+                .dateOfBirth(new Date())
+                .mobile(faker.number().digits(10))
+                .isHosteler(false)
+                .mail("20eucs152@skcet.ac.in").build();
+
+        Student studentTwoB = Student.builder().rollNo("20eucs125")
+                .name("selvakumar")
+                .classCode("III CSE C")
                 .dateOfBirth(new Date())
                 .mobile(faker.number().digits(10))
                 .isHosteler(true)
-                .mail("20eucs064@skcet.ac.in").build();
-
-        Student studentTwoB = Student.builder().rollNo("20eucs065")
-                .name("Muruga")
-                .classCode("III CSE B")
-                .dateOfBirth(new Date())
-                .mobile(faker.number().digits(10))
-                .isHosteler(true)
-                .mail("20eucs065@skcet.ac.in").build();
+                .mail("20eucs125@skcet.ac.in").build();
 
         Student studentOne = Student.builder().rollNo("20eucs147")
                 .name("sugan")
@@ -66,23 +66,33 @@ public class BootstrapDataDev implements CommandLineRunner {
                 .isHosteler(true)
                 .mail("20eucs147@skcet.ac.in").build();
 
-        Student studentTwo = Student.builder().rollNo("20eucs148")
-                .name("sujith")
+        Student studentTwo = Student.builder().rollNo("20eucs137")
+                .name("giri")
                 .classCode("III CSE C")
                 .dateOfBirth(new Date())
                 .mobile(faker.number().digits(10))
                 .isHosteler(true)
-                .mail("20eucs148@skcet.ac.in").build();
+                .mail("20eucs137@skcet.ac.in").build();
+
+        Student studentThree = Student.builder().rollNo("20eucs127")
+                .name("shalini")
+                .classCode("III CSE C")
+                .dateOfBirth(new Date())
+                .mobile(faker.number().digits(10))
+                .isHosteler(true)
+                .mail("20eucs127@skcet.ac.in").build();
 
         Event eventOne = Event.builder()
-                .description("HourOfPlacement")
+                .title("HourOfPlacement")
+                .description("From SKCET placement portal")
                 .fromDate(new Date())
                 .endDate(new Date())
                 .classCodes("III CSE C")
                 .build();
 
         Event eventTwo = Event.builder()
-                .description("Bootathon")
+                .title("Bootathon")
+                .description("From Bootcamp devision")
                 .fromDate(new Date())
                 .endDate(new Date())
                 .classCodes("III CSE C")
@@ -98,6 +108,7 @@ public class BootstrapDataDev implements CommandLineRunner {
         studentRepository.save(studentTwo);
         studentRepository.save(studentOneB);
         studentRepository.save(studentTwoB);
+        studentRepository.save(studentThree);
 
         log.info(studentRepository.findByClassCode("III CSE C").toString());
 
