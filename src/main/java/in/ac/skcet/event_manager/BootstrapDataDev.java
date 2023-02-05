@@ -41,45 +41,46 @@ public class BootstrapDataDev implements CommandLineRunner {
                 .mobile(faker.number().digits(10))
                 .staffId("sugankpms")
                 .build();
+        Teacher teacherThree = Teacher.builder().name("giri")
+                .classCode("III CSE C")
+                .mail("srigiriboopathy@gmail.com")
+                .mobile(faker.number().digits(10))
+                .staffId("srigiriboopathy")
+                .build();
 
         Student studentOneB = Student.builder().rollNo("20eucs152")
-                .name("Sushanthika")
+                .name("Sushanthika M")
                 .classCode("III CSE C")
-                .dateOfBirth(new Date())
+                .dateOfBirth(java.sql.Date.valueOf("2002-12-16"))
                 .mobile(faker.number().digits(10))
-                .isHosteler(false)
                 .mail("20eucs152@skcet.ac.in").build();
 
         Student studentTwoB = Student.builder().rollNo("20eucs125")
-                .name("selvakumar")
+                .name("Selvakumar S")
                 .classCode("III CSE C")
-                .dateOfBirth(new Date())
+                .dateOfBirth(java.sql.Date.valueOf("2002-12-16"))
                 .mobile(faker.number().digits(10))
-                .isHosteler(true)
                 .mail("20eucs125@skcet.ac.in").build();
 
         Student studentOne = Student.builder().rollNo("20eucs147")
-                .name("sugan")
+                .name("Sugavanesh M")
                 .classCode("III CSE C")
-                .dateOfBirth(new Date())
+                .dateOfBirth(java.sql.Date.valueOf("2002-12-16"))
                 .mobile(faker.number().digits(10))
-                .isHosteler(true)
                 .mail("20eucs147@skcet.ac.in").build();
 
         Student studentTwo = Student.builder().rollNo("20eucs137")
-                .name("giri")
+                .name("Srigiri T")
                 .classCode("III CSE C")
-                .dateOfBirth(new Date())
+                .dateOfBirth(java.sql.Date.valueOf("2002-12-16"))
                 .mobile(faker.number().digits(10))
-                .isHosteler(true)
                 .mail("20eucs137@skcet.ac.in").build();
 
         Student studentThree = Student.builder().rollNo("20eucs127")
-                .name("shalini")
+                .name("Shalini S")
                 .classCode("III CSE C")
-                .dateOfBirth(new Date())
+                .dateOfBirth(java.sql.Date.valueOf("2002-12-16"))
                 .mobile(faker.number().digits(10))
-                .isHosteler(true)
                 .mail("20eucs127@skcet.ac.in").build();
 
         Event eventOne = Event.builder()
@@ -104,6 +105,7 @@ public class BootstrapDataDev implements CommandLineRunner {
 
         teacherRepository.save(teacherOne);
         teacherRepository.save(teacherTwo);
+        teacherRepository.save(teacherThree);
         studentRepository.save(studentOne);
         studentRepository.save(studentTwo);
         studentRepository.save(studentOneB);
