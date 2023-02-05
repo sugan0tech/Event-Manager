@@ -61,4 +61,9 @@ public class TeacherController {
         else
             log.info(eventService.save(event).toString());
     }
+    @PostMapping("/event/notification/{studentId}")
+    public void sendNotification(@PathVariable String studentId){
+
+    }
+
 }

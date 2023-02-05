@@ -37,16 +37,14 @@ public class TestApi {
         Student studentOne = Student.builder().rollNo("20eucs147")
                 .name("sugan")
                 .classCode("III CSE C")
-                .dateOfBirth(new Date())
+                .dateOfBirth(java.sql.Date.valueOf("2002-12-16"))
                 .mobile("1234567890")
-                .isHosteler(true)
                 .mail("20eucs147@skcet.ac.in").build();
         Student studentTwo = Student.builder().rollNo("20eucs148")
                 .name("sujith")
                 .classCode("III CSE C")
-                .dateOfBirth(new Date())
+                .dateOfBirth(java.sql.Date.valueOf("2002-12-16"))
                 .mobile("1234567890")
-                .isHosteler(true)
                 .mail("20eucs148@skcet.ac.in").build();
 
         lst.add(studentOne);
