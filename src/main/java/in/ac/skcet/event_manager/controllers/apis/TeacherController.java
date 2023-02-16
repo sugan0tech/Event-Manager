@@ -41,8 +41,6 @@ public class TeacherController {
 
     @PostMapping("/event/stats/{eventId}/{classCode}")
     public Map<String, Integer> getEventStatus(@PathVariable Integer eventId, @PathVariable String classCode){
-        log.info(eventId.toString());
-        log.info(classCode);
         return eventStatService.getEventStat(eventId, classCode);
     }
 

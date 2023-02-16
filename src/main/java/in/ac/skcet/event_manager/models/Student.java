@@ -1,6 +1,8 @@
 package in.ac.skcet.event_manager.models;
 
 import lombok.*;
+import org.springframework.context.annotation.Lazy;
+
 import javax.persistence.*;
 import java.sql.Date;
 import java.util.HashSet;
@@ -12,6 +14,7 @@ import java.util.Set;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
+@Lazy(false)
 public class Student {
     @Id
     private String rollNo;
