@@ -2,10 +2,14 @@ package in.ac.skcet.event_manager.controllers.apis;
 
 import in.ac.skcet.event_manager.commands.EventCmdToEvent;
 import in.ac.skcet.event_manager.commands.EventCommand;
+import in.ac.skcet.event_manager.models.Attendance;
 import in.ac.skcet.event_manager.models.Event;
+import in.ac.skcet.event_manager.models.Student;
 import in.ac.skcet.event_manager.models.StudentStat;
+import in.ac.skcet.event_manager.repositories.AttendanceRepository;
 import in.ac.skcet.event_manager.services.EventService;
 import in.ac.skcet.event_manager.services.EventStatService;
+import in.ac.skcet.event_manager.services.StudentService;
 import in.ac.skcet.event_manager.services.TeacherService;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -24,6 +28,9 @@ public class TeacherController {
     EventService eventService;
     EventStatService eventStatService;
     EventCmdToEvent eventCmdToEvent;
+    StudentService studentService;
+    AttendanceRepository attendanceRepository;
+
 
     @PostMapping("/events/pending/{staffId}")
     public List<Event> getEvents(@PathVariable String staffId){
@@ -61,7 +68,15 @@ public class TeacherController {
     }
     @PostMapping("/event/notification/{studentId}")
     public void sendNotification(@PathVariable String studentId){
-
     }
+
+    @PostMapping("/student/attendance/{studentId}")
+    public void addAttendance(@PathVariable String studentId){
+        Student student = studentService.findByID(studentId).orElse(new Student());
+        Attendance attendance = attendanceRepository.findById(1L).orElse(new Attendance());
+        student.addAttendance(attendance);
+        studentService.save(student);
+    }
+
 
 }

@@ -4,9 +4,7 @@ import lombok.*;
 import org.springframework.context.annotation.Lazy;
 
 import javax.persistence.*;
-import java.sql.Date;
-import java.util.HashSet;
-import java.util.Set;
+import java.util.*;
 
 @Entity
 @Getter
@@ -28,6 +26,9 @@ public class Student {
     @ManyToMany
     private Set<Event> events = new HashSet<>();
 
+    @ManyToMany
+    private Set<Attendance> attendanceSet = new HashSet<>();
+
     public void addEvent(Event event){
         if(this.events == null){
             this.events = new HashSet<>();
@@ -37,6 +38,14 @@ public class Student {
         this.events.add(event);
     }
 
+    public void addAttendance(Attendance attendance){
+        if(this.attendanceSet == null){
+            this.attendanceSet = new HashSet<>();
+            this.attendanceSet.add(attendance);
+            return;
+        }
+        this.attendanceSet.add(attendance);
+    }
     @Override
     public String toString() {
         return "Student{" +

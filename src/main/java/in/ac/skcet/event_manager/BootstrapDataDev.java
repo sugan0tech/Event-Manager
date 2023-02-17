@@ -1,9 +1,11 @@
 package in.ac.skcet.event_manager;
 
 import com.github.javafaker.Faker;
+import in.ac.skcet.event_manager.models.Attendance;
 import in.ac.skcet.event_manager.models.Event;
 import in.ac.skcet.event_manager.models.Student;
 import in.ac.skcet.event_manager.models.Teacher;
+import in.ac.skcet.event_manager.repositories.AttendanceRepository;
 import in.ac.skcet.event_manager.repositories.EventRepository;
 import in.ac.skcet.event_manager.repositories.StudentRepository;
 import in.ac.skcet.event_manager.repositories.TeacherRepository;
@@ -24,6 +26,7 @@ public class BootstrapDataDev implements CommandLineRunner {
     private EventRepository eventRepository;
     private StudentRepository studentRepository;
     private TeacherRepository teacherRepository;
+    private AttendanceRepository attendanceRepository;
 
 
     @Override
@@ -99,6 +102,11 @@ public class BootstrapDataDev implements CommandLineRunner {
                 .classCodes("III CSE C")
                 .build();
 
+        Attendance attendance = Attendance.builder().date(new Date()).build();
+        attendanceRepository.save(attendance);
+
+        studentOne.addAttendance(attendance);
+        studentTwo.addAttendance(attendance);
 
         eventRepository.save(eventOne);
         eventRepository.save(eventTwo);

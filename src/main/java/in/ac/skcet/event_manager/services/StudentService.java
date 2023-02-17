@@ -9,6 +9,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
 
@@ -19,6 +20,13 @@ public class StudentService {
 
     StudentRepository studentRepository;
     EventService eventService;
+    public Student save(Student student){
+        return studentRepository.save(student);
+    }
+
+    public Optional<Student> findByID(String id){
+        return studentRepository.findById(id);
+    }
 
     public List<Event> getPendingEvents(String studentId) {
         Student student = studentRepository.findById(studentId).orElse(null);
