@@ -16,6 +16,8 @@ import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Component;
 
 import java.util.Date;
+import java.util.Timer;
+import java.util.TimerTask;
 
 
 @Slf4j
@@ -121,6 +123,22 @@ public class BootstrapDataDev implements CommandLineRunner {
         studentRepository.save(studentThree);
 
         log.info(studentRepository.findByClassCode("III CSE C").toString());
+
+
+        TimerTask timerTask = new TimerTask() {
+            @Override
+            public void run() {
+                log.info("timer things");
+                log.info("timer things");
+                log.info("timer things");
+                log.info("timer things");
+                log.info("timer things");
+                log.info("timer things");
+            }
+        };
+        Timer timer = new Timer("Timer");
+        Long delay = 2000L;
+        timer.schedule(timerTask, delay);
 
     }
 }
