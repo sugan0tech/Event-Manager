@@ -28,7 +28,23 @@ public class FirebaseMessagingService {
                 .builder()
                 .setToken("ezHx0XqJR0KzWB7uisx16r:APA91bFqMGVoppfbXUrLya2mievN6d7IqKJhwhoxmozR0lQjMnUCmKGnTezhB7Zvy2l8lL4KDBowO7Awn_s8ZA4QvUIwg-j7tnrY6cQBO2Ng_d5U7Q89FCzJ-uDls5Vlm7cTf073qtO8")
                 .setNotification(notification)
-                .putAllData(note.getData())
+                .build();
+
+        return firebaseMessaging.send(message);
+    }
+
+    public String sendNotificationByToken(Note note, String token) throws FirebaseMessagingException {
+
+        Notification notification = Notification
+                .builder()
+                .setTitle(note.getSubject())
+                .setBody(note.getContent())
+                .build();
+
+        Message message = Message
+                .builder()
+                .setToken(token)
+                .setNotification(notification)
                 .build();
 
         return firebaseMessaging.send(message);

@@ -1,6 +1,5 @@
 package in.ac.skcet.event_manager.models;
 
-import in.ac.skcet.event_manager.services.RegisteredUserService;
 import lombok.*;
 import lombok.extern.slf4j.Slf4j;
 
@@ -19,7 +18,7 @@ import javax.persistence.Id;
 public class RegisteredUser {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Double id;
+    private Integer id;
     private String email;
 
     private String token;

@@ -20,5 +20,5 @@ public class Event {
     private String description;
     private Date fromDate;
     private Date endDate;
-    private String classCodes;
+    private String classCode;
 }

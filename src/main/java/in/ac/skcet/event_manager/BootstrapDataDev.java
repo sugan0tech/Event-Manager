@@ -1,14 +1,12 @@
 package in.ac.skcet.event_manager;
 
 import com.github.javafaker.Faker;
-import in.ac.skcet.event_manager.models.Attendance;
-import in.ac.skcet.event_manager.models.Event;
-import in.ac.skcet.event_manager.models.Student;
-import in.ac.skcet.event_manager.models.Teacher;
+import in.ac.skcet.event_manager.models.*;
 import in.ac.skcet.event_manager.repositories.AttendanceRepository;
 import in.ac.skcet.event_manager.repositories.EventRepository;
 import in.ac.skcet.event_manager.repositories.StudentRepository;
 import in.ac.skcet.event_manager.repositories.TeacherRepository;
+import in.ac.skcet.event_manager.services.RegisteredUserService;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.boot.CommandLineRunner;
@@ -29,6 +27,7 @@ public class BootstrapDataDev implements CommandLineRunner {
     private StudentRepository studentRepository;
     private TeacherRepository teacherRepository;
     private AttendanceRepository attendanceRepository;
+    private RegisteredUserService registeredUserService;
 
 
     @Override
@@ -93,7 +92,7 @@ public class BootstrapDataDev implements CommandLineRunner {
                 .description("From SKCET placement portal")
                 .fromDate(new Date())
                 .endDate(new Date())
-                .classCodes("III CSE C")
+                .classCode("III CSE C")
                 .build();
 
         Event eventTwo = Event.builder()
@@ -101,7 +100,7 @@ public class BootstrapDataDev implements CommandLineRunner {
                 .description("From Bootcamp devision")
                 .fromDate(new Date())
                 .endDate(new Date())
-                .classCodes("III CSE C")
+                .classCode("III CSE C")
                 .build();
 
         Attendance attendance = Attendance.builder().date(new Date()).build();
@@ -123,6 +122,12 @@ public class BootstrapDataDev implements CommandLineRunner {
         studentRepository.save(studentThree);
 
         log.info(studentRepository.findByClassCode("III CSE C").toString());
+        RegisteredUser registeredUser = RegisteredUser.builder()
+                .email("20eucs147@skcet.ac.in")
+                .token("fHye8lejSBCyDodRhf_gcL:APA91bFBtVs3JfCl2PiBB28Cpr7TW2s8rEcxleQWv4pfxqm-oBd6MLTIfK2DGEMf-lRiPbnsQRpinCyr2xMeyeSoqPuA1Yt7EelymJY4dT9NEAOlA2-ZjWfLXLPwDK1UC3DrEr6F2mdZ\n")
+                .build();
+
+        registeredUserService.save(registeredUser);
 
 
         TimerTask timerTask = new TimerTask() {

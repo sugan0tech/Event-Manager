@@ -31,7 +31,7 @@ public class EventService {
     }
 
     public List<Event> getPastFiveEvents(String classCode) {
-        return eventRepository.findAllByEndDateBeforeAndClassCodesLike(new Date(), classCode + "%", PageRequest.of(0,5, Sort.by("endDate").descending()));
+        return eventRepository.findAllByEndDateBeforeAndClassCodeLike(new Date(), classCode + "%", PageRequest.of(0,5, Sort.by("endDate").descending()));
 
     }
 

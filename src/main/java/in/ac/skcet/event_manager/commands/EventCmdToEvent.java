@@ -28,7 +28,7 @@ public class EventCmdToEvent implements Converter<EventCommand, Event> {
                 return null;
             return Event.builder()
                     .title(eventCommand.getTitle())
-                    .classCodes(eventCommand.getClassCode())
+                    .classCode(eventCommand.getClassCode())
                     .description(eventCommand.getDescription())
                     .fromDate(fromDate)
                     .endDate(endDate).build();

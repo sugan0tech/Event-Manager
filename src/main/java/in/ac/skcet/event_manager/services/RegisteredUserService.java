@@ -4,14 +4,15 @@ import in.ac.skcet.event_manager.models.RegisteredUser;
 import in.ac.skcet.event_manager.repositories.RegisteredUserRepository;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.stereotype.Service;
 
 @AllArgsConstructor
 @Slf4j
+@Service
 public class RegisteredUserService {
     RegisteredUserRepository registeredUserRepository;
 
     public RegisteredUser findById(Integer id){
-        //TODO Exception needed
         return registeredUserRepository.findById(id).orElse(null);
     }
 

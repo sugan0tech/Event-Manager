@@ -1,5 +1,6 @@
 package in.ac.skcet.event_manager.controllers.apis;
 
+import com.google.firebase.messaging.FirebaseMessagingException;
 import in.ac.skcet.event_manager.commands.EventCmdToEvent;
 import in.ac.skcet.event_manager.commands.EventCommand;
 import in.ac.skcet.event_manager.models.Attendance;
@@ -7,10 +8,7 @@ import in.ac.skcet.event_manager.models.Event;
 import in.ac.skcet.event_manager.models.Student;
 import in.ac.skcet.event_manager.models.StudentStat;
 import in.ac.skcet.event_manager.repositories.AttendanceRepository;
-import in.ac.skcet.event_manager.services.EventService;
-import in.ac.skcet.event_manager.services.EventStatService;
-import in.ac.skcet.event_manager.services.StudentService;
-import in.ac.skcet.event_manager.services.TeacherService;
+import in.ac.skcet.event_manager.services.*;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.*;
@@ -30,6 +28,7 @@ public class TeacherController {
     EventCmdToEvent eventCmdToEvent;
     StudentService studentService;
     AttendanceRepository attendanceRepository;
+    PushNotificationService pushNotificationService;
 
 
     @PostMapping("/events/pending/{staffId}")
@@ -57,18 +56,25 @@ public class TeacherController {
     }
 
     @PostMapping("/event/new")
-    public void createEvent(@ModelAttribute EventCommand eventCommand){
+    public void createEvent(@ModelAttribute EventCommand eventCommand) throws FirebaseMessagingException {
         log.info(eventCommand.toString());
         Event event = eventCmdToEvent.convert(eventCommand);
         if(event == null) {
             log.info("Invalid Event!");
         }
-        else
+        else {
             log.info(eventService.save(event).toString());
+            log.info(event.getClassCode());
+            pushNotificationService.notifyAll(event.getClassCode());
+        }
+
+
+
     }
     @PostMapping("/event/notification/{studentId}")
     public void sendNotification(@PathVariable String studentId){
     }
+
 
     @PostMapping("/student/attendance/{studentId}")
     public void addAttendance(@PathVariable String studentId){
