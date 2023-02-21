@@ -23,7 +23,7 @@ public class Student {
     private String mail;
     private String mobile;
 
-    @ManyToMany
+    @ManyToMany(fetch = FetchType.EAGER)
     private Set<Event> events = new HashSet<>();
 
     @ManyToMany

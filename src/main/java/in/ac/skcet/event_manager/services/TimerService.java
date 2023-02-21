@@ -30,7 +30,7 @@ public class TimerService {
         };
 
         Timer timer = new Timer("Timer");
-        Long delay = 10000L;
+        Long delay = 15000L;
         timer.schedule(timerTask, delay);
     }
 

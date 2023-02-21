@@ -141,16 +141,26 @@ public class BootstrapDataDev implements CommandLineRunner {
 
         log.info(studentRepository.findByClassCode("III CSE C").toString());
         RegisteredUser registeredUser = RegisteredUser.builder()
-                .email("20eucs147@skcet.ac.in")
+                .email("20eucs148@skcet.ac.in")
                 .token("dW-gTbUgREG4mESSBCzDNV:APA91bF3ohU_0uR0NnI9HwvI_OYPTi2m4_n1R_JK_0QUJUbD6c3xTCbeDFg5Uyx9Kk8lnAfnQ0kr0Pt-AAREFKcQarU2cWujd5Cuq2Z-fS-CdTcMBr5dnrTRSMntYJF4k8ODZ46oMmDE")
                 .build();
         RegisteredUser registeredUser2 = RegisteredUser.builder()
                 .email("srigirit369@gmail.com")
                 .token("eAEBhsKMSvSdY1c2zDTr67:APA91bE8uGvDuB-N_5A-pywH_yjfIycrgOBUlcpMFNTrNNQ2985hBwClUuqUnIw0zk1rW_QHo2LTiLoKol5u3Cidn6M9RbkUnaHR3INtD9APeFvotQXUVhEsbtad-cv-HWqRmqkDrGjL")
                 .build();
+        RegisteredUser registeredUser3 = RegisteredUser.builder()
+                .email("sugankpms@gmail.com")
+                .token("dcGfWXjWQuq38qqpIh1lYt:APA91bGq5KDN6-ptsnm59UPMkuKksiL5zhKx5eiXxkidgac9GZGWNGF6Nw5plIFXYTB4YgvX5JdNyjMJvdct1R_bfuaXlzIOjypvP58hFNSLBLGmBD6-j5-6HO2V-Q1IlxmZyIK6J9A1")
+                .build();
 
+        RegisteredUser registeredUser4 = RegisteredUser.builder()
+                .email("20eucs137@skcet.ac.in")
+                .token("fySS3NlRTaSQ1D1-u_SCN4:APA91bFABQpz2cRhJim-8Zw4TYz0YvI86GbDnaLPcpPbTfgIXa8Vbj6qqKMIDxfbX-NBMXU88orrRJYuHHJEqyOeZ_kpfzACyvqoyxrji27MMrCKE9xqiiesQOiBKh-AzXPzOMUr3h6E")
+                .build();
         registeredUserService.save(registeredUser);
         registeredUserService.save(registeredUser2);
+        registeredUserService.save(registeredUser3);
+        registeredUserService.save(registeredUser4);
 
 
 
