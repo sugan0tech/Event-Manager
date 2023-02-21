@@ -52,6 +52,22 @@ public class BootstrapDataDev implements CommandLineRunner {
                 .staffId("srigiriboopathy")
                 .build();
 
+        Teacher teacherFour = Teacher.builder().name("Gowthamani R")
+                .classCode("III CSE C")
+                .mail("gowthamanir@skcet.ac.in")
+                .mobile(faker.number().digits(10))
+                .staffId("gowthamanir")
+                .build();
+
+        Teacher teacherFive = Teacher.builder().name("Sasikala Rani K")
+                .classCode("III CSE C")
+                .mail("sasikalaranik@skcet.ac.in")
+                .mobile(faker.number().digits(10))
+                .staffId("sasikalaranik")
+                .build();
+
+
+
         Student studentOneB = Student.builder().rollNo("20eucs152")
                 .name("Sushanthika M")
                 .classCode("III CSE C")
@@ -115,6 +131,8 @@ public class BootstrapDataDev implements CommandLineRunner {
         teacherRepository.save(teacherOne);
         teacherRepository.save(teacherTwo);
         teacherRepository.save(teacherThree);
+        teacherRepository.save(teacherFour);
+        teacherRepository.save(teacherFive);
         studentRepository.save(studentOne);
         studentRepository.save(studentTwo);
         studentRepository.save(studentOneB);
@@ -124,10 +142,15 @@ public class BootstrapDataDev implements CommandLineRunner {
         log.info(studentRepository.findByClassCode("III CSE C").toString());
         RegisteredUser registeredUser = RegisteredUser.builder()
                 .email("20eucs147@skcet.ac.in")
-                .token("fHye8lejSBCyDodRhf_gcL:APA91bFBtVs3JfCl2PiBB28Cpr7TW2s8rEcxleQWv4pfxqm-oBd6MLTIfK2DGEMf-lRiPbnsQRpinCyr2xMeyeSoqPuA1Yt7EelymJY4dT9NEAOlA2-ZjWfLXLPwDK1UC3DrEr6F2mdZ\n")
+                .token("dW-gTbUgREG4mESSBCzDNV:APA91bF3ohU_0uR0NnI9HwvI_OYPTi2m4_n1R_JK_0QUJUbD6c3xTCbeDFg5Uyx9Kk8lnAfnQ0kr0Pt-AAREFKcQarU2cWujd5Cuq2Z-fS-CdTcMBr5dnrTRSMntYJF4k8ODZ46oMmDE")
+                .build();
+        RegisteredUser registeredUser2 = RegisteredUser.builder()
+                .email("srigirit369@gmail.com")
+                .token("eAEBhsKMSvSdY1c2zDTr67:APA91bE8uGvDuB-N_5A-pywH_yjfIycrgOBUlcpMFNTrNNQ2985hBwClUuqUnIw0zk1rW_QHo2LTiLoKol5u3Cidn6M9RbkUnaHR3INtD9APeFvotQXUVhEsbtad-cv-HWqRmqkDrGjL")
                 .build();
 
         registeredUserService.save(registeredUser);
+        registeredUserService.save(registeredUser2);
 
 
         TimerTask timerTask = new TimerTask() {
