@@ -4,9 +4,12 @@ import com.google.firebase.messaging.FirebaseMessagingException;
 import in.ac.skcet.event_manager.models.Event;
 import in.ac.skcet.event_manager.models.Note;
 import in.ac.skcet.event_manager.models.Student;
+import in.ac.skcet.event_manager.models.Teacher;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
+
+import java.util.Map;
 import java.util.Set;
 
 @Service
@@ -16,16 +19,21 @@ public class PushNotificationService {
    FirebaseMessagingService firebaseMessagingService;
    StudentService studentService;
    RegisteredUserService registeredUserService;
+   TeacherService teacherService;
+   EventStatService eventStatService;
 
-   public void pendingStudentsNotification(Event event) throws FirebaseMessagingException {
-       Set<Student> studnetSet = studentService.findByClassCode(event.getClassCode());
-       log.info(studnetSet.toString());
-       for(Student student : studnetSet){
-           String token = registeredUserService.getTokenByEmail(student.getMail()).orElse(null);
+
+   public void eventCompletionNotification(Event event) throws FirebaseMessagingException {
+       Set<Teacher> teacherSet = teacherService.findByClassCode(event.getClassCode());
+       log.info(teacherSet.toString());
+//       Map<String, Integer> stats = eventStatService.getEventStat(event.getEventId(), event.getClassCode());
+       for(Teacher teacher : teacherSet){
+           String token = registeredUserService.getTokenByEmail(teacher.getMail()).orElse(null);
            if(token != null){
+//                       .content("pending -" + stats.get("pending") + "\ncompleted -" + stats.get("completed"))
                Note note = Note.builder()
-                       .content("hiii")
-                       .subject("Complete it soon!!!")
+                       .content("pending -2 completed -3")
+                       .subject("Event Ended { " + event.getTitle() + " }")
                        .build();
 
                log.info(token);

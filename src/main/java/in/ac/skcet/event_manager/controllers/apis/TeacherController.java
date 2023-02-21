@@ -29,6 +29,7 @@ public class TeacherController {
     StudentService studentService;
     AttendanceRepository attendanceRepository;
     PushNotificationService pushNotificationService;
+    TimerService timerService;
 
 
     @PostMapping("/events/pending/{staffId}")
@@ -65,6 +66,7 @@ public class TeacherController {
             log.info(eventService.save(event).toString());
             log.info(event.getClassCode());
             pushNotificationService.eventNotification(event);
+            timerService.setTimerForEvent(event);
         }
 
 

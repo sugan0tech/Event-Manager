@@ -153,20 +153,7 @@ public class BootstrapDataDev implements CommandLineRunner {
         registeredUserService.save(registeredUser2);
 
 
-        TimerTask timerTask = new TimerTask() {
-            @Override
-            public void run() {
-                log.info("timer things");
-                log.info("timer things");
-                log.info("timer things");
-                log.info("timer things");
-                log.info("timer things");
-                log.info("timer things");
-            }
-        };
-        Timer timer = new Timer("Timer");
-        Long delay = 2000L;
-        timer.schedule(timerTask, delay);
+
 
     }
 }
