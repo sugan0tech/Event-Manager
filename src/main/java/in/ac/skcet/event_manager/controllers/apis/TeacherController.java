@@ -57,7 +57,6 @@ public class TeacherController {
 
     @PostMapping("/event/new")
     public void createEvent(@ModelAttribute EventCommand eventCommand) throws FirebaseMessagingException {
-        log.info(eventCommand.toString());
         Event event = eventCmdToEvent.convert(eventCommand);
         if(event == null) {
             log.info("Invalid Event!");
@@ -65,7 +64,7 @@ public class TeacherController {
         else {
             log.info(eventService.save(event).toString());
             log.info(event.getClassCode());
-            pushNotificationService.notifyAll(event.getClassCode());
+            pushNotificationService.eventNotification(event);
         }
 
 
