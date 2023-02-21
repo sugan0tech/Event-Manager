@@ -23,10 +23,12 @@ public class PushNotificationService {
    EventStatService eventStatService;
 
 
-   public void eventCompletionNotification(Event event) throws FirebaseMessagingException {
+   public void eventCompletionNotification(Event event) throws FirebaseMessagingException{
        Set<Teacher> teacherSet = teacherService.findByClassCode(event.getClassCode());
-       log.info(teacherSet.toString());
        Map<String, Integer> stats = eventStatService.getEventStat(event.getEventId(), event.getClassCode());
+       log.info(event.toString());
+       log.info(event.getClassCode());
+       log.info(event.getEventId().toString());
        log.info(stats.toString());
        for(Teacher teacher : teacherSet){
            String token = registeredUserService.getTokenByEmail(teacher.getMail()).orElse(null);

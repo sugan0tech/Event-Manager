@@ -18,6 +18,12 @@ public class LoingController {
 
     @RequestMapping("/login/{email}/{token}")
     public String getToken(@PathVariable String email, @PathVariable String token){
-        return registeredUserService.save(new RegisteredUser(email, token)).getToken();
+        RegisteredUser registeredUser = registeredUserService.findById(email);
+        if(registeredUser == null){
+            return registeredUserService.save(new RegisteredUser(email, token)).getToken();
+        }else{
+            registeredUser.setToken(token);
+            return registeredUserService.save(registeredUser).getToken();
+        }
     }
 }

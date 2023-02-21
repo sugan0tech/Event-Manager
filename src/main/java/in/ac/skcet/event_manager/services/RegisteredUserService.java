@@ -14,8 +14,8 @@ import java.util.Optional;
 public class RegisteredUserService {
     RegisteredUserRepository registeredUserRepository;
 
-    public RegisteredUser findById(Integer id){
-        return registeredUserRepository.findById(id).orElse(null);
+    public RegisteredUser findById(String email){
+        return registeredUserRepository.findById(email).orElse(null);
     }
 
     public RegisteredUser save(RegisteredUser registeredUser){
@@ -23,7 +23,7 @@ public class RegisteredUserService {
     }
 
     public Optional<String> getTokenByEmail(String email){
-        RegisteredUser registeredUser= registeredUserRepository.findByEmail(email).orElse(null);
+        RegisteredUser registeredUser= registeredUserRepository.findById(email).orElse(null);
         if(registeredUser == null){
             log.info(email + " - Not Registered");
             return Optional.empty();

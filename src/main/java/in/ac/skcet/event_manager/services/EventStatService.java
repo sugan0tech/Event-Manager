@@ -22,6 +22,9 @@ public class EventStatService {
 
     public Map<String, Integer> getEventStat(Integer eventId, String classCode){
 
+        log.info("--------------------");
+        log.info(eventId.toString());
+
         Event  event = eventService.findById(eventId).orElse(new Event());
         List<Student> students = new ArrayList<>(studentService.findByClassCode(classCode));
         Map<String, Integer> result = new HashMap<>();

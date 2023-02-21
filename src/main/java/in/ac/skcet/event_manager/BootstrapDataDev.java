@@ -141,16 +141,16 @@ public class BootstrapDataDev implements CommandLineRunner {
 
         log.info(studentRepository.findByClassCode("III CSE C").toString());
         RegisteredUser registeredUser = RegisteredUser.builder()
-                .email("20eucs148@skcet.ac.in")
-                .token("dW-gTbUgREG4mESSBCzDNV:APA91bF3ohU_0uR0NnI9HwvI_OYPTi2m4_n1R_JK_0QUJUbD6c3xTCbeDFg5Uyx9Kk8lnAfnQ0kr0Pt-AAREFKcQarU2cWujd5Cuq2Z-fS-CdTcMBr5dnrTRSMntYJF4k8ODZ46oMmDE")
+                .email("20eucs147@skcet.ac.in")
+                .token("fBXw5XxYTc2eksqIwAkCPk:APA91bGcKc_Zcn_RZYSOYqwiNvtr74eB79Hf8iIn7cmRT3yCSxii7AKlIfULkEz8Gh8tePH-fwG9kXiMS3cCPvMDTeoPTKZ0cU8w9Cybiz3tNb0ziL21TD6cEXIeCQt3ATkLZMOj-qzw")
                 .build();
         RegisteredUser registeredUser2 = RegisteredUser.builder()
                 .email("srigirit369@gmail.com")
-                .token("eAEBhsKMSvSdY1c2zDTr67:APA91bE8uGvDuB-N_5A-pywH_yjfIycrgOBUlcpMFNTrNNQ2985hBwClUuqUnIw0zk1rW_QHo2LTiLoKol5u3Cidn6M9RbkUnaHR3INtD9APeFvotQXUVhEsbtad-cv-HWqRmqkDrGjL")
+                .token("dnEOnth5RLWMMm5adhOE63:APA91bHwV9A37Mjv_Nc0cDP-qQgX-vo98gPlArwRo_7bh_nFzZuTu_Qqnado3IkKEHqL2PnPh9PRLRMdUzxfCHArVg4ntthz0yATWgRDEROLZTTbzB5f_vaReZ-VSerxYNGW-ZV0xOAN")
                 .build();
         RegisteredUser registeredUser3 = RegisteredUser.builder()
                 .email("sugankpms@gmail.com")
-                .token("dcGfWXjWQuq38qqpIh1lYt:APA91bGq5KDN6-ptsnm59UPMkuKksiL5zhKx5eiXxkidgac9GZGWNGF6Nw5plIFXYTB4YgvX5JdNyjMJvdct1R_bfuaXlzIOjypvP58hFNSLBLGmBD6-j5-6HO2V-Q1IlxmZyIK6J9A1")
+                .token("dBzuzDL6Tg6ESsMjze41s9:APA91bGIqqwAaPt3B0EjgF961IITNK2S0INhwZlUL2bBbNGuKP3Zru6k1yS8P-lke-UAM7gTnt-JBcUlFk1dZW4NruqvziEeFUqLVTwIClPRDROcI4ZOpJH7cl5lbXpiLw-aM4h5mIyL")
                 .build();
 
         RegisteredUser registeredUser4 = RegisteredUser.builder()
