@@ -13,8 +13,7 @@ import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 @RestController
 @RequestMapping("/teacher")
@@ -57,10 +56,11 @@ public class TeacherController {
     }
 
     @PostMapping("/event/new")
-    public void createEvent(@ModelAttribute EventCommand eventCommand) throws FirebaseMessagingException {
+    public String createEvent(@ModelAttribute EventCommand eventCommand) throws FirebaseMessagingException {
         Event event = eventCmdToEvent.convert(eventCommand);
         if(event == null) {
             log.info("Invalid Event!");
+            return "invalid";
         }
         else {
             log.info(eventService.save(event).toString());
@@ -69,11 +69,22 @@ public class TeacherController {
             timerService.setTimerForEvent(event);
         }
 
+        return "added";
+
 
 
     }
     @PostMapping("/event/notification/{studentId}")
     public void sendNotification(@PathVariable String studentId){
+    }
+
+    @PostMapping("/student/getList/{classCode}")
+    public Map<String, String> getList(@PathVariable String classCode){
+        Map<String, String> studentList = new TreeMap<>();
+        studentService.findByClassCode(classCode).forEach(student ->
+                studentList.put(student.getRollNo(), student.getName())
+        );
+        return studentList;
     }
 
 
