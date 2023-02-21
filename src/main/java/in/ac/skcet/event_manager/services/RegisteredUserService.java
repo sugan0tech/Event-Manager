@@ -6,6 +6,8 @@ import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
+import java.util.Optional;
+
 @AllArgsConstructor
 @Slf4j
 @Service
@@ -20,7 +22,12 @@ public class RegisteredUserService {
         return registeredUserRepository.save(registeredUser);
     }
 
-    public String getTokenByEmail(String email){
-        return registeredUserRepository.findByEmail(email).getToken();
+    public Optional<String> getTokenByEmail(String email){
+        RegisteredUser registeredUser= registeredUserRepository.findByEmail(email).orElse(null);
+        if(registeredUser == null){
+            log.info(email + " - Not Registered");
+            return Optional.empty();
+        }
+        return Optional.of(registeredUser.getToken());
     }
 }
