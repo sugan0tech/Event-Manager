@@ -3,10 +3,7 @@ package in.ac.skcet.event_manager.controllers.apis;
 import com.google.firebase.messaging.FirebaseMessagingException;
 import in.ac.skcet.event_manager.commands.EventCmdToEvent;
 import in.ac.skcet.event_manager.commands.EventCommand;
-import in.ac.skcet.event_manager.models.Attendance;
-import in.ac.skcet.event_manager.models.Event;
-import in.ac.skcet.event_manager.models.Student;
-import in.ac.skcet.event_manager.models.StudentStat;
+import in.ac.skcet.event_manager.models.*;
 import in.ac.skcet.event_manager.repositories.AttendanceRepository;
 import in.ac.skcet.event_manager.services.*;
 import lombok.AllArgsConstructor;
@@ -74,9 +71,6 @@ public class TeacherController {
 
 
     }
-    @PostMapping("/event/notification/{studentId}")
-    public void sendNotification(@PathVariable String studentId){
-    }
 
     @PostMapping("/student/getList/{classCode}")
     public Map<String, String> getList(@PathVariable String classCode){
@@ -87,14 +81,34 @@ public class TeacherController {
         return studentList;
     }
 
-
-    @PostMapping("/student/attendance/{studentId}")
-    public void addAttendance(@PathVariable String studentId){
-        Student student = studentService.findByID(studentId).orElse(new Student());
-        Attendance attendance = attendanceRepository.findById(1L).orElse(new Attendance());
-        student.addAttendance(attendance);
-        studentService.save(student);
+    @PostMapping("/student/attendanceList/{classCode}")
+    public Map<String, String> getattendanceList(@PathVariable String classCode){
+        Map<String, String> studentList = new TreeMap<>();
+        studentService.findByClassCode(classCode).forEach(student ->
+                studentList.put(student.getRollNo(), student.getName())
+        );
+        return studentList;
     }
 
+    @PostMapping("/student/attendance/{classCode}")
+    public void addAttendance(@PathVariable String classCode, @RequestBody Map<String, String> attendanceForm ) throws FirebaseMessagingException {
+        log.info(attendanceForm.toString());
+        final Attendance attendance = attendanceRepository.findById(1L).orElse(Attendance.builder().date(new Date()).build());
+        if(attendance.getId() == null){
+            attendanceRepository.save(attendance);
+        }
+        attendanceForm.forEach((studentId, status) -> {
+            if(status.equals("true")){
+                Student student = studentService.findByID(studentId).orElse(null);
+                if(student == null ){
+                    log.info("null null");
+                }else{
+                    student.addAttendance(attendance);
+                    studentService.save(student);
+                }
+            }
+        });
 
+        pushNotificationService.attendanceNotification(classCode, attendance);
+    }
 }
