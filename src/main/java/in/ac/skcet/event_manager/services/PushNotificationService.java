@@ -1,10 +1,7 @@
 package in.ac.skcet.event_manager.services;
 
 import com.google.firebase.messaging.FirebaseMessagingException;
-import in.ac.skcet.event_manager.models.Event;
-import in.ac.skcet.event_manager.models.Note;
-import in.ac.skcet.event_manager.models.Student;
-import in.ac.skcet.event_manager.models.Teacher;
+import in.ac.skcet.event_manager.models.*;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -43,6 +40,28 @@ public class PushNotificationService {
            }
        }
    }
+
+    public void attendanceNotification(String classCode, Attendance attendance) throws FirebaseMessagingException{
+        Set<Teacher> teacherSet = teacherService.findByClassCode(classCode);
+        Set<Student> studentSet = studentService.findByClassCode(classCode);
+
+        int total = studentSet.size();
+        int present = (int) studentSet.stream().filter(student -> student.getAttendanceSet().contains(attendance)).count();
+        int absent = total - present;
+
+        for(Teacher teacher : teacherSet){
+            String token = registeredUserService.getTokenByEmail(teacher.getMail()).orElse(null);
+            if(token != null){
+                Note note = Note.builder()
+                        .content("preset - " + present + "/" + total+ "\nabsent - " + absent)
+                        .subject(classCode + " " + "Attendance")
+                        .build();
+
+                log.info(token);
+                firebaseMessagingService.sendNotificationByToken(note, token);
+            }
+        }
+    }
 
     public void eventNotification(Event event) throws FirebaseMessagingException {
         Set<Student> studnetSet = studentService.findByClassCode(event.getClassCode());
