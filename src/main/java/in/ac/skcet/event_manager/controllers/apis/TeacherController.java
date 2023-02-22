@@ -10,6 +10,7 @@ import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.*;
 
+import java.text.SimpleDateFormat;
 import java.util.*;
 
 @RestController
@@ -67,9 +68,6 @@ public class TeacherController {
         }
 
         return "added";
-
-
-
     }
 
     @PostMapping("/student/getList/{classCode}")
@@ -81,22 +79,24 @@ public class TeacherController {
         return studentList;
     }
 
-    @PostMapping("/student/attendanceList/{classCode}")
-    public Map<String, String> getattendanceList(@PathVariable String classCode){
-        Map<String, String> studentList = new TreeMap<>();
-        studentService.findByClassCode(classCode).forEach(student ->
-                studentList.put(student.getRollNo(), student.getName())
-        );
+    @PostMapping("/student/attendanceList/{classCode}/{date}")
+    public Map<String, Map<String, Boolean>> getAttendanceList(@PathVariable String classCode, @PathVariable String date){
+
+        Map<String, Map<String, Boolean>> studentList = new TreeMap<>();
+
+        studentService.findByClassCode(classCode).forEach(student -> {
+            Map<String, Boolean> intermediateStudentData = new HashMap<>();
+            intermediateStudentData.put(student.getName(), studentService.isPresent(student.getRollNo(), date));
+            studentList.put(student.getRollNo(), intermediateStudentData);
+            });
         return studentList;
     }
 
-    @PostMapping("/student/attendance/{classCode}")
-    public void addAttendance(@PathVariable String classCode, @RequestBody Map<String, String> attendanceForm ) throws FirebaseMessagingException {
+    @PostMapping("/student/attendance/{classCode}/{date}")
+    public void addAttendance(@PathVariable String classCode, @PathVariable String date, @RequestBody Map<String, String> attendanceForm ) throws FirebaseMessagingException {
         log.info(attendanceForm.toString());
-        final Attendance attendance = attendanceRepository.findById(1L).orElse(Attendance.builder().date(new Date()).build());
-        if(attendance.getId() == null){
-            attendanceRepository.save(attendance);
-        }
+        final Attendance attendance = attendanceRepository.findByDate(java.sql.Date.valueOf(date)).orElse(Attendance.builder().date(java.sql.Date.valueOf(new SimpleDateFormat("yyyy-MM-dd").format(new Date()))).build());
+        attendanceRepository.save(attendance);
         attendanceForm.forEach((studentId, status) -> {
             if(status.equals("true")){
                 Student student = studentService.findByID(studentId).orElse(null);

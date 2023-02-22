@@ -1,12 +1,15 @@
 package in.ac.skcet.event_manager.services;
 
+import in.ac.skcet.event_manager.models.Attendance;
 import in.ac.skcet.event_manager.models.Event;
 import in.ac.skcet.event_manager.models.Student;
+import in.ac.skcet.event_manager.repositories.AttendanceRepository;
 import in.ac.skcet.event_manager.repositories.StudentRepository;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
+import java.sql.Date;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -17,6 +20,7 @@ import java.util.stream.Collectors;
 @Slf4j
 @AllArgsConstructor
 public class StudentService {
+    private final AttendanceRepository attendanceRepository;
 
     StudentRepository studentRepository;
     EventService eventService;
@@ -51,5 +55,9 @@ public class StudentService {
 
     public Set<Student> findByClassCode(String classCode){
         return studentRepository.findByClassCode(classCode);
+    }
+
+    public Boolean isPresent(String rollNo, String date){
+        return studentRepository.findById(rollNo).orElse(new Student()).getAttendanceSet().contains(attendanceRepository.findByDate(Date.valueOf(date)).orElse(new Attendance()));
     }
 }
