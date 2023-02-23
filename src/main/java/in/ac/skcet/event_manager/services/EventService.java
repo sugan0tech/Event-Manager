@@ -4,11 +4,10 @@ import in.ac.skcet.event_manager.models.Event;
 import in.ac.skcet.event_manager.repositories.EventRepository;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import java.util.*;
+import java.util.stream.Collectors;
 
 
 @AllArgsConstructor
@@ -30,8 +29,8 @@ public class EventService {
         return eventRepository.findAll();
     }
 
-    public List<Event> getPastFiveEvents(String classCode) {
-        return eventRepository.findAllByEndDateBeforeAndClassCodeLike(new Date(), classCode + "%", PageRequest.of(0,5, Sort.by("endDate").descending()));
+    public List<Event> getPastFiveEvents(String classCode){
+        return eventRepository.findAll().stream().filter(event -> event.getClassCode().equals(classCode)&&(event.getEndDate().compareTo(new Date()) < 0)).collect(Collectors.toList());
 
     }
 
