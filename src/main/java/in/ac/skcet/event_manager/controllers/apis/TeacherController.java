@@ -80,13 +80,16 @@ public class TeacherController {
     }
 
     @PostMapping("/student/attendanceList/{classCode}/{date}")
-    public Map<String, Map<String, Boolean>> getAttendanceList(@PathVariable String classCode, @PathVariable String date){
+    public Map<String, Map<String, Map<String, Boolean>>> getAttendanceList(@PathVariable String classCode, @PathVariable String date){
 
-        Map<String, Map<String, Boolean>> studentList = new TreeMap<>();
+        Map<String, Map<String, Map<String, Boolean>>> studentList = new TreeMap<>();
 
         studentService.findByClassCode(classCode).forEach(student -> {
-            Map<String, Boolean> intermediateStudentData = new HashMap<>();
-            intermediateStudentData.put(student.getName(), studentService.isPresent(student.getRollNo(), date));
+            Map<String, Map<String, Boolean>> intermediateStudentData = new HashMap<>();
+            Map<String, Boolean> booleanMap = new HashMap<>();
+            booleanMap.put("isPresent", studentService.isPresent(student.getRollNo(), date));
+            booleanMap.put("onOd", student.getOnDuty());
+            intermediateStudentData.put(student.getName(), booleanMap);
             studentList.put(student.getRollNo(), intermediateStudentData);
             });
         return studentList;
@@ -98,15 +101,20 @@ public class TeacherController {
         final Attendance attendance = attendanceRepository.findByDate(java.sql.Date.valueOf(date)).orElse(Attendance.builder().date(java.sql.Date.valueOf(new SimpleDateFormat("yyyy-MM-dd").format(new Date()))).build());
         attendanceRepository.save(attendance);
         attendanceForm.forEach((studentId, status) -> {
+            Student student = studentService.findByID(studentId).orElse(null);
+            if(student == null )
+                log.info("null null");
+
             if(status.equals("true")){
-                Student student = studentService.findByID(studentId).orElse(null);
-                if(student == null ){
-                    log.info("null null");
-                }else{
-                    student.addAttendance(attendance);
-                    studentService.save(student);
+                assert student != null;
+                student.addAttendance(attendance);
+            }else{
+                if(studentService.isPresent(studentId, new SimpleDateFormat("yyyy-MM-dd").format(attendance.getDate()))){
+                    assert student != null;
+                    student.getAttendanceSet().remove(attendance);
                 }
             }
+            studentService.save(student);
         });
 
         pushNotificationService.attendanceNotification(classCode, attendance);
