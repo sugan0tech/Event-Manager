@@ -23,15 +23,15 @@ public class TimerService {
                     pushNotificationService.eventCompletionNotification(event);
                     log.info("An Automatic Event Timer For Staffs");
                 } catch (FirebaseMessagingException e) {
-                    log.error("error in timer task");
+                    log.error(e.toString());
                 }
 
             }
         };
 
-        Timer timer = new Timer("Timer");
-        Long delay = 30000L;
-        timer.schedule(timerTask, delay);
+        log.info("Scheduled time is also working");
+        new Timer().schedule(timerTask, event.getEndDate());
+
     }
 
 }
