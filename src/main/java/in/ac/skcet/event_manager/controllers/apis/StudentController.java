@@ -1,5 +1,6 @@
 package in.ac.skcet.event_manager.controllers.apis;
 
+import in.ac.skcet.event_manager.exception.studentnotfoundexception;
 import in.ac.skcet.event_manager.models.Event;
 import in.ac.skcet.event_manager.services.StudentService;
 import lombok.AllArgsConstructor;
@@ -18,7 +19,7 @@ public class StudentController {
     StudentService studentService;
 
     @PostMapping("/get/{studentId}")
-    public List<Event> getEvents(@PathVariable String studentId){
+    public List<Event> getEvents(@PathVariable String studentId) throws studentnotfoundexception {
         return studentService.getPendingEvents(studentId);
     }
 
