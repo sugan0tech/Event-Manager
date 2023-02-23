@@ -12,10 +12,9 @@ import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.context.annotation.Profile;
-import org.springframework.core.annotation.Order;
+import org.springframework.core.io.ResourceLoader;
 import org.springframework.stereotype.Component;
 
-import javax.transaction.Transactional;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Map;
@@ -33,11 +32,10 @@ public class BootstrapDataDev implements CommandLineRunner {
     private TeacherRepository teacherRepository;
     private AttendanceRepository attendanceRepository;
     private RegisteredUserService registeredUserService;
-    private EventStatService eventStatService;
 
 
     @Override
-    public void run(String... args) throws Exception {
+    public void run(String... args){
         Faker faker = new Faker();
         Teacher teacherOne = Teacher.builder().name("James")
                 .classCode("III CSE C")
@@ -168,53 +166,5 @@ public class BootstrapDataDev implements CommandLineRunner {
         registeredUserService.save(registeredUser3);
         registeredUserService.save(registeredUser4);
 
-
-        TimerTask timerTask = new TimerTask() {
-            @Override
-            public void run() {
-                Map<String, Integer> stats = eventStatService.getEventStat(1, "III CSE C");
-                log.info(stats.toString());
-            }
-        };
-
-        Timer timer = new Timer("Timer");
-        Long delay = 25000L;
-        timer.schedule(timerTask, delay);
-
-    }
-
-    @Slf4j
-    @Component
-    @AllArgsConstructor
-    @Profile("prod")
-    @Order
-    @Transactional
-    public static class BootstrapDataProd implements CommandLineRunner {
-        private EventRepository eventRepository;
-        private StudentRepository studentRepository;
-        private TeacherRepository teacherRepository;
-        private AttendanceRepository attendanceRepository;
-        private RegisteredUserService registeredUserService;
-        private EventStatService eventStatService;
-
-
-        @Override
-        public void run(String... args) throws Exception {
-            log.info(studentRepository.findAll().toString());
-            Map<String, Integer> stats = eventStatService.getEventStat(31, "III CSE C");
-            log.info(eventStatService.getStudentStatusList(31, "III CSE C").toString());
-            log.info(stats.toString());
-            TimerTask timerTask = new TimerTask() {
-                @Override
-                public void run() {
-                    Map<String, Integer> stats = eventStatService.getEventStat(31, "III CSE C");
-                    log.info(stats.toString());
-                }
-            };
-
-            Timer timer = new Timer("Timer");
-            Long delay = 1000L;
-            timer.schedule(timerTask, delay);
-        }
     }
 }
