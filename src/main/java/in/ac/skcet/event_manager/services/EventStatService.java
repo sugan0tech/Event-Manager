@@ -7,6 +7,7 @@ import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
+import javax.transaction.Transactional;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
@@ -20,10 +21,8 @@ public class EventStatService {
     EventService eventService;
     StudentService studentService;
 
+    @Transactional
     public Map<String, Integer> getEventStat(Integer eventId, String classCode){
-
-        log.info("--------------------");
-        log.info(eventId.toString());
 
         Event  event = eventService.findById(eventId).orElse(new Event());
         List<Student> students = new ArrayList<>(studentService.findByClassCode(classCode));
