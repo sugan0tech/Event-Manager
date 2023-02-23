@@ -4,6 +4,7 @@ import lombok.*;
 import org.springframework.context.annotation.Lazy;
 
 import javax.persistence.*;
+import java.sql.Date;
 import java.util.*;
 
 @Entity
@@ -22,6 +23,7 @@ public class Student {
     private Date dateOfBirth;
     private String mail;
     private String mobile;
+    private Boolean onDuty = false;
 
     @ManyToMany(fetch = FetchType.EAGER)
     private Set<Event> events = new HashSet<>();

@@ -60,4 +60,9 @@ public class StudentService {
     public Boolean isPresent(String rollNo, String date){
         return studentRepository.findById(rollNo).orElse(new Student()).getAttendanceSet().contains(attendanceRepository.findByDate(Date.valueOf(date)).orElse(new Attendance()));
     }
+
+    public void updateOd(Student student){
+        student.setOnDuty(!student.getOnDuty());
+        studentRepository.save(student);
+    }
 }
