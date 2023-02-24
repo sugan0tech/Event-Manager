@@ -43,7 +43,7 @@ public class BootstrapDataDev implements CommandLineRunner {
                 .staffId("srigirit369")
                 .build();
         Teacher teacherTwo = Teacher.builder().name("sugankpms")
-                .classCode("III CSE C")
+                .classCode("CSE")
                 .mail("sugankpms@gmail.com")
                 .mobile(faker.number().digits(10))
                 .staffId("sugankpms")
@@ -69,11 +69,17 @@ public class BootstrapDataDev implements CommandLineRunner {
                 .staffId("sasikalaranik")
                 .build();
 
+        Student studentOneb = Student.builder().rollNo("20eucs050")
+                .name("sathish c")
+                .classCode("III CSE B")
+                .dateOfBirth(java.sql.Date.valueOf("2002-12-16"))
+                .mobile(faker.number().digits(10))
+                .mail("20eucs152@skcet.ac.in").build();
 
 
-        Student studentOneB = Student.builder().rollNo("20eucs152")
-                .name("Sushanthika M")
-                .classCode("III CSE C")
+        Student studentOne2 = Student.builder().rollNo("772721eucs122")
+                .name("Hariharan M")
+                .classCode("II CSE C")
                 .dateOfBirth(java.sql.Date.valueOf("2002-12-16"))
                 .mobile(faker.number().digits(10))
                 .mail("20eucs152@skcet.ac.in").build();
@@ -138,9 +144,10 @@ public class BootstrapDataDev implements CommandLineRunner {
         teacherRepository.save(teacherFive);
         studentRepository.save(studentOne);
         studentRepository.save(studentTwo);
-        studentRepository.save(studentOneB);
+        studentRepository.save(studentOneb);
         studentRepository.save(studentTwoB);
         studentRepository.save(studentThree);
+        studentRepository.save(studentOne2);
 
         log.info(studentRepository.findByClassCode("III CSE C").toString());
         RegisteredUser registeredUser = RegisteredUser.builder()

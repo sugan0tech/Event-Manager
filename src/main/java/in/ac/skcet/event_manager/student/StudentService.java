@@ -1,5 +1,6 @@
 package in.ac.skcet.event_manager.student;
 
+import in.ac.skcet.event_manager.class_code.ClassCodeService;
 import in.ac.skcet.event_manager.exception.StudentNotFoundException;
 import in.ac.skcet.event_manager.attendance.Attendance;
 import in.ac.skcet.event_manager.event.Event;
@@ -23,6 +24,7 @@ public class StudentService {
 
     StudentRepository studentRepository;
     EventService eventService;
+    ClassCodeService classCodeService;
 
     @Transactional
     public Student save(Student student){
@@ -53,7 +55,7 @@ public class StudentService {
     }
 
     public Set<Student> findByClassCode(String classCode){
-        return studentRepository.findByClassCode(classCode);
+        return studentRepository.findAll().stream().filter(student -> classCodeService.compareCodes(student.getClassCode(), classCode)).collect(Collectors.toSet());
     }
 
     public Boolean isPresent(String rollNo, String date){

@@ -28,9 +28,11 @@ public class Student {
     private Boolean onDuty = false;
 
     @ManyToMany(fetch = FetchType.EAGER)
+    @ToString.Exclude
     private Set<Event> events = new HashSet<>();
 
     @ManyToMany
+    @ToString.Exclude
     private Set<Attendance> attendanceSet = new HashSet<>();
 
     public void addEvent(Event event){
