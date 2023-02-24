@@ -19,7 +19,7 @@ import in.ac.skcet.event_manager.teacher.TeacherService;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.*;
-
+import in.ac.skcet.event_manager.exception.TeacherNotFoundException;
 import java.text.SimpleDateFormat;
 import java.util.*;
 
@@ -41,7 +41,7 @@ public class TeacherController {
 
 
     @PostMapping("/events/pending/{staffId}")
-    public List<Event> getEvents(@PathVariable String staffId) throws TeacherNotFoundException {
+    public List<Event> getEvents(@PathVariable String staffId) throws TeacherNotFoundException{
        log.info(staffId);
        log.info(teacherService.findById("srigirit369").toString());
        return teacherService.findEvents(staffId);
