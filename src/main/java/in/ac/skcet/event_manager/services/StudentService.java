@@ -10,6 +10,7 @@ import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
+import javax.transaction.Transactional;
 import java.sql.Date;
 import java.util.ArrayList;
 import java.util.List;
@@ -29,8 +30,8 @@ public class StudentService {
         return studentRepository.save(student);
     }
 
-    public Optional<Student> findByID(String id){
-        return studentRepository.findById(id);
+    public Student findByID(String id) throws studentnotfoundexception {
+        return studentRepository.findById(id).orElseThrow(() -> new studentnotfoundexception("Student Not found id :" + id));
     }
 
     public List<Event> getPendingEvents(String studentId) throws studentnotfoundexception{
