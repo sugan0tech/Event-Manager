@@ -1,17 +1,19 @@
 package in.ac.skcet.event_manager.commands;
 
-import in.ac.skcet.event_manager.models.Staff;
-import in.ac.skcet.event_manager.models.Student;
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.ToString;
 
-import java.util.Date;
-import java.util.HashSet;
-import java.util.Set;
+import java.util.*;
 
+@ToString
+@AllArgsConstructor
+@Data
 public class OnDutyFormCommand {
     private String description;
     private byte[] document;
-    private Set<String> studentRollNoSet = new HashSet<>();
-    private Set<String> mentorNameSet = new HashSet<>();
-    private Date fromDate;
-    private Date endDate;
+    private final List<String> studentRollNoList = new ArrayList<>();
+    private final List<String> mentorNameList = new ArrayList<>();
+    private String fromDate;
+    private String endDate;
 }

@@ -13,6 +13,7 @@ import java.util.Set;
 @Builder
 @Getter
 @Setter
+@ToString
 public class OnDutyForm {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -23,9 +24,11 @@ public class OnDutyForm {
     private byte[] document;
 
     @OneToMany
+    @ToString.Exclude
     private Set<Student> studentSet = new HashSet<>();
 
     @OneToMany
+    @ToString.Exclude
     private Set<Staff> mentorSet = new HashSet<>();
 
     private Date fromDate;
