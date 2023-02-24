@@ -50,12 +50,13 @@ public class PushNotificationService {
         int total = studentSet.size();
         int present = (int) studentSet.stream().filter(student -> student.getAttendanceSet().contains(attendance)).count();
         int absent = total - present;
+        int od = (int) studentSet.stream().filter(Student::getOnDuty).count();
 
         for(Teacher teacher : teacherSet){
             String token = registeredUserService.getTokenByEmail(teacher.getMail()).orElse(null);
             if(token != null){
                 Note note = Note.builder()
-                        .content("preset - " + present + "/" + total+ "\nabsent - " + absent)
+                        .content("present - " + present + "/" + total+ "\nabsent - " + absent + " od - " + od)
                         .subject(classCode + " " + "Attendance")
                         .build();
 
