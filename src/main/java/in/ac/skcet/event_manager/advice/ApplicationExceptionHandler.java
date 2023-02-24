@@ -13,10 +13,10 @@ import java.util.Map;
 public class ApplicationExceptionHandler {
     @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
     @ExceptionHandler(StudentNotFoundException.class)
-    public Map<String,String> handlexception(StudentNotFoundException ex)
+    public Map<String,String> handleException(StudentNotFoundException ex)
     {
         Map<String,String>map=new HashMap<>();
-        map.put("errormesaage", ex.getMessage());
+        map.put("error message", ex.getMessage());
         return map;
     }
 }
