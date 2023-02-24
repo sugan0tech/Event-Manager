@@ -23,6 +23,7 @@ public class OnDutyForm {
     private String description;
 
     @Lob
+    @Column(length = 20971520)
     private byte[] document;
 
     @ManyToMany

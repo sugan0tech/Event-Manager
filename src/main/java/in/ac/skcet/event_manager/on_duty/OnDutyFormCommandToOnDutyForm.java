@@ -36,6 +36,7 @@ public class OnDutyFormCommandToOnDutyForm implements Converter<OnDutyFormComman
         try {
             return OnDutyForm.builder()
                     .description(onDutyFormCommand.getDescription())
+                    .document(onDutyFormCommand.getDocument())
                     .studentSet(studentSet)
                     .fromDate(simpleDateFormat.parse(onDutyFormCommand.getFromDate()))
                     .endDate(simpleDateFormat.parse(onDutyFormCommand.getEndDate()))
