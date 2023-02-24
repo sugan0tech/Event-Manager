@@ -17,6 +17,10 @@ public class OnDutyFormService {
     OnDutyFormRepository onDutyFormRepository;
     StudentService studentService;
 
+    public List<OnDutyForm> findAll(){
+        return onDutyFormRepository.findAll();
+    }
+
     public OnDutyForm findById(Long id) throws OdFormNotFoundException {
         return onDutyFormRepository.findById(id).orElseThrow(() -> new OdFormNotFoundException("Expected OdForm not found id:" + id));
     }

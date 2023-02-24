@@ -14,6 +14,7 @@ import in.ac.skcet.event_manager.student.Student;
 import in.ac.skcet.event_manager.student.StudentService;
 import in.ac.skcet.event_manager.student.StudentStat;
 import in.ac.skcet.event_manager.teacher.StaffEventTimer;
+import in.ac.skcet.event_manager.teacher.Teacher;
 import in.ac.skcet.event_manager.teacher.TeacherService;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -41,17 +42,20 @@ public class TeacherController {
 
     @PostMapping("/events/pending/{staffId}")
     public List<Event> getEvents(@PathVariable String staffId) throws TeacherNotFoundException{
-
        log.info(staffId);
        log.info(teacherService.findById("srigirit369").toString());
        return teacherService.findEvents(staffId);
+    }
+
+    @PostMapping("/getClassCode/{staffId}")
+    public String getClassCode(@PathVariable String staffId) throws TeacherNotFoundException {
+        return teacherService.findById(staffId).getClassCode();
     }
 
     @PostMapping("/events/past-five/{classCode}")
     public List<Event> getPastFiveEvents(@PathVariable String classCode) {
         return eventService.getPastFiveEvents(classCode);
     }
-
 
     @PostMapping("/event/stats/{eventId}/{classCode}")
     public Map<String, Integer> getEventStatus(@PathVariable Integer eventId, @PathVariable String classCode){
