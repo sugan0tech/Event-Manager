@@ -3,9 +3,7 @@ package in.ac.skcet.event_manager.on_duty;
 import com.fasterxml.jackson.databind.JavaType;
 import com.fasterxml.jackson.databind.type.TypeFactory;
 import com.fasterxml.jackson.databind.util.Converter;
-import in.ac.skcet.event_manager.exception.studentnotfoundexception;
-import in.ac.skcet.event_manager.on_duty.OnDutyForm;
-import in.ac.skcet.event_manager.on_duty.OnDutyFormCommand;
+import in.ac.skcet.event_manager.exception.StudentNotFoundException;
 import in.ac.skcet.event_manager.student.Student;
 import in.ac.skcet.event_manager.student.StudentService;
 import lombok.AllArgsConstructor;
@@ -31,7 +29,7 @@ public class OnDutyFormCommandToOnDutyForm implements Converter<OnDutyFormComman
         onDutyFormCommand.getStudentRollNoList().forEach(rollNo -> {
             try {
                 studentSet.add(studentService.findByID(rollNo));
-            } catch (studentnotfoundexception e) {
+            } catch (StudentNotFoundException e) {
                 throw new RuntimeException(e);
             }
         });

@@ -3,7 +3,7 @@ package in.ac.skcet.event_manager.controllers.apis;
 import in.ac.skcet.event_manager.on_duty.OnDutyEndTimer;
 import in.ac.skcet.event_manager.on_duty.OnDutyFormCommand;
 import in.ac.skcet.event_manager.on_duty.OnDutyFormCommandToOnDutyForm;
-import in.ac.skcet.event_manager.exception.studentnotfoundexception;
+import in.ac.skcet.event_manager.exception.StudentNotFoundException;
 import in.ac.skcet.event_manager.event.Event;
 import in.ac.skcet.event_manager.on_duty.OnDutyFormService;
 import in.ac.skcet.event_manager.student.StudentService;
@@ -25,7 +25,7 @@ public class StudentController {
     OnDutyEndTimer onDutyEndTimer;
 
     @PostMapping("/get/{studentId}")
-    public List<Event> getEvents(@PathVariable String studentId) throws studentnotfoundexception {
+    public List<Event> getEvents(@PathVariable String studentId) throws StudentNotFoundException {
         return studentService.getPendingEvents(studentId);
     }
 
@@ -35,7 +35,7 @@ public class StudentController {
     }
 
     @PostMapping("/addOd/{studentId}")
-    public void updateOdForm(@ModelAttribute OnDutyFormCommand onDutyFormCommand) throws studentnotfoundexception {
+    public void updateOdForm(@ModelAttribute OnDutyFormCommand onDutyFormCommand) throws StudentNotFoundException {
         log.info(onDutyFormCommand.toString());
         onDutyEndTimer.autoEndOdTimer(onDutyFormService.save(onDutyFormCommandToOnDutyForm.convert(onDutyFormCommand)));
     }

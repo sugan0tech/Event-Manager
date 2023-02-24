@@ -1,6 +1,6 @@
 package in.ac.skcet.event_manager.student;
 
-import in.ac.skcet.event_manager.exception.studentnotfoundexception;
+import in.ac.skcet.event_manager.exception.StudentNotFoundException;
 import in.ac.skcet.event_manager.attendance.Attendance;
 import in.ac.skcet.event_manager.event.Event;
 import in.ac.skcet.event_manager.attendance.AttendanceRepository;
@@ -29,12 +29,12 @@ public class StudentService {
         return studentRepository.save(student);
     }
 
-    public Student findByID(String id) throws studentnotfoundexception {
-        return studentRepository.findById(id).orElseThrow(() -> new studentnotfoundexception("Student Not found id :" + id));
+    public Student findByID(String id) throws StudentNotFoundException {
+        return studentRepository.findById(id).orElseThrow(() -> new StudentNotFoundException("Student Not found id :" + id));
     }
 
-    public List<Event> getPendingEvents(String studentId) throws studentnotfoundexception{
-        Student student = studentRepository.findById(studentId).orElseThrow(() -> new studentnotfoundexception("student not found"));
+    public List<Event> getPendingEvents(String studentId) throws StudentNotFoundException {
+        Student student = studentRepository.findById(studentId).orElseThrow(() -> new StudentNotFoundException("student not found"));
         log.info(student.toString());
         return eventService.findAll().stream().filter(event -> !student.getEvents().contains(event)).collect(Collectors.toList());
     }
