@@ -3,10 +3,12 @@ package in.ac.skcet.event_manager.controllers.apis;
 import com.google.firebase.messaging.FirebaseMessagingException;
 import in.ac.skcet.event_manager.attendance.Attendance;
 import in.ac.skcet.event_manager.event.*;
-import in.ac.skcet.event_manager.exception.studentnotfoundexception;
+import in.ac.skcet.event_manager.exception.OdFormNotFoundException;
+import in.ac.skcet.event_manager.exception.StudentNotFoundException;
 import in.ac.skcet.event_manager.attendance.AttendanceRepository;
 import in.ac.skcet.event_manager.firebase_notification.PushNotificationService;
-import in.ac.skcet.event_manager.on_duty.OnDutyFormRepository;
+import in.ac.skcet.event_manager.on_duty.OnDutyForm;
+import in.ac.skcet.event_manager.on_duty.OnDutyFormService;
 import in.ac.skcet.event_manager.student.Student;
 import in.ac.skcet.event_manager.student.StudentService;
 import in.ac.skcet.event_manager.student.StudentStat;
@@ -24,7 +26,6 @@ import java.util.*;
 @AllArgsConstructor
 @Slf4j
 public class TeacherController {
-    private final OnDutyFormRepository onDutyFormRepository;
 
     TeacherService teacherService;
     EventService eventService;
@@ -34,6 +35,7 @@ public class TeacherController {
     AttendanceRepository attendanceRepository;
     PushNotificationService pushNotificationService;
     StaffEventTimer staffEventTimer;
+    OnDutyFormService onDutyFormService;
 
 
     @PostMapping("/events/pending/{staffId}")
@@ -103,7 +105,18 @@ public class TeacherController {
     }
 
     @PostMapping("/cancelOd/{id}")
-    public void cancelOd(@PathVariable Integer id){
+    public void cancelOd(@PathVariable Long id) throws OdFormNotFoundException {
+        OnDutyForm onDutyForm = onDutyFormService.findById(id);
+        onDutyForm.getStudentSet().forEach(student -> {
+            student.setOnDuty(false);
+            studentService.save(student);
+        });
+        onDutyFormService.delete(id);
+    }
+
+    @PostMapping("/getOdList/{classCode}")
+    public List<OnDutyForm> getOdList(@PathVariable String classCode){
+        return onDutyFormService.findByClassCode(classCode);
     }
 
     @PostMapping("/student/attendance/{classCode}/{date}")
@@ -112,17 +125,13 @@ public class TeacherController {
         final Attendance attendance = attendanceRepository.findByDate(java.sql.Date.valueOf(date)).orElse(Attendance.builder().date(java.sql.Date.valueOf(new SimpleDateFormat("yyyy-MM-dd").format(new Date()))).build());
         attendanceRepository.save(attendance);
         attendanceForm.forEach((studentId, status) -> {
-            Student student = null;
+            Student student;
             try {
                 student = studentService.findByID(studentId);
-            } catch (studentnotfoundexception e) {
+            } catch (StudentNotFoundException e) {
                 throw new RuntimeException(e);
             }
-            if(student == null )
-                log.info("null null");
-
             if(status.equals("true")){
-                assert student != null;
                 student.addAttendance(attendance);
             }else{
                 if(studentService.isPresent(studentId, new SimpleDateFormat("yyyy-MM-dd").format(attendance.getDate()))){
