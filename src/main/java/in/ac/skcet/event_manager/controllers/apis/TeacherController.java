@@ -3,6 +3,7 @@ package in.ac.skcet.event_manager.controllers.apis;
 import com.google.firebase.messaging.FirebaseMessagingException;
 import in.ac.skcet.event_manager.commands.EventCmdToEvent;
 import in.ac.skcet.event_manager.commands.EventCommand;
+import in.ac.skcet.event_manager.exception.studentnotfoundexception;
 import in.ac.skcet.event_manager.models.*;
 import in.ac.skcet.event_manager.repositories.AttendanceRepository;
 import in.ac.skcet.event_manager.services.*;
@@ -96,12 +97,17 @@ public class TeacherController {
     }
 
     @PostMapping("/student/attendance/{classCode}/{date}")
-    public void addAttendance(@PathVariable String classCode, @PathVariable String date, @RequestBody Map<String, String> attendanceForm ) throws FirebaseMessagingException {
+    public void addAttendance(@PathVariable String classCode, @PathVariable String date, @RequestBody Map<String, String> attendanceForm ) throws FirebaseMessagingException{
         log.info(attendanceForm.toString());
         final Attendance attendance = attendanceRepository.findByDate(java.sql.Date.valueOf(date)).orElse(Attendance.builder().date(java.sql.Date.valueOf(new SimpleDateFormat("yyyy-MM-dd").format(new Date()))).build());
         attendanceRepository.save(attendance);
         attendanceForm.forEach((studentId, status) -> {
-            Student student = studentService.findByID(studentId).orElse(null);
+            Student student = null;
+            try {
+                student = studentService.findByID(studentId);
+            } catch (studentnotfoundexception e) {
+                throw new RuntimeException(e);
+            }
             if(student == null )
                 log.info("null null");
 
