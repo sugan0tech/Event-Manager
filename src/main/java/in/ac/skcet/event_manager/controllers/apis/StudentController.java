@@ -1,11 +1,12 @@
 package in.ac.skcet.event_manager.controllers.apis;
 
-import in.ac.skcet.event_manager.commands.OnDutyFormCommand;
-import in.ac.skcet.event_manager.commands.OnDutyFormCommandToOnDutyForm;
+import in.ac.skcet.event_manager.on_duty.OnDutyEndTimer;
+import in.ac.skcet.event_manager.on_duty.OnDutyFormCommand;
+import in.ac.skcet.event_manager.on_duty.OnDutyFormCommandToOnDutyForm;
 import in.ac.skcet.event_manager.exception.studentnotfoundexception;
-import in.ac.skcet.event_manager.models.Event;
-import in.ac.skcet.event_manager.services.OnDutyFormService;
-import in.ac.skcet.event_manager.services.StudentService;
+import in.ac.skcet.event_manager.event.Event;
+import in.ac.skcet.event_manager.on_duty.OnDutyFormService;
+import in.ac.skcet.event_manager.student.StudentService;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.*;
@@ -21,6 +22,7 @@ public class StudentController {
     StudentService studentService;
     OnDutyFormCommandToOnDutyForm onDutyFormCommandToOnDutyForm;
     OnDutyFormService onDutyFormService;
+    OnDutyEndTimer onDutyEndTimer;
 
     @PostMapping("/get/{studentId}")
     public List<Event> getEvents(@PathVariable String studentId) throws studentnotfoundexception {
@@ -35,7 +37,7 @@ public class StudentController {
     @PostMapping("/addOd/{studentId}")
     public void updateOdForm(@ModelAttribute OnDutyFormCommand onDutyFormCommand) throws studentnotfoundexception {
         log.info(onDutyFormCommand.toString());
-        onDutyFormService.save(onDutyFormCommandToOnDutyForm.convert(onDutyFormCommand));
+        onDutyEndTimer.autoEndOdTimer(onDutyFormService.save(onDutyFormCommandToOnDutyForm.convert(onDutyFormCommand)));
     }
 
 }

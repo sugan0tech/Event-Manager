@@ -1,6 +1,8 @@
 package in.ac.skcet.event_manager.commands;
 
-import in.ac.skcet.event_manager.models.Event;
+import in.ac.skcet.event_manager.event.EventCmdToEvent;
+import in.ac.skcet.event_manager.event.EventCommand;
+import in.ac.skcet.event_manager.event.Event;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;

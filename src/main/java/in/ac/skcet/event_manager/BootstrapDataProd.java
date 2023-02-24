@@ -5,15 +5,15 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.annotation.Profile;
 import org.springframework.core.annotation.Order;
 import org.springframework.stereotype.Component;
-import in.ac.skcet.event_manager.repositories.StudentRepository;
-import in.ac.skcet.event_manager.services.EventStatService;
+import in.ac.skcet.event_manager.student.StudentRepository;
+import in.ac.skcet.event_manager.event.EventStatService;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.core.io.ResourceLoader;
 
 import javax.transaction.Transactional;
+import java.util.Date;
 import java.util.Map;
-import java.util.Timer;
-import java.util.TimerTask;
+
 
 @Slf4j
 @Component
@@ -35,7 +35,7 @@ public class BootstrapDataProd implements CommandLineRunner {
         log.info(stats.toString());
         log.info("-------------------------------------------------------------------");
         log.info(resourceLoader.getResource("classpath:").getURI().getPath());
-
+        log.info(new Date().toString());
 
     }
 

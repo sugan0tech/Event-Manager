@@ -1,8 +1,8 @@
 package in.ac.skcet.event_manager.controllers.apis;
 
 
-import in.ac.skcet.event_manager.models.RegisteredUser;
-import in.ac.skcet.event_manager.services.RegisteredUserService;
+import in.ac.skcet.event_manager.firebase_notification.RegisteredUser;
+import in.ac.skcet.event_manager.firebase_notification.RegisteredUserService;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.PathVariable;

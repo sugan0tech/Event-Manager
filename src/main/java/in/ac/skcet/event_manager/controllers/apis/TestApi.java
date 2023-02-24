@@ -1,7 +1,7 @@
 package in.ac.skcet.event_manager.controllers.apis;
 
-import in.ac.skcet.event_manager.models.Event;
-import in.ac.skcet.event_manager.models.Student;
+import in.ac.skcet.event_manager.event.Event;
+import in.ac.skcet.event_manager.student.Student;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;

@@ -1,12 +1,17 @@
 package in.ac.skcet.event_manager.controllers.apis;
 
 import com.google.firebase.messaging.FirebaseMessagingException;
-import in.ac.skcet.event_manager.commands.EventCmdToEvent;
-import in.ac.skcet.event_manager.commands.EventCommand;
+import in.ac.skcet.event_manager.attendance.Attendance;
+import in.ac.skcet.event_manager.event.*;
 import in.ac.skcet.event_manager.exception.studentnotfoundexception;
-import in.ac.skcet.event_manager.models.*;
-import in.ac.skcet.event_manager.repositories.AttendanceRepository;
-import in.ac.skcet.event_manager.services.*;
+import in.ac.skcet.event_manager.attendance.AttendanceRepository;
+import in.ac.skcet.event_manager.firebase_notification.PushNotificationService;
+import in.ac.skcet.event_manager.on_duty.OnDutyFormRepository;
+import in.ac.skcet.event_manager.student.Student;
+import in.ac.skcet.event_manager.student.StudentService;
+import in.ac.skcet.event_manager.student.StudentStat;
+import in.ac.skcet.event_manager.teacher.StaffEventTimer;
+import in.ac.skcet.event_manager.teacher.TeacherService;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.*;
@@ -19,6 +24,7 @@ import java.util.*;
 @AllArgsConstructor
 @Slf4j
 public class TeacherController {
+    private final OnDutyFormRepository onDutyFormRepository;
 
     TeacherService teacherService;
     EventService eventService;
@@ -27,7 +33,7 @@ public class TeacherController {
     StudentService studentService;
     AttendanceRepository attendanceRepository;
     PushNotificationService pushNotificationService;
-    TimerService timerService;
+    StaffEventTimer staffEventTimer;
 
 
     @PostMapping("/events/pending/{staffId}")
@@ -65,7 +71,7 @@ public class TeacherController {
             log.info(eventService.save(event).toString());
             log.info(event.getClassCode());
             pushNotificationService.eventNotification(event);
-            timerService.setTimerForEvent(event);
+            staffEventTimer.setTimerForEvent(event);
         }
 
         return "added";
@@ -94,6 +100,10 @@ public class TeacherController {
             studentList.put(student.getRollNo(), intermediateStudentData);
             });
         return studentList;
+    }
+
+    @PostMapping("/cancelOd/{id}")
+    public void cancelOd(@PathVariable Integer id){
     }
 
     @PostMapping("/student/attendance/{classCode}/{date}")

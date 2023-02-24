@@ -1,25 +1,24 @@
 package in.ac.skcet.event_manager;
 
 import com.github.javafaker.Faker;
-import in.ac.skcet.event_manager.models.*;
-import in.ac.skcet.event_manager.repositories.AttendanceRepository;
-import in.ac.skcet.event_manager.repositories.EventRepository;
-import in.ac.skcet.event_manager.repositories.StudentRepository;
-import in.ac.skcet.event_manager.repositories.TeacherRepository;
-import in.ac.skcet.event_manager.services.EventStatService;
-import in.ac.skcet.event_manager.services.RegisteredUserService;
+import in.ac.skcet.event_manager.attendance.Attendance;
+import in.ac.skcet.event_manager.event.Event;
+import in.ac.skcet.event_manager.firebase_notification.RegisteredUser;
+import in.ac.skcet.event_manager.attendance.AttendanceRepository;
+import in.ac.skcet.event_manager.event.EventRepository;
+import in.ac.skcet.event_manager.student.StudentRepository;
+import in.ac.skcet.event_manager.teacher.TeacherRepository;
+import in.ac.skcet.event_manager.firebase_notification.RegisteredUserService;
+import in.ac.skcet.event_manager.student.Student;
+import in.ac.skcet.event_manager.teacher.Teacher;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.context.annotation.Profile;
-import org.springframework.core.io.ResourceLoader;
 import org.springframework.stereotype.Component;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
-import java.util.Map;
-import java.util.Timer;
-import java.util.TimerTask;
 
 
 @Slf4j
