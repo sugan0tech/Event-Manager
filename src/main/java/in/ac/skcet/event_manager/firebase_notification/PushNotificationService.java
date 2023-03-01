@@ -48,9 +48,10 @@ public class PushNotificationService {
         Set<Student> studentSet = studentService.findByClassCode(classCode);
 
         int total = studentSet.size();
-        int present = (int) studentSet.stream().filter(student -> student.getAttendanceSet().contains(attendance)).count();
+        int present = (int) studentSet.stream().filter(student -> student.getAttendanceBitSetMap().containsKey(attendance)).count();
         int absent = total - present;
-        int od = (int) studentSet.stream().filter(Student::getOnDuty).count();
+        log.info(studentSet.toString());
+        int od = (int) studentSet.stream().filter(student -> student.getOnDuty() != null).count();
 
         for(Teacher teacher : teacherSet){
             String token = registeredUserService.getTokenByEmail(teacher.getMail()).orElse(null);

@@ -11,7 +11,6 @@ import in.ac.skcet.event_manager.exception.TeacherNotFoundException;
 import in.ac.skcet.event_manager.firebase_notification.PushNotificationService;
 import in.ac.skcet.event_manager.on_duty.OnDutyForm;
 import in.ac.skcet.event_manager.on_duty.OnDutyFormService;
-import in.ac.skcet.event_manager.student.Student;
 import in.ac.skcet.event_manager.student.StudentService;
 import in.ac.skcet.event_manager.student.StudentStat;
 import in.ac.skcet.event_manager.teacher.StaffEventTimer;
@@ -19,7 +18,6 @@ import in.ac.skcet.event_manager.teacher.TeacherService;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.*;
-import java.text.SimpleDateFormat;
 import java.util.*;
 
 @RestController
@@ -101,7 +99,11 @@ public class TeacherController {
         studentService.findByClassCode(classCode).forEach(student -> {
             Map<String, Map<String, Boolean>> intermediateStudentData = new HashMap<>();
             Map<String, Boolean> booleanMap = new HashMap<>();
-            booleanMap.put("isPresent", studentService.isPresent(student.getRollNo(), date));
+            try {
+                booleanMap.put("isPresent", attendanceService.isPresent(student.getRollNo(), date));
+            } catch (StudentNotFoundException e) {
+                throw new RuntimeException(e);
+            }
             booleanMap.put("onOd", student.getOnDuty());
             intermediateStudentData.put(student.getName(), booleanMap);
             studentList.put(student.getRollNo(), intermediateStudentData);
@@ -110,9 +112,14 @@ public class TeacherController {
     }
 
 
-    @PostMapping("/getList/{classCode}/{startDate}/{endDate}")
-    public Map<String, Double> getAttendancePercentage(@PathVariable String classCode, @PathVariable String startDate, @PathVariable String endDate){
-        return attendanceService.getAttendancePercentage(classCode, new Date(Long.parseLong(startDate)), new Date(Long.parseLong(endDate)));
+    @PostMapping("/getAttendancePercentage/daily/{classCode}/{startDate}/{endDate}")
+    public Map<String, Double> getAttendancePercentageDaily(@PathVariable String classCode, @PathVariable String startDate, @PathVariable String endDate){
+        return attendanceService.getAttendancePercentageDaily(classCode, new Date(Long.parseLong(startDate)), new Date(Long.parseLong(endDate)));
+    }
+
+    @PostMapping("/getAttendancePercentage/hourly/{classCode}/{startDate}/{endDate}")
+    public Map<String, Double> getAttendancePercentageHourly(@PathVariable String classCode, @PathVariable String startDate, @PathVariable String endDate){
+        return attendanceService.getAttendancePercentageHourly(classCode, new Date(Long.parseLong(startDate)), new Date(Long.parseLong(endDate)));
     }
 
     @PostMapping("/cancelOd/{id}")
@@ -132,25 +139,15 @@ public class TeacherController {
 
     @PostMapping("/student/attendance/{classCode}/{date}")
     public void addAttendance(@PathVariable String classCode, @PathVariable String date, @RequestBody Map<String, String> attendanceForm ) throws FirebaseMessagingException{
-        log.info(attendanceForm.toString());
-        final Attendance attendance = attendanceRepository.findByDate(java.sql.Date.valueOf(date)).orElse(Attendance.builder().date(java.sql.Date.valueOf(new SimpleDateFormat("yyyy-MM-dd").format(new Date()))).build());
-        attendanceRepository.save(attendance);
+
+        final Attendance attendance = attendanceService.findByDate(date);
+
         attendanceForm.forEach((studentId, status) -> {
-            Student student;
             try {
-                student = studentService.findByID(studentId);
+                attendanceService.updateAttendance(studentId, attendance, Boolean.valueOf(status));
             } catch (StudentNotFoundException e) {
                 throw new RuntimeException(e);
             }
-            if(status.equals("true")){
-                student.addAttendance(attendance);
-            }else{
-                if(studentService.isPresent(studentId, new SimpleDateFormat("yyyy-MM-dd").format(attendance.getDate()))){
-                    assert student != null;
-                    student.getAttendanceSet().remove(attendance);
-                }
-            }
-            studentService.save(student);
         });
 
         pushNotificationService.attendanceNotification(classCode, attendance);

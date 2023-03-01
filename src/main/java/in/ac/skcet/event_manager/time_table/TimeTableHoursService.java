@@ -1,13 +1,9 @@
 package in.ac.skcet.event_manager.time_table;
 
-import lombok.NoArgsConstructor;
-import org.springframework.stereotype.Service;
-
 import java.time.LocalTime;
 
-@Service
-@NoArgsConstructor
 public class TimeTableHoursService {
+    private TimeTableHoursService(){}
     private static final LocalTime[] PERIOD_START_TIMES = {
             LocalTime.parse("08:45"), // Period 1 start time
             LocalTime.parse("09:40"), // Period 2 start time

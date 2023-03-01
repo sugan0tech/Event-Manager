@@ -3,6 +3,7 @@ package in.ac.skcet.event_manager.student;
 import in.ac.skcet.event_manager.attendance.Attendance;
 import in.ac.skcet.event_manager.event.Event;
 import lombok.*;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.annotation.Lazy;
 
 import javax.persistence.*;
@@ -16,6 +17,7 @@ import java.util.*;
 @AllArgsConstructor
 @Builder
 @Lazy(false)
+@Slf4j
 public class Student {
     @Id
     private String rollNo;
@@ -26,14 +28,20 @@ public class Student {
     private String mail;
     private String mobile;
     private Boolean onDuty = false;
-
     @ManyToMany(fetch = FetchType.EAGER)
     @ToString.Exclude
     private Set<Event> events = new HashSet<>();
 
-    @ManyToMany
+    public Map<Attendance, BitSet> getAttendanceBitSetMap() {
+        if(attendanceBitSetMap == null){
+            new HashMap<>();
+        }
+        return attendanceBitSetMap;
+    }
+
+    @ElementCollection
     @ToString.Exclude
-    private Set<Attendance> attendanceSet = new HashSet<>();
+    private Map<Attendance, BitSet> attendanceBitSetMap = new HashMap<>();
 
     public void addEvent(Event event){
         if(this.events == null){
@@ -44,13 +52,19 @@ public class Student {
         this.events.add(event);
     }
 
-    public void addAttendance(Attendance attendance){
-        if(this.attendanceSet == null){
-            this.attendanceSet = new HashSet<>();
-            this.attendanceSet.add(attendance);
+
+    public void addAttendance(Attendance attendance, BitSet bitSet){
+        if(this.attendanceBitSetMap == null){
+            this.attendanceBitSetMap = new HashMap<>();
+            this.attendanceBitSetMap.put(attendance, bitSet);
             return;
         }
-        this.attendanceSet.add(attendance);
+        if(attendanceBitSetMap.containsKey(attendance)){
+            bitSet.or(attendanceBitSetMap.get(attendance));
+            attendanceBitSetMap.put(attendance, bitSet);
+        }else{
+            this.attendanceBitSetMap.put(attendance, bitSet);
+        }
     }
     @Override
     public String toString() {
@@ -61,6 +75,7 @@ public class Student {
                 ", dateOfBirth=" + dateOfBirth +
                 ", mail='" + mail + '\'' +
                 ", mobile='" + mobile + '\'' +
+                ", onDuty='" + onDuty + '\'' +
                 '}';
     }
 }

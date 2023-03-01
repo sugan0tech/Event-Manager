@@ -1,5 +1,6 @@
 package in.ac.skcet.event_manager.student;
 
+import in.ac.skcet.event_manager.attendance.AttendanceService;
 import in.ac.skcet.event_manager.class_code.ClassCodeService;
 import in.ac.skcet.event_manager.exception.StudentNotFoundException;
 import in.ac.skcet.event_manager.attendance.Attendance;
@@ -58,9 +59,6 @@ public class StudentService {
         return studentRepository.findAll().stream().filter(student -> classCodeService.compareCodes(student.getClassCode(), classCode)).collect(Collectors.toSet());
     }
 
-    public Boolean isPresent(String rollNo, String date){
-        return studentRepository.findById(rollNo).orElse(new Student()).getAttendanceSet().contains(attendanceRepository.findByDate(Date.valueOf(date)).orElse(new Attendance()));
-    }
 
     public void updateOd(Student student){
         student.setOnDuty(true);

@@ -18,6 +18,7 @@ import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Component;
 
 import java.text.SimpleDateFormat;
+import java.util.BitSet;
 import java.util.Date;
 
 
@@ -131,8 +132,8 @@ public class BootstrapDataDev implements CommandLineRunner {
         Attendance attendance = Attendance.builder().date(java.sql.Date.valueOf(new SimpleDateFormat("yyyy-MM-dd").format(new Date()))).build();
         attendanceRepository.save(attendance);
 
-        studentOne.addAttendance(attendance);
-        studentTwo.addAttendance(attendance);
+        studentOne.addAttendance(attendance, new BitSet(7));
+        studentTwo.addAttendance(attendance, new BitSet(7));
 
         eventRepository.save(eventOne);
         eventRepository.save(eventTwo);
@@ -167,10 +168,10 @@ public class BootstrapDataDev implements CommandLineRunner {
                 .email("20eucs137@skcet.ac.in")
                 .token("fySS3NlRTaSQ1D1-u_SCN4:APA91bFABQpz2cRhJim-8Zw4TYz0YvI86GbDnaLPcpPbTfgIXa8Vbj6qqKMIDxfbX-NBMXU88orrRJYuHHJEqyOeZ_kpfzACyvqoyxrji27MMrCKE9xqiiesQOiBKh-AzXPzOMUr3h6E")
                 .build();
-        registeredUserService.save(registeredUser);
-        registeredUserService.save(registeredUser2);
-        registeredUserService.save(registeredUser3);
-        registeredUserService.save(registeredUser4);
+//        registeredUserService.save(registeredUser);
+//        registeredUserService.save(registeredUser2);
+//        registeredUserService.save(registeredUser3);
+//        registeredUserService.save(registeredUser4);
 
     }
 }

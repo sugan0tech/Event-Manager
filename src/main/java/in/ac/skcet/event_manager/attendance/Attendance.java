@@ -2,10 +2,7 @@ package in.ac.skcet.event_manager.attendance;
 
 import lombok.*;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
+import javax.persistence.*;
 import java.sql.Date;
 
 @Entity
@@ -14,6 +11,7 @@ import java.sql.Date;
 @Getter
 @Setter
 @Builder
+@ToString
 public class Attendance {
 
     @Id
