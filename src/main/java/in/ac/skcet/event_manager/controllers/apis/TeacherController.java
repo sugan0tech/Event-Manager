@@ -2,6 +2,7 @@ package in.ac.skcet.event_manager.controllers.apis;
 
 import com.google.firebase.messaging.FirebaseMessagingException;
 import in.ac.skcet.event_manager.attendance.Attendance;
+import in.ac.skcet.event_manager.attendance.AttendanceService;
 import in.ac.skcet.event_manager.event.*;
 import in.ac.skcet.event_manager.exception.OdFormNotFoundException;
 import in.ac.skcet.event_manager.exception.StudentNotFoundException;
@@ -14,12 +15,10 @@ import in.ac.skcet.event_manager.student.Student;
 import in.ac.skcet.event_manager.student.StudentService;
 import in.ac.skcet.event_manager.student.StudentStat;
 import in.ac.skcet.event_manager.teacher.StaffEventTimer;
-import in.ac.skcet.event_manager.teacher.Teacher;
 import in.ac.skcet.event_manager.teacher.TeacherService;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.*;
-import in.ac.skcet.event_manager.exception.TeacherNotFoundException;
 import java.text.SimpleDateFormat;
 import java.util.*;
 
@@ -38,6 +37,7 @@ public class TeacherController {
     PushNotificationService pushNotificationService;
     StaffEventTimer staffEventTimer;
     OnDutyFormService onDutyFormService;
+    AttendanceService attendanceService;
 
 
     @PostMapping("/events/pending/{staffId}")
@@ -107,6 +107,12 @@ public class TeacherController {
             studentList.put(student.getRollNo(), intermediateStudentData);
             });
         return studentList;
+    }
+
+
+    @PostMapping("/getList/{classCode}/{startDate}/{endDate}")
+    public Map<String, Double> getAttendancePercentage(@PathVariable String classCode, @PathVariable String startDate, @PathVariable String endDate){
+        return attendanceService.getAttendancePercentage(classCode, new Date(Long.parseLong(startDate)), new Date(Long.parseLong(endDate)));
     }
 
     @PostMapping("/cancelOd/{id}")
