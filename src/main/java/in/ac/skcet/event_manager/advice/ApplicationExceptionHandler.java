@@ -1,5 +1,6 @@
 package in.ac.skcet.event_manager.advice;
 
+import in.ac.skcet.event_manager.exception.InvalidDateException;
 import in.ac.skcet.event_manager.exception.StudentNotFoundException;
 import in.ac.skcet.event_manager.exception.TeacherNotFoundException;
 import org.springframework.http.HttpStatus;
@@ -26,6 +27,15 @@ public class ApplicationExceptionHandler {
     {
         Map<String,String>map=new HashMap<>();
         map.put("error message", ex.getMessage());
+        return map;
+    }
+    @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
+    @ExceptionHandler(InvalidDateException.class)
+    public Map<String,String> handleExceptionForDate(InvalidDateException ex)
+    {
+        Map<String,String>map=new HashMap<>();
+        map.put("error message", ex.getMessage());
+        System.out.println("Invalid Date");
         return map;
     }
 
