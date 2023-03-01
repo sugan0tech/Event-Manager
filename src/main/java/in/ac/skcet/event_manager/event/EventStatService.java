@@ -8,10 +8,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.List;
+import java.util.*;
 
 @Service
 @Slf4j
@@ -49,6 +46,7 @@ public class EventStatService {
                         studentStats.add(new StudentStat(student, false));
                 }
         );
+        studentStats.sort(Comparator.comparing(StudentStat::getStudentRollNo));
         return studentStats;
     }
 }
