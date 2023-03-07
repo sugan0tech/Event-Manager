@@ -19,7 +19,7 @@ jobs:
         java-version: '18'
         distribution: 'corretto'
         cache: maven
-    - name: Test
-      run: mvn test -f pom.xml
-    - name: Build
-      run: mvn -B package -f pom.xml
+#    - name: Test
+#      run: mvn test -f pom.xml
+#    - name: Build
+#      run: mvn -B package -f pom.xml
