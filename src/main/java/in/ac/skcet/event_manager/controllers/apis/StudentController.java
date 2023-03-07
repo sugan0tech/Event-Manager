@@ -1,8 +1,11 @@
 package in.ac.skcet.event_manager.controllers.apis;
 
+import in.ac.skcet.event_manager.event.EventService;
+import in.ac.skcet.event_manager.exception.EventNotFoundException;
 import in.ac.skcet.event_manager.on_duty.*;
 import in.ac.skcet.event_manager.exception.StudentNotFoundException;
 import in.ac.skcet.event_manager.event.Event;
+import in.ac.skcet.event_manager.student.Student;
 import in.ac.skcet.event_manager.student.StudentService;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -21,10 +24,11 @@ public class StudentController {
     OnDutyFormCommandToOnDutyForm onDutyFormCommandToOnDutyForm;
     OnDutyFormService onDutyFormService;
     OnDutyEndTimer onDutyEndTimer;
+    EventService eventService;
 
     @PostMapping("/get/{studentId}")
     public List<Event> getEvents(@PathVariable String studentId) throws StudentNotFoundException {
-        return studentService.getPendingEvents(studentId);
+        return eventService.getPendingEvents(studentId);
     }
 
     @PostMapping("/getClassCode/{rollNo}")
@@ -33,8 +37,8 @@ public class StudentController {
     }
 
     @PostMapping("/update/{studentId}/{eventId}")
-    public void updateEventStatus(@PathVariable String studentId, @PathVariable String eventId){
-        studentService.updateEvent(studentId, eventId);
+    public void updateEventStatus(@PathVariable String studentId, @PathVariable String eventId) throws StudentNotFoundException, EventNotFoundException {
+        eventService.updateEvent(studentId, eventId);
     }
 
     @PostMapping("/addOd/{studentId}")
@@ -44,14 +48,11 @@ public class StudentController {
     }
 
     @PostMapping("/getOd/{studentId}")
-    public List<OnDutyForm> getOdForm(@PathVariable  String studentId){
-        return onDutyFormService.findAll().stream().filter(onDutyForm -> {
-            try {
-                return onDutyForm.getStudentSet().contains(studentService.findByID(studentId));
-            } catch (StudentNotFoundException e) {
-                throw new RuntimeException(e);
-            }
-        }).collect(Collectors.toList());
+    public List<OnDutyForm> getOdForm(@PathVariable  String studentId) throws StudentNotFoundException {
+        Student student = studentService.findByID(studentId);
+        return onDutyFormService.findAll().stream().filter(onDutyForm ->
+            onDutyForm.getStudentSet().contains(student)
+        ).collect(Collectors.toList());
     }
 
 }

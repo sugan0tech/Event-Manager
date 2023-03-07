@@ -1,19 +1,12 @@
 package in.ac.skcet.event_manager.student;
 
-import in.ac.skcet.event_manager.attendance.AttendanceService;
 import in.ac.skcet.event_manager.class_code.ClassCodeService;
 import in.ac.skcet.event_manager.exception.StudentNotFoundException;
-import in.ac.skcet.event_manager.attendance.Attendance;
-import in.ac.skcet.event_manager.event.Event;
-import in.ac.skcet.event_manager.attendance.AttendanceRepository;
-import in.ac.skcet.event_manager.event.EventService;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
-import java.sql.Date;
-import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
 
@@ -21,10 +14,8 @@ import java.util.stream.Collectors;
 @Slf4j
 @AllArgsConstructor
 public class StudentService {
-    private final AttendanceRepository attendanceRepository;
 
     StudentRepository studentRepository;
-    EventService eventService;
     ClassCodeService classCodeService;
 
     @Transactional
@@ -36,29 +27,9 @@ public class StudentService {
         return studentRepository.findById(id).orElseThrow(() -> new StudentNotFoundException("Student Not found id :" + id));
     }
 
-    public List<Event> getPendingEvents(String studentId) throws StudentNotFoundException {
-        Student student = studentRepository.findById(studentId).orElseThrow(() -> new StudentNotFoundException("student not found"));
-        log.info(student.toString());
-        return eventService.findAll().stream().filter(event -> !student.getEvents().contains(event)).collect(Collectors.toList());
-    }
-
-
-    public void updateEvent(String studentId, String eventId){
-
-        Event event = eventService.findById(Integer.valueOf(eventId)).orElse(null);
-        Student stu = studentRepository.findById(studentId).orElse(null);
-        if(stu == null || event == null)
-            return;
-
-        log.info(event.toString());
-        stu.addEvent(event);
-        studentRepository.save(stu);
-    }
-
     public Set<Student> findByClassCode(String classCode){
         return studentRepository.findAll().stream().filter(student -> classCodeService.compareCodes(student.getClassCode(), classCode)).collect(Collectors.toSet());
     }
-
 
     public void updateOd(Student student){
         student.setOnDuty(true);

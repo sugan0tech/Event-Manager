@@ -41,7 +41,7 @@ public class TeacherController {
     @PostMapping("/events/pending/{staffId}")
     public List<Event> getEvents(@PathVariable String staffId) throws TeacherNotFoundException{
        log.info(staffId);
-       log.info(teacherService.findById("srigirit369").toString());
+       log.info(teacherService.findById(staffId).toString());
        return teacherService.findEvents(staffId);
     }
 
@@ -50,18 +50,21 @@ public class TeacherController {
         return teacherService.findById(staffId).getClassCode();
     }
 
-    @PostMapping("/events/past-five/{classCode}")
-    public List<Event> getPastFiveEvents(@PathVariable String classCode) {
+    @PostMapping("/events/past-five/{staffId}")
+    public List<Event> getPastFiveEvents(@PathVariable String staffId) throws TeacherNotFoundException {
+        String classCode = teacherService.findById(staffId).getClassCode();
         return eventService.getPastFiveEvents(classCode);
     }
 
-    @PostMapping("/event/stats/{eventId}/{classCode}")
-    public Map<String, Integer> getEventStatus(@PathVariable Integer eventId, @PathVariable String classCode){
+    @PostMapping("/event/stats/{eventId}/{staffId}")
+    public Map<String, Integer> getEventStatus(@PathVariable Integer eventId, @PathVariable String staffId) throws TeacherNotFoundException {
+        String classCode = teacherService.findById(staffId).getClassCode();
         return eventStatService.getEventStat(eventId, classCode);
     }
 
-    @PostMapping("/event/stats-list/{eventId}/{classCode}")
-    public List<StudentStat> getStudentWithStats(@PathVariable Integer eventId, @PathVariable  String classCode){
+    @PostMapping("/event/stats-list/{eventId}/{staffId}")
+    public List<StudentStat> getStudentWithStats(@PathVariable Integer eventId, @PathVariable  String staffId) throws TeacherNotFoundException {
+        String classCode = teacherService.findById(staffId).getClassCode();
         return eventStatService.getStudentStatusList(eventId, classCode);
     }
 
@@ -82,8 +85,9 @@ public class TeacherController {
         return "added";
     }
 
-    @PostMapping("/student/getList/{classCode}")
-    public Map<String, String> getList(@PathVariable String classCode){
+    @PostMapping("/student/getList/{staffId}")
+    public Map<String, String> getList(@PathVariable String staffId) throws TeacherNotFoundException {
+        String classCode = teacherService.findById(staffId).getClassCode();
         Map<String, String> studentList = new TreeMap<>();
         studentService.findByClassCode(classCode).forEach(student ->
                 studentList.put(student.getRollNo(), student.getName())
@@ -91,8 +95,9 @@ public class TeacherController {
         return studentList;
     }
 
-    @PostMapping("/student/attendanceList/{classCode}/{date}")
-    public Map<String, Map<String, Map<String, Boolean>>> getAttendanceList(@PathVariable String classCode, @PathVariable String date){
+    @PostMapping("/student/attendanceList/{staffId}/{date}")
+    public Map<String, Map<String, Map<String, Boolean>>> getAttendanceList(@PathVariable String staffId, @PathVariable String date) throws TeacherNotFoundException {
+        String classCode = teacherService.findById(staffId).getClassCode();
 
         Map<String, Map<String, Map<String, Boolean>>> studentList = new TreeMap<>();
 
@@ -102,7 +107,7 @@ public class TeacherController {
             try {
                 booleanMap.put("isPresent", attendanceService.isPresent(student.getRollNo(), date));
             } catch (StudentNotFoundException e) {
-                throw new RuntimeException(e);
+                log.info(e.toString());
             }
             booleanMap.put("onOd", student.getOnDuty());
             intermediateStudentData.put(student.getName(), booleanMap);
@@ -112,13 +117,15 @@ public class TeacherController {
     }
 
 
-    @PostMapping("/getAttendancePercentage/daily/{classCode}/{startDate}/{endDate}")
-    public Map<String, Double> getAttendancePercentageDaily(@PathVariable String classCode, @PathVariable String startDate, @PathVariable String endDate){
+    @PostMapping("/getAttendancePercentage/daily/{staffId}/{startDate}/{endDate}")
+    public Map<String, Double> getAttendancePercentageDaily(@PathVariable String staffId, @PathVariable String startDate, @PathVariable String endDate) throws TeacherNotFoundException {
+        String classCode = teacherService.findById(staffId).getClassCode();
         return attendanceService.getAttendancePercentageDaily(classCode, new Date(Long.parseLong(startDate)), new Date(Long.parseLong(endDate)));
     }
 
-    @PostMapping("/getAttendancePercentage/hourly/{classCode}/{startDate}/{endDate}")
-    public Map<String, Double> getAttendancePercentageHourly(@PathVariable String classCode, @PathVariable String startDate, @PathVariable String endDate){
+    @PostMapping("/getAttendancePercentage/hourly/{staffId}/{startDate}/{endDate}")
+    public Map<String, Double> getAttendancePercentageHourly(@PathVariable String staffId, @PathVariable String startDate, @PathVariable String endDate) throws TeacherNotFoundException {
+        String classCode = teacherService.findById(staffId).getClassCode();
         return attendanceService.getAttendancePercentageHourly(classCode, new Date(Long.parseLong(startDate)), new Date(Long.parseLong(endDate)));
     }
 
@@ -132,13 +139,15 @@ public class TeacherController {
         onDutyFormService.delete(id);
     }
 
-    @PostMapping("/getOdList/{classCode}")
-    public List<OnDutyForm> getOdList(@PathVariable String classCode){
+    @PostMapping("/getOdList/{staffId}")
+    public List<OnDutyForm> getOdList(@PathVariable String staffId) throws TeacherNotFoundException {
+        String classCode = teacherService.findById(staffId).getClassCode();
         return onDutyFormService.findByClassCode(classCode);
     }
 
-    @PostMapping("/student/attendance/{classCode}/{date}")
-    public void addAttendance(@PathVariable String classCode, @PathVariable String date, @RequestBody Map<String, String> attendanceForm ) throws FirebaseMessagingException{
+    @PostMapping("/student/attendance/{staffId}/{date}")
+    public void addAttendance(@PathVariable String staffId, @PathVariable String date, @RequestBody Map<String, String> attendanceForm ) throws FirebaseMessagingException, TeacherNotFoundException {
+        String classCode = teacherService.findById(staffId).getClassCode();
 
         final Attendance attendance = attendanceService.findByDate(date);
 

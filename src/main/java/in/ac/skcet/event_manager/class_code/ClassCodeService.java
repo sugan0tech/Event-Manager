@@ -1,5 +1,6 @@
 package in.ac.skcet.event_manager.class_code;
 
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -7,6 +8,7 @@ import java.util.Arrays;
 import java.util.List;
 
 @Service
+@Slf4j
 public class ClassCodeService {
     private List<String> departments;
     private List<String> years;
@@ -38,5 +40,5 @@ public class ClassCodeService {
         }
 
         return classCodeA.contains(classCodeB);
-    };
+    }
 }

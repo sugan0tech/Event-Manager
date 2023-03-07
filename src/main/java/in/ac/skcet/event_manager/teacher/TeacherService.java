@@ -1,5 +1,6 @@
 package in.ac.skcet.event_manager.teacher;
 
+import in.ac.skcet.event_manager.class_code.ClassCodeService;
 import in.ac.skcet.event_manager.event.EventService;
 import in.ac.skcet.event_manager.event.Event;
 import in.ac.skcet.event_manager.exception.StudentNotFoundException;
@@ -20,6 +21,7 @@ public class TeacherService {
 
     TeacherRepository teacherRepository;
     EventService eventService;
+    ClassCodeService classCodeService;
 
     public Teacher findById(String staffId) throws TeacherNotFoundException {
         return teacherRepository.findById(staffId).orElseThrow(() -> new TeacherNotFoundException("Teacher Not found id :" + staffId));
@@ -27,7 +29,7 @@ public class TeacherService {
 
     public List<Event> findEvents(String teacherId){
         String teacherClassCode = teacherRepository.findById(teacherId).orElse(new Teacher()).getClassCode();
-        return eventService.findAll().stream().filter(event -> event.getClassCode().equals(teacherClassCode)).collect(Collectors.toList());
+        return eventService.findAll().stream().filter(event -> classCodeService.compareCodes(event.getClassCode(), teacherClassCode)).collect(Collectors.toList());
     }
     public Set<Teacher> findByClassCode(String classCode){
         return teacherRepository.findByClassCode(classCode);
