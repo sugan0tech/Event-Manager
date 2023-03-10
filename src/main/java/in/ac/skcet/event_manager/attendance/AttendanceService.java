@@ -42,6 +42,64 @@ public class AttendanceService {
         return studentPercentage;
     }
 
+    public List<List<Map<String, Map<String, Boolean>>>> getAttendancePerClassAtRange(String classCode, Date startDate, Date endDate){
+
+        List<Map<String, Map<String, Boolean>>> perStudentPercentageList = new LinkedList<>();
+        List<List<Map<String, Map<String, Boolean>>>> perClassPercentageList = new LinkedList<>();
+        List<Attendance> attendanceList = attendanceRepository.findAll().stream().filter(attendance -> attendance.getDate().after(startDate) && attendance.getDate().before(endDate)).collect(Collectors.toList());
+        List<Student> students = studentService.findByClassCode(classCode);
+
+        students.forEach(student -> {
+            attendanceList.forEach(attendance -> {
+                try {
+                    perStudentPercentageList.add(getAttendancePerDayPerStudent(student.getRollNo(), attendance));
+                } catch (StudentNotFoundException e) {
+                    throw new RuntimeException(e);
+                }
+            });
+            perClassPercentageList.add(perStudentPercentageList);
+        });
+        log.info(perClassPercentageList.toString());
+        return perClassPercentageList;
+    }
+
+    public List<Map<String, Map<String, Integer>>> getAttendancePerClass(String date){
+        List<Map<String, Map<String, Integer>>> stats = new ArrayList<>();
+        Set<String> classCodes = new TreeSet<>();
+        studentService.findAll().forEach(student -> {
+            classCodes.add(student.getClassCode());
+        });
+        Attendance attendance = findByDate(date);
+
+        Map<String, Map<String, Integer>> perClass;
+        Map<String, Integer> perClassStats;
+        for(String classCode: classCodes){
+
+            List<Student> studentList = studentService.findByClassCode(classCode);
+
+            int total = studentList.size();
+            int present = (int) studentList.stream().filter(student -> {
+                if (student.getAttendanceBitSetMap().containsKey(attendance)){
+                    return !student.getAttendanceBitSetMap().get(attendance).isEmpty();
+                }
+                return false;
+            }).count();
+            int absent = total - present;
+            int od = (int) studentList.stream().filter(student -> student.getOnDuty() != null).count();
+
+            perClassStats = new TreeMap<>();
+            perClassStats.put("present", present);
+            perClassStats.put("absent", absent);
+            perClassStats.put("od", od);
+            perClass = new TreeMap<>();
+            perClass.put(classCode, perClassStats);
+            stats.add(perClass);
+        }
+
+
+        return stats;
+    }
+
     public List<Map<String, Map<String, Boolean>>> getAttendancePerStudentAtRange(String rollNo, Date startDate, Date endDate){
         List<Map<String, Map<String, Boolean>>> perStudentPercentageList = new LinkedList<>();
         List<Attendance> attendanceList = attendanceRepository.findAll().stream().filter(attendance -> attendance.getDate().after(startDate) && attendance.getDate().before(endDate)).collect(Collectors.toList());
@@ -61,13 +119,11 @@ public class AttendanceService {
         if(bitSet == null){
             return periodMap;
         }
-        log.info(bitSet.toString());
         for(int period = 0; period <= 9; period++){
             int convertedPeriod = TimeTableHoursService.convert(period);
             if(convertedPeriod == -1){
                 continue;
             }
-            log.info(bitSet.get(period) + " " +period + " " + convertedPeriod);
             periods.put("Day " + attendance.getId() + " P-" + convertedPeriod, bitSet.get(period));
         }
         periodMap.put(rollNo, periods);

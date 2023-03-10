@@ -12,6 +12,7 @@ import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
@@ -45,7 +46,7 @@ public class PushNotificationService {
 
    public void attendanceNotificationPerStaff(Teacher teacher, Attendance attendance) throws FirebaseMessagingException{
 
-       Set<Student> studentSet = studentService.findByClassCode(teacher.getClassCode());
+       List<Student> studentSet = studentService.findByClassCode(teacher.getClassCode());
 
        int total = studentSet.size();
        int present = (int) studentSet.stream().filter(student -> {
@@ -70,7 +71,7 @@ public class PushNotificationService {
 
     public void attendanceNotification(String classCode, Attendance attendance) throws FirebaseMessagingException{
         Set<Teacher> teacherSet = teacherService.findByClassCodeExact(classCode);
-        Set<Student> studentSet = studentService.findByClassCode(classCode);
+        List<Student> studentSet = studentService.findByClassCode(classCode);
 
         int total = studentSet.size();
         int present = (int) studentSet.stream().filter(student -> {
@@ -99,7 +100,7 @@ public class PushNotificationService {
     }
 
     public void eventNotification(Event event) throws FirebaseMessagingException {
-        Set<Student> studnetSet = studentService.findByClassCode(event.getClassCode());
+        List<Student> studnetSet = studentService.findByClassCode(event.getClassCode());
         for(Student student : studnetSet){
             String token = registeredUserService.getTokenByEmail(student.getMail()).orElse(null);
             if(token != null){

@@ -15,9 +15,12 @@ import in.ac.skcet.event_manager.student.StudentService;
 import in.ac.skcet.event_manager.student.StudentStat;
 import in.ac.skcet.event_manager.teacher.StaffEventTimer;
 import in.ac.skcet.event_manager.teacher.TeacherService;
+import in.ac.skcet.event_manager.time_table.TimeTableHoursService;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.*;
+
+import java.time.LocalTime;
 import java.util.*;
 
 @RestController
@@ -116,7 +119,6 @@ public class TeacherController {
         return studentList;
     }
 
-
     @PostMapping("/getAttendancePercentage/daily/{staffId}/{startDate}/{endDate}")
     public Map<String, Double> getAttendancePercentageDaily(@PathVariable String staffId, @PathVariable String startDate, @PathVariable String endDate) throws TeacherNotFoundException {
         String classCode = teacherService.findById(staffId).getClassCode();
@@ -164,4 +166,17 @@ public class TeacherController {
     public List<Map<String, Map<String, Boolean>>> getStudentAttendanceStat(@PathVariable  String rollNo,@PathVariable String startDate,@PathVariable String endDate){
         return attendanceService.getAttendancePerStudentAtRange(rollNo, new Date(Long.parseLong(startDate)), new Date(Long.parseLong(endDate)));
     }
+    @PostMapping("/student/attendance/statsPerClass/{staffId}/{startDate}/{endDate}")
+    public List<List<Map<String, Map<String, Boolean>>>> getStudentAttendanceStatClass(@PathVariable  String staffId,@PathVariable String startDate,@PathVariable String endDate) throws TeacherNotFoundException {
+        return attendanceService.getAttendancePerClassAtRange(teacherService.findById(staffId).getClassCode(), new Date(Long.parseLong(startDate)), new Date(Long.parseLong(endDate)));
+    }
+    @PostMapping("/attendance/all/{date}")
+    public List<Map<String, Map<String, Integer>>> getAttendanceStatForAllClass(@PathVariable String date){
+        return attendanceService.getAttendancePerClass(date);
+    }
+    @PostMapping("getPeriod")
+    public int getPeriod(){
+        return TimeTableHoursService.getPeriodNumber(LocalTime.now());
+    }
+
 }

@@ -25,8 +25,8 @@ public class AttendanceTimerService {
     PushNotificationService pushNotificationService;
     AttendanceService attendanceService;
 
-//    @Scheduled(cron = "0 33 11 * * *") // for 9:30 am
-    @Scheduled(fixedDelay = 100000) // for test
+//    @Scheduled(fixedDelay = 100000) // for test
+    @Scheduled(cron = "0 33 11 * * *") // for 9:30 am
     public void sendAttendanceNotification() throws TeacherNotFoundException {
 
         List<Teacher> teacherList = teacherService.findAll();
