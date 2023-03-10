@@ -39,7 +39,7 @@ public class Student {
         return attendanceBitSetMap;
     }
 
-    @ElementCollection
+    @ElementCollection(fetch = FetchType.EAGER)
     @ToString.Exclude
     private Map<Attendance, BitSet> attendanceBitSetMap = new HashMap<>();
 
@@ -63,6 +63,7 @@ public class Student {
             bitSet.or(attendanceBitSetMap.get(attendance));
             attendanceBitSetMap.put(attendance, bitSet);
         }else{
+            log.info(bitSet.toString());
             this.attendanceBitSetMap.put(attendance, bitSet);
         }
     }
