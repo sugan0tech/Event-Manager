@@ -5,11 +5,12 @@ import java.time.LocalTime;
 public class TimeTableHoursService {
     private TimeTableHoursService(){}
     private static final LocalTime[] PERIOD_START_TIMES = {
-            LocalTime.parse("08:45"), // Period 1 start time
-            LocalTime.parse("09:40"), // Period 2 start time
-            LocalTime.parse("10:35"), // Period 3 start time
-            LocalTime.parse("11:00"), // Period 4 start time
-            LocalTime.parse("11:55"), // Period 5 start time
+            LocalTime.parse("08:45"), // Period 0 start time
+            LocalTime.parse("09:40"), // Period 1 start time
+            LocalTime.parse("10:35"), // Period 2 start time
+            LocalTime.parse("11:00"), // Period 3 start time
+            LocalTime.parse("11:55"), // Period 4 start time
+            LocalTime.parse("12:50"), // Period 5 start time
             LocalTime.parse("13:50"), // Period 6 start time
             LocalTime.parse("14:45"), // Period 7 start time
             LocalTime.parse("15:35")  // Period 8 start time
@@ -17,8 +18,8 @@ public class TimeTableHoursService {
 
     private static final int[] BREAK_PERIODS = {2, 5}; // Periods that have break
 
-    private static final int LUNCH_START_PERIOD = 4;
-    private static final int LUNCH_END_PERIOD = 5;
+    private static final int LUNCH_START_PERIOD = 5;
+    private static final int LUNCH_END_PERIOD = 6;
 
     private static final LocalTime DAY_START_TIME = LocalTime.parse("08:45");
     private static final LocalTime DAY_END_TIME = LocalTime.parse("16:45");
