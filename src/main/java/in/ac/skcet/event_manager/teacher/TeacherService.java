@@ -3,14 +3,12 @@ package in.ac.skcet.event_manager.teacher;
 import in.ac.skcet.event_manager.class_code.ClassCodeService;
 import in.ac.skcet.event_manager.event.EventService;
 import in.ac.skcet.event_manager.event.Event;
-import in.ac.skcet.event_manager.exception.StudentNotFoundException;
 import in.ac.skcet.event_manager.exception.TeacherNotFoundException;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
 
@@ -32,7 +30,18 @@ public class TeacherService {
         return eventService.findAll().stream().filter(event -> classCodeService.compareCodes(event.getClassCode(), teacherClassCode)).collect(Collectors.toList());
     }
     public Set<Teacher> findByClassCode(String classCode){
+        List<Teacher> teacherSet = teacherRepository.findAll();
+        return teacherSet.stream().filter(teacher ->
+            classCodeService.compareCodes(teacher.getClassCode(), classCode)
+        ).collect(Collectors.toSet());
+    }
+
+    public Set<Teacher> findByClassCodeExact(String classCode){
         return teacherRepository.findByClassCode(classCode);
+    }
+
+    public List<Teacher> findAll(){
+        return teacherRepository.findAll();
     }
 
 }
