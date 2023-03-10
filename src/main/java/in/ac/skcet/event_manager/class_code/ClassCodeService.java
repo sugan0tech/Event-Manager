@@ -18,14 +18,14 @@ public class ClassCodeService {
         this.years = new ArrayList<>(Arrays.asList("I", "II", "III", "IV", "V"));
         this.sections = new ArrayList<>(Arrays.asList("A", "B", "C"));
     }
-    public boolean compareCodes(String classCodeA, String classCodeB){
-        if(classCodeA.length() < classCodeB.length())
+    public boolean compareCodes(String lowPriority, String highPriority){
+        if(lowPriority.length() < highPriority.length())
             return false;
 
-        if(classCodeB.charAt(0) == 'I' && classCodeA.charAt(0) == 'I'){
-            String[] classCodeAStr = classCodeA.split(" ");
+        if(highPriority.charAt(0) == 'I' && lowPriority.charAt(0) == 'I'){
+            String[] classCodeAStr = lowPriority.split(" ");
             StringBuilder classCodeAWithoutYear = new StringBuilder();
-            String[] classCodeBStr = classCodeB.split(" ");
+            String[] classCodeBStr = highPriority.split(" ");
             StringBuilder classCodeBWithoutYear = new StringBuilder();
             if(!classCodeAStr[0].equals(classCodeBStr[0]))
                 return false;
@@ -39,6 +39,6 @@ public class ClassCodeService {
             return classCodeAWithoutYear.toString().contains(classCodeBWithoutYear.toString());
         }
 
-        return classCodeA.contains(classCodeB);
+        return lowPriority.contains(highPriority);
     }
 }
