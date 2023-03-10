@@ -33,6 +33,9 @@ public class TimeTableHoursService {
         for (int i = 0; i < PERIOD_START_TIMES.length; i++) {
             // Check if time is within the period start time and end time
             if (time.isAfter(PERIOD_START_TIMES[i]) && time.isBefore(getPeriodEndTime(i))) {
+                if(isBreakPeriod(i)){
+                    return 0;
+                }
                     return i; // Return period number starting from 1
             }
         }
