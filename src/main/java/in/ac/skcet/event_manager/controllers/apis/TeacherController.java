@@ -160,4 +160,8 @@ public class TeacherController {
 
         pushNotificationService.attendanceNotificationPerStaff(teacherService.findById(staffId), attendance);
     }
+    @PostMapping("/student/attendance/stats/{rollNo}/{startDate}/{endDate}")
+    public List<Map<String, Map<String, Boolean>>> getStudentAttendanceStat(@PathVariable  String rollNo,@PathVariable String startDate,@PathVariable String endDate){
+        return attendanceService.getAttendancePerStudentAtRange(rollNo, new Date(Long.parseLong(startDate)), new Date(Long.parseLong(endDate)));
+    }
 }

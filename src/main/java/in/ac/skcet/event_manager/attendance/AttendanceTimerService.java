@@ -30,9 +30,6 @@ public class AttendanceTimerService {
     public void sendAttendanceNotification() throws TeacherNotFoundException {
 
         List<Teacher> teacherList = teacherService.findAll();
-        teacherList.forEach(teacher -> log.info(teacher.getName()));
-        teacherList.clear();
-        teacherList.add(teacherService.findById("sugankpms"));
         Date date  = new Date();
         teacherList.forEach(teacher -> {
             try {

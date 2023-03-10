@@ -42,6 +42,33 @@ public class AttendanceService {
         return studentPercentage;
     }
 
+    public List<Map<String, Map<String, Boolean>>> getAttendancePerStudentAtRange(String rollNo, Date startDate, Date endDate){
+        List<Map<String, Map<String, Boolean>>> perStudentPercentageList = new LinkedList<>();
+        List<Attendance> attendanceList = attendanceRepository.findAll().stream().filter(attendance -> attendance.getDate().after(startDate) && attendance.getDate().before(endDate)).collect(Collectors.toList());
+        attendanceList.forEach(attendance -> {
+            try {
+                perStudentPercentageList.add(getAttendancePerDayPerStudent(rollNo, attendance));
+            } catch (StudentNotFoundException e) {
+                throw new RuntimeException(e);
+            }
+        });
+        return perStudentPercentageList;
+    }
+    public Map<String, Map<String, Boolean>> getAttendancePerDayPerStudent(String rollNo, Attendance attendance) throws StudentNotFoundException {
+        Map<String, Map<String, Boolean>> periodMap = new TreeMap<>();
+        Map<String, Boolean> periods = new TreeMap<>();
+        BitSet bitSet = studentService.findByID(rollNo).getAttendanceBitSetMap().get(attendance);
+        if(bitSet == null){
+            return periodMap;
+        }
+        log.info(bitSet.toString());
+        for(int period = 1; period <= 8; period++){
+            periods.put("Day " + attendance.getId() + " P -> " + period + "", bitSet.get(period));
+        }
+        periodMap.put(rollNo, periods);
+        return periodMap;
+    }
+
     public Map<String, Double> getAttendancePercentageHourly(String classCode, Date startDate, Date endDate){
         Map<String, Double> studentPercentage = new TreeMap<>();
         long totalHours = countDays(startDate, endDate)*7;

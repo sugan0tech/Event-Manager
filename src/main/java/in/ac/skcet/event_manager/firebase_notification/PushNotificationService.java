@@ -54,9 +54,7 @@ public class PushNotificationService {
            }
            return false;
        }).count();
-       log.info("Present" + present);
        int absent = total - present;
-       log.info(studentSet.toString());
        int od = (int) studentSet.stream().filter(student -> student.getOnDuty() != null).count();
 
            String token = registeredUserService.getTokenByEmail(teacher.getMail()).orElse(null);
@@ -65,8 +63,6 @@ public class PushNotificationService {
                        .content("present - " + present + "/" + total+ "\nabsent - " + absent + " od - " + od)
                        .subject(teacher.getClassCode() + " " + "Attendance")
                        .build();
-
-               log.info(token);
                firebaseMessagingService.sendNotificationByToken(note, token);
            }
 
