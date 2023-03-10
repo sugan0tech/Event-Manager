@@ -67,4 +67,15 @@ public class TimeTableHoursService {
             return PERIOD_START_TIMES[period + 1];
         }
     }
+
+    public  static int convert(int period){
+        if(isBreakPeriod(period))
+            return -1;
+        period++;
+        if(period <= 2)
+            return period;
+        if(period <= 5)
+            return period - 1;
+        return period - 3;
+    }
 }

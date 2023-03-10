@@ -62,8 +62,12 @@ public class AttendanceService {
             return periodMap;
         }
         log.info(bitSet.toString());
-        for(int period = 1; period <= 8; period++){
-            periods.put("Day " + attendance.getId() + " P -> " + period + "", bitSet.get(period));
+        for(int period = 0; period <= 9; period++){
+            int convertedPeriod = TimeTableHoursService.convert(period);
+            if(convertedPeriod == -1){
+                continue;
+            }
+            periods.put("Day " + attendance.getId() + " P -> " + convertedPeriod + " " + period, bitSet.get(period));
         }
         periodMap.put(rollNo, periods);
         return periodMap;
