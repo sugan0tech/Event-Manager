@@ -33,12 +33,7 @@ public class TimeTableHoursService {
         for (int i = 0; i < PERIOD_START_TIMES.length; i++) {
             // Check if time is within the period start time and end time
             if (time.isAfter(PERIOD_START_TIMES[i]) && time.isBefore(getPeriodEndTime(i))) {
-                // Check if the period has a break or lunch
-                if (isBreakPeriod(i) || isLunchPeriod(i)) {
-                    return 0; // Return 0 for break or lunch periods
-                } else {
-                    return i + 1; // Return period number starting from 1
-                }
+                    return i; // Return period number starting from 1
             }
         }
 

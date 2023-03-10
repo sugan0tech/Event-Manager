@@ -67,7 +67,8 @@ public class AttendanceService {
             if(convertedPeriod == -1){
                 continue;
             }
-            periods.put("Day " + attendance.getId() + " P -> " + convertedPeriod + " " + period, bitSet.get(period));
+            log.info(bitSet.get(period) + " " +period + " " + convertedPeriod);
+            periods.put("Day " + attendance.getId() + " P-" + convertedPeriod, bitSet.get(period));
         }
         periodMap.put(rollNo, periods);
         return periodMap;
