@@ -43,12 +43,47 @@ public class PushNotificationService {
        }
    }
 
+   public void attendanceNotificationPerStaff(Teacher teacher, Attendance attendance) throws FirebaseMessagingException{
+
+       Set<Student> studentSet = studentService.findByClassCode(teacher.getClassCode());
+
+       int total = studentSet.size();
+       int present = (int) studentSet.stream().filter(student -> {
+           if (student.getAttendanceBitSetMap().containsKey(attendance)){
+               return !student.getAttendanceBitSetMap().get(attendance).isEmpty();
+           }
+           return false;
+       }).count();
+       log.info("Present" + present);
+       int absent = total - present;
+       log.info(studentSet.toString());
+       int od = (int) studentSet.stream().filter(student -> student.getOnDuty() != null).count();
+
+           String token = registeredUserService.getTokenByEmail(teacher.getMail()).orElse(null);
+           if(token != null){
+               Note note = Note.builder()
+                       .content("present - " + present + "/" + total+ "\nabsent - " + absent + " od - " + od)
+                       .subject(teacher.getClassCode() + " " + "Attendance")
+                       .build();
+
+               log.info(token);
+               firebaseMessagingService.sendNotificationByToken(note, token);
+           }
+
+   }
+
     public void attendanceNotification(String classCode, Attendance attendance) throws FirebaseMessagingException{
-        Set<Teacher> teacherSet = teacherService.findByClassCode(classCode);
+        Set<Teacher> teacherSet = teacherService.findByClassCodeExact(classCode);
         Set<Student> studentSet = studentService.findByClassCode(classCode);
 
         int total = studentSet.size();
-        int present = (int) studentSet.stream().filter(student -> student.getAttendanceBitSetMap().containsKey(attendance)).count();
+        int present = (int) studentSet.stream().filter(student -> {
+            if (student.getAttendanceBitSetMap().containsKey(attendance)){
+                return !student.getAttendanceBitSetMap().get(attendance).isEmpty();
+            }
+            return false;
+        }).count();
+        log.info("Present" + present);
         int absent = total - present;
         log.info(studentSet.toString());
         int od = (int) studentSet.stream().filter(student -> student.getOnDuty() != null).count();

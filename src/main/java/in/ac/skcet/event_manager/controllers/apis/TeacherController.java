@@ -147,7 +147,6 @@ public class TeacherController {
 
     @PostMapping("/student/attendance/{staffId}/{date}")
     public void addAttendance(@PathVariable String staffId, @PathVariable String date, @RequestBody Map<String, String> attendanceForm ) throws FirebaseMessagingException, TeacherNotFoundException {
-        String classCode = teacherService.findById(staffId).getClassCode();
 
         final Attendance attendance = attendanceService.findByDate(date);
 
@@ -159,6 +158,6 @@ public class TeacherController {
             }
         });
 
-        pushNotificationService.attendanceNotification(classCode, attendance);
+        pushNotificationService.attendanceNotificationPerStaff(teacherService.findById(staffId), attendance);
     }
 }
