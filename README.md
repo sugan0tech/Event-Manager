@@ -30,55 +30,8 @@ Our project is completely built in Java. We have utilised the core concepts of S
 ![Class Diagram](UML/classDiagram.jpg)
 
 
-# Teacher Controller API Documentation
-
-This is the API documentation for the Teacher Controller. It provides various endpoints for managing teacher events, student attendance, and on-duty forms.
-
-## Base URL
-
-The base URL for all endpoints mentioned in this document is `http://localhost:8080`.
-
-## API Endpoints
-
-### 1. Get Pending Events for a Teacher
-
-Get all the pending events for a teacher by teacher ID.
-
-**URL:** `/teacher/events/pending/{staffId}`
-
-**Method:** `POST`
-
-**Request Parameters:**
-
-- `staffId`: The ID of the teacher whose events are to be retrieved. (Required)
-
-**Example Curl Command:**
-
-```curl
-curl --location --request POST 'http://localhost:8080/teacher/events/pending/1234' \
---header 'Content-Type: application/json' \
---data-raw '{
-    "staffId": "1234"
-}'
-```
-
-
-# TeacherController API Documentation
-
-This document provides an overview of the TeacherController API, which exposes endpoints for performing operations on events, attendance, and on-duty forms for teachers. 
-
-## API Overview
-
-The TeacherController API provides the following endpoints:
-
-| Endpoint | Method | Description |
-| -------- | ------ | ----------- |
-| `/teacher/events/pending/{staffId}` | POST | Get pending events for a given staff ID |
-| `/teacher/getClassCode/{staffId}` | POST | Get the class code for a given staff ID |
-| `/teacher/events/past-five/{staffId}` | POST | Get the past five events for a given staff ID |
-| `/teacher/event/stats/{eventId}/{staffId}` | POST | Get the status of an event for a given event ID and staff ID |
-| `/teacher/event/stats-list/{eventId}/{staffId}` | POST | Get the status of all students for a given event ID and staff ID |
-| `/teacher/event/new` | POST | Create a new event |
-| `/teacher/student/getList/{staffId}` | POST | Get a list of students for a given staff ID |
-| `/teacher/student/attendanceList/{staffId}/{date}` | POST | Get attendance status for all students for a given staff ID and date |
-| `/teacher/getAttendancePercentage/daily/{staffId}/{startDate}/{endDate}` | POST | Get the daily attendance percentage for a given staff ID and date range |
+# Api documentaion (Postman)
+[Attendance API's](https://documenter.getpostman.com/view/25479641/2s93JzMgJJ)
+[Event API's](https://documenter.getpostman.com/view/25479641/2s93JzMgJL)
+[Od API's](https://documenter.getpostman.com/view/25479641/2s93JzMgNb)
+[Teacher API's](https://documenter.getpostman.com/view/25479641/2s93JzMgNd)
