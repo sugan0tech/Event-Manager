@@ -1,17 +1,21 @@
-package in.ac.skcet.event_manager.controllers.apis;
+package in.ac.skcet.event_manager.controllers;
 
 import in.ac.skcet.event_manager.event.EventService;
 import in.ac.skcet.event_manager.exception.EventNotFoundException;
+import in.ac.skcet.event_manager.exception.TeacherNotFoundException;
 import in.ac.skcet.event_manager.on_duty.*;
 import in.ac.skcet.event_manager.exception.StudentNotFoundException;
 import in.ac.skcet.event_manager.event.Event;
 import in.ac.skcet.event_manager.student.Student;
 import in.ac.skcet.event_manager.student.StudentService;
+import in.ac.skcet.event_manager.teacher.TeacherService;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Map;
+import java.util.TreeMap;
 import java.util.stream.Collectors;
 
 @RestController
@@ -25,6 +29,7 @@ public class StudentController {
     OnDutyFormService onDutyFormService;
     OnDutyEndTimer onDutyEndTimer;
     EventService eventService;
+    TeacherService teacherService;
 
     @PostMapping("/get/{studentId}")
     public List<Event> getEvents(@PathVariable String studentId) throws StudentNotFoundException {
@@ -34,6 +39,25 @@ public class StudentController {
     @PostMapping("/getClassCode/{rollNo}")
     public String getClassCode(@PathVariable String rollNo) throws StudentNotFoundException {
         return studentService.findByID(rollNo).getClassCode();
+    }
+
+    @PostMapping("/student/getList/{staffId}")
+    public Map<String, String> getList(@PathVariable String staffId) throws TeacherNotFoundException {
+        String classCode = teacherService.findById(staffId).getClassCode();
+        Map<String, String> studentList = new TreeMap<>();
+        studentService.findByClassCode(classCode).forEach(student ->
+                studentList.put(student.getRollNo(), student.getName())
+        );
+        return studentList;
+    }
+
+    @PostMapping("/student/get-list-by-class-code/{classCode}")
+    public Map<String, String> getListByClassCode(@PathVariable String classCode){
+        Map<String, String> studentList = new TreeMap<>();
+        studentService.findByClassCode(classCode).forEach(student ->
+                studentList.put(student.getRollNo(), student.getName())
+        );
+        return studentList;
     }
 
     @PostMapping("/update/{studentId}/{eventId}")

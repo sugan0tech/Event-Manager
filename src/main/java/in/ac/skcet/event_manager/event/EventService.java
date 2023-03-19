@@ -29,6 +29,7 @@ public class EventService {
     public Optional<Event> findById(Integer eventId) {
         return eventRepository.findById(eventId);
     }
+    public List<Event> findByClassCode(String classCode){return eventRepository.findAll().stream().filter(event -> classCodeService.compareCodes(event.getClassCode(), classCode)).collect(Collectors.toList());}
 
     public List<Event> findAll() {
         return eventRepository.findAll();

@@ -18,27 +18,29 @@ public class ClassCodeService {
         this.years = new ArrayList<>(Arrays.asList("I", "II", "III", "IV", "V"));
         this.sections = new ArrayList<>(Arrays.asList("A", "B", "C"));
     }
-    public boolean compareCodes(String lowPriority, String highPriority){
-        if(lowPriority.length() < highPriority.length())
+    public boolean compareCodes(String target, String given){
+        if(target.length() < given.length())
             return false;
 
-        if(highPriority.charAt(0) == 'I' && lowPriority.charAt(0) == 'I'){
-            String[] classCodeAStr = lowPriority.split(" ");
-            StringBuilder classCodeAWithoutYear = new StringBuilder();
-            String[] classCodeBStr = highPriority.split(" ");
-            StringBuilder classCodeBWithoutYear = new StringBuilder();
-            if(!classCodeAStr[0].equals(classCodeBStr[0]))
+        if(given.charAt(0) == 'I' && target.charAt(0) == 'I'){
+
+            String[] targetArray = target.split(" ");
+            StringBuilder targetWithoutYear = new StringBuilder();
+            String[] givenArray = given.split(" ");
+            StringBuilder givenWithoutYear = new StringBuilder();
+
+            if(!targetArray[0].equals(givenArray[0]))
                 return false;
 
-            for(int i = 1; i < classCodeAStr.length; i++)
-                classCodeAWithoutYear.append(classCodeAStr[i]);
+            for(int i = 1; i < targetArray.length; i++)
+                targetWithoutYear.append(targetArray[i]);
 
-            for(int i = 1; i < classCodeBStr.length; i++)
-                classCodeBWithoutYear.append(classCodeBStr[i]);
+            for(int i = 1; i < givenArray.length; i++)
+                givenWithoutYear.append(givenArray[i]);
 
-            return classCodeAWithoutYear.toString().contains(classCodeBWithoutYear.toString());
+            return targetWithoutYear.toString().contains(givenWithoutYear.toString());
         }
 
-        return lowPriority.contains(highPriority);
+        return target.contains(given);
     }
 }
