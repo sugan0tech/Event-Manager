@@ -27,7 +27,7 @@ Our project is completely built in Java. We have utilised the core concepts of S
 
 * Class Diagram
 
-![Class Diagram](UML/classDiagram.jpg)
+![Class Diagram](UML/classDiagram.png)
 
 
 # Api documentaion (Postman)
