@@ -17,5 +17,8 @@ RUN mvn dependency:resolve
 RUN mvn package
 
 
-# Set the entry point to run the JAR file
-ENTRYPOINT ["java", "-jar", "/Event-Manager/target/*.jar"]
+# Expose port 8080
+EXPOSE 8080
+
+# Run the application
+CMD ["mvn", "spring-boot:run"]
