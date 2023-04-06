@@ -8,6 +8,7 @@ import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
+import java.util.Date;
 import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
@@ -27,7 +28,7 @@ public class TeacherService {
 
     public List<Event> findEvents(String teacherId){
         String teacherClassCode = teacherRepository.findById(teacherId).orElse(new Teacher()).getClassCode();
-        return eventService.findAll().stream().filter(event -> classCodeService.compareCodes(event.getClassCode(), teacherClassCode)).collect(Collectors.toList());
+        return eventService.findAll().stream().filter(event -> classCodeService.compareCodes(event.getClassCode(), teacherClassCode)&&(event.getEndDate().compareTo(new Date()) >= 0)).collect(Collectors.toList());
     }
     public Set<Teacher> findByClassCode(String classCode){
         List<Teacher> teacherSet = teacherRepository.findAll();

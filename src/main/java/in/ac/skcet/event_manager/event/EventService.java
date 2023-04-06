@@ -29,15 +29,16 @@ public class EventService {
     public Optional<Event> findById(Integer eventId) {
         return eventRepository.findById(eventId);
     }
-    public List<Event> findByClassCode(String classCode){return eventRepository.findAll().stream().filter(event -> classCodeService.compareCodes(event.getClassCode(), classCode)).collect(Collectors.toList());}
+    public List<Event> findByClassCode(String classCode){
+        return eventRepository.findAll().stream().filter(event -> classCodeService.compareCodes(event.getClassCode(), classCode)&&(event.getEndDate().compareTo(new Date()) >= 0)).collect(Collectors.toList());
+    }
 
     public List<Event> findAll() {
         return eventRepository.findAll();
     }
 
     public List<Event> getPastFiveEvents(String classCode){
-        return eventRepository.findAll().stream().filter(event -> event.getClassCode().equals(classCode)&&(event.getEndDate().compareTo(new Date()) < 0)).collect(Collectors.toList());
-
+        return eventRepository.findAll().stream().filter(event -> classCodeService.compareCodes(event.getClassCode(), classCode)&&(event.getEndDate().compareTo(new Date()) < 0)).collect(Collectors.toList());
     }
 
     public List<Event> getPendingEvents(String studentId) throws StudentNotFoundException {
