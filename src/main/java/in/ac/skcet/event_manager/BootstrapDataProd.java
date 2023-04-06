@@ -1,5 +1,8 @@
 package in.ac.skcet.event_manager;
 
+import in.ac.skcet.event_manager.event.EventService;
+import in.ac.skcet.event_manager.on_duty.OnDutyForm;
+import in.ac.skcet.event_manager.on_duty.OnDutyFormService;
 import in.ac.skcet.event_manager.student.StudentService;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -25,19 +28,20 @@ public class BootstrapDataProd implements CommandLineRunner {
     private EventStatService eventStatService;
     private StudentService studentService;
     private ResourceLoader resourceLoader;
+    private OnDutyFormService onDutyFormService;
+    private EventService eventService;
 
 
     @Override
     public void run(String... args) throws Exception {
-        Map<String, Integer> stats = eventStatService.getEventStat(31, "III CSE C");
-        log.info(eventStatService.getStudentStatusList(31, "III CSE C").toString());
-        log.info(stats.toString());
-        log.info("-------------------------------------------------------------------");
-        log.info(resourceLoader.getResource("classpath:").getURI().getPath());
-        log.info(new Date().toString());
-        log.info(studentService.findByID("20eucs124").getAttendanceBitSetMap().toString());
-        log.info(studentService.findByID("20eucs125").getAttendanceBitSetMap().toString());
-
+        onDutyFormService.findAll().forEach(onDutyForm -> {
+            if(onDutyForm.getEndDate().before(new Date())){
+                onDutyForm.getStudentSet().forEach(student -> {
+                    student.setOnDuty(false);
+                    studentService.save(student);
+                });
+            }
+        });
     }
 
 }
