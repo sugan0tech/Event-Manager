@@ -55,8 +55,13 @@ public class EventController {
 
     @PostMapping("/stats/{eventId}/{staffId}")
     public Map<String, Integer> getEventStatus(@PathVariable Integer eventId, @PathVariable String staffId) throws TeacherNotFoundException {
-        String classCode = teacherService.findById(staffId).getClassCode();
-        return eventStatService.getEventStat(eventId, classCode);
+        String staffClassCode = teacherService.findById(staffId).getClassCode();
+        String eventClassCode = eventService.findById(eventId).orElseThrow(() -> new RuntimeException("Event not found")).getClassCode();
+
+        if(staffClassCode.length() > eventClassCode.length()){
+            return eventStatService.getEventStat(eventId, staffClassCode);
+        }
+        return eventStatService.getEventStat(eventId, eventClassCode);
     }
     @PostMapping("/stats-by-class-code/{eventId}/{classCode}")
     public Map<String, Integer> getEventStatusByClassCode(@PathVariable Integer eventId, @PathVariable String classCode) {
@@ -65,8 +70,13 @@ public class EventController {
 
     @PostMapping("/stats-list/{eventId}/{staffId}")
     public List<StudentStat> getStudentWithStats(@PathVariable Integer eventId, @PathVariable  String staffId) throws TeacherNotFoundException {
-        String classCode = teacherService.findById(staffId).getClassCode();
-        return eventStatService.getStudentStatusList(eventId, classCode);
+        String staffClassCode = teacherService.findById(staffId).getClassCode();
+        String eventClassCode = eventService.findById(eventId).orElseThrow(() -> new RuntimeException("Event not found")).getClassCode();
+
+        if(staffClassCode.length() > eventClassCode.length()){
+            return eventStatService.getStudentStatusList(eventId, staffClassCode);
+        }
+        return eventStatService.getStudentStatusList(eventId, eventClassCode);
     }
 
     @PostMapping("/stats-list-by-class-code/{eventId}/{classCode}")
