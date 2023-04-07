@@ -16,7 +16,7 @@ jobs:
           distribution: 'corretto'
           cache: maven
       - name: Copy Firebase credentials
-        run: echo "${{ secrets.FIREBASE_CREDENTIALS }}" > firebase-service-account.json
+        run: echo "${{ secrets.FIREBASE_CREDENTIALS }}" > src/main/resources/firebase-service-account.json
       - name: clean build
         run: mvn clean install
       - name: Test
