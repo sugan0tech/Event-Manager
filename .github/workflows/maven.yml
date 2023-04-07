@@ -15,6 +15,10 @@ jobs:
           java-version: '18'
           distribution: 'corretto'
           cache: maven
+      - name: Copy Firebase credentials
+        run: echo "${{ secrets.FIREBASE_CREDENTIALS }}" > firebase-service-account.json
+      - name: clean build
+        run: mvn clean install
       - name: Test
         run: mvn test -f pom.xml
       - name: Build
