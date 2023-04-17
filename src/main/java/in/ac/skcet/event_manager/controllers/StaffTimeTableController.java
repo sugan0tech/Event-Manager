@@ -29,8 +29,8 @@ public class StaffTimeTableController {
         return timeTableStaffService.save(timeTableConverter.convert(timeTableStaffCommand));
     }
 
-    @PostMapping("/get/available/{classCode}/{periodNumber}")
-    public List<String> getAvailableStaff(@PathVariable String classCode, @PathVariable int periodNumber){
-        return timeTableStaffService.freeList(classCode, periodNumber);
+    @PostMapping("/get/available/{dayOrder}/{classCode}/{periodNumber}")
+    public List<String> getAvailableStaff(@PathVariable int dayOrder, @PathVariable String classCode, @PathVariable int periodNumber){
+        return timeTableStaffService.freeList(classCode, periodNumber, dayOrder);
     }
 }

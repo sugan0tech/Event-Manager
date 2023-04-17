@@ -40,14 +40,32 @@ public class TimeTableStaffService {
         return timeTableStaffRepository.findByStaff(teacherService.findById(staffId));
     }
 
-    public List<String> freeList(String classCode, int period){
+    public List<String> freeList(String classCode, int period, int dayOrder){
         List<String> freeStaff = new ArrayList<>();
         if(period > 6 || period < 0){
             return freeStaff;
         }
         timeTableStaffRepository.findAll().stream().forEach(timeTableStaff -> {
             Teacher teacher = (Teacher) timeTableStaff.getStaff();
-            if(classCodeService.compareCodes(teacher.getClassCode(), classCode) && timeTableStaff.getDayOne().get(period).equals("Free")){
+            List<String> day = null;
+            switch (dayOrder){
+                case 1:
+                    day = timeTableStaff.getDayOne();
+                    break;
+                case 2:
+                    day = timeTableStaff.getDayTwo();
+                    break;
+                case 3:
+                    day = timeTableStaff.getDayThree();
+                    break;
+                case 4:
+                    day = timeTableStaff.getDayFour();
+                    break;
+                case 5:
+                    day = timeTableStaff.getDayFive();
+                    break;
+            }
+            if(classCodeService.compareCodes(teacher.getClassCode(), classCode) && day.get(period).equals("Free")){
                 freeStaff.add(timeTableStaff.getStaff().getStaffId());
             }
         });
