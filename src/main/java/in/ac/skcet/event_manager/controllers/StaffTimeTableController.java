@@ -9,6 +9,8 @@ import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @RestController
 @Slf4j
 @AllArgsConstructor
@@ -25,5 +27,10 @@ public class StaffTimeTableController {
     @PostMapping("/new")
     public TimeTableStaff addStaffTimeTableByStaff(@ModelAttribute TimeTableStaffCommand timeTableStaffCommand) throws TeacherNotFoundException {
         return timeTableStaffService.save(timeTableConverter.convert(timeTableStaffCommand));
+    }
+
+    @PostMapping("/get/available/{classCode}/{periodNumber}")
+    public List<String> getAvailableStaff(@PathVariable String classCode, @PathVariable int periodNumber){
+        return timeTableStaffService.freeList(classCode, periodNumber);
     }
 }
