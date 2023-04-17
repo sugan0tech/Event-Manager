@@ -5,6 +5,7 @@ import in.ac.skcet.event_manager.attendance.Attendance;
 import in.ac.skcet.event_manager.event.Event;
 import in.ac.skcet.event_manager.attendance.AttendanceRepository;
 import in.ac.skcet.event_manager.event.EventRepository;
+import in.ac.skcet.event_manager.exception.TeacherNotFoundException;
 import in.ac.skcet.event_manager.student.StudentRepository;
 import in.ac.skcet.event_manager.teacher.TeacherRepository;
 import in.ac.skcet.event_manager.firebase_notification.RegisteredUserService;
@@ -39,7 +40,7 @@ public class BootstrapDataDev implements CommandLineRunner {
 
 
     @Override
-    public void run(String... args){
+    public void run(String... args) throws TeacherNotFoundException {
         Faker faker = new Faker();
         Teacher teacherOne = Teacher.builder().name("James")
                 .classCode("III CSE C")
@@ -166,7 +167,7 @@ public class BootstrapDataDev implements CommandLineRunner {
         timeTableStaff.getDayOne().set(1, "CNS");
         log.info(timeTableStaff.getDayOne().toString());
         timeTableStaffService.save(timeTableStaff);
-        TimeTableStaff timeTableStaff2 = TimeTableStaff.builder().staff(teacherTwo)
+        TimeTableStaff timeTableStaff2 = TimeTableStaff.builder().staff(teacherThree)
                 .dayOne(new ArrayList<>(Arrays.asList("Free","Free","Free","Free","Free","Free","Free")))
                 .dayTwo(new ArrayList<>(Arrays.asList("Free","Free","Free","Free","Free","Free","Free")))
                 .dayThree(new ArrayList<>(Arrays.asList("Free","Free","Free","Free","Free","Free","Free")))
