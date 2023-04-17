@@ -19,4 +19,12 @@ public class Staff implements Serializable {
     private String name;
     private String mail;
     private String mobile;
+    private boolean isPresent;
+
+    public void setPresentKt(boolean present) {
+        isPresent = present;
+    }
+    public boolean getPresentKt(){
+        return isPresent;
+    }
 }

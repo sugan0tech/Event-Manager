@@ -22,6 +22,10 @@ public class TeacherService {
     EventService eventService;
     ClassCodeService classCodeService;
 
+    public Teacher save(Teacher teacher){
+        return teacherRepository.save(teacher);
+    }
+
     public Teacher findById(String staffId) throws TeacherNotFoundException {
         return teacherRepository.findById(staffId).orElseThrow(() -> new TeacherNotFoundException("Teacher Not found id :" + staffId));
     }

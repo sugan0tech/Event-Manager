@@ -13,8 +13,8 @@ public class HOD extends Staff {
     private String classCode;
 
     @Builder
-    public HOD(String staffId, String name, String mail, String mobile, String classCode) {
-        super(staffId, name, mail, mobile);
+    public HOD(String staffId, String name, String mail, String mobile, String classCode, boolean isPresent) {
+        super(staffId, name, mail, mobile,isPresent);
         this.classCode = classCode;
     }
 

@@ -1,7 +1,5 @@
 package in.ac.skcet.event_manager.firebase_notification;
 
-import in.ac.skcet.event_manager.firebase_notification.RegisteredUser;
-import in.ac.skcet.event_manager.firebase_notification.RegisteredUserRepository;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
