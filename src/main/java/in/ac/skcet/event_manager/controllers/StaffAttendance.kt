@@ -9,10 +9,10 @@ import org.springframework.web.bind.annotation.RequestMapping
 import org.springframework.web.bind.annotation.RestController
 import kotlin.streams.toList
 
-@RestController
-@RequestMapping("/staff/attendance")
-@AllArgsConstructor
-class StaffAttendance (private val teacherService: TeacherService){
+//@RestController
+//@RequestMapping("/staff/attendance")
+//@AllArgsConstructor
+class StaffAttendanceK (private val teacherService: TeacherService){
 
 
     @PostMapping("/put/{staffId}/{status}")
