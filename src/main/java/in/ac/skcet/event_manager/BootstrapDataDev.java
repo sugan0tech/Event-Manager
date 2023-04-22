@@ -8,7 +8,6 @@ import in.ac.skcet.event_manager.event.EventRepository;
 import in.ac.skcet.event_manager.exception.TeacherNotFoundException;
 import in.ac.skcet.event_manager.student.StudentRepository;
 import in.ac.skcet.event_manager.teacher.TeacherRepository;
-import in.ac.skcet.event_manager.firebase_notification.RegisteredUserService;
 import in.ac.skcet.event_manager.student.Student;
 import in.ac.skcet.event_manager.teacher.Teacher;
 import in.ac.skcet.event_manager.time_table.TimeTableStaff;

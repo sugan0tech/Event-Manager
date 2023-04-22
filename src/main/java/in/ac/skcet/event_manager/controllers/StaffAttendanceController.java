@@ -15,7 +15,7 @@ import java.util.stream.Collectors;
 @RestController
 @RequestMapping("/staff/attendance")
 @AllArgsConstructor
-public class StaffAttendance {
+public class StaffAttendanceController {
     private TeacherService teacherService;
 
     @PostMapping("/put/{staffId}/{status}")

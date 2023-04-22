@@ -5,6 +5,7 @@ import in.ac.skcet.event_manager.exception.TeacherNotFoundException;
 import in.ac.skcet.event_manager.teacher.Teacher;
 import in.ac.skcet.event_manager.teacher.TeacherService;
 import lombok.AllArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -13,6 +14,7 @@ import java.util.List;
 
 @Service
 @AllArgsConstructor
+@Slf4j
 public class TimeTableStaffService {
     private final TimeTableStaffRepository timeTableStaffRepository;
     private final ClassCodeService classCodeService;
