@@ -29,13 +29,13 @@ docker run -p 8080:8080 --network="host" event-manager-image
 ## UML Diagrams
 
 
-* Entity Relationship Diagram
+[//]: # (* Entity Relationship Diagram &#40;Soon..&#41;)
 
-![ER Diagram](UML/ERDiagram.jpg)
+[//]: # (![ER Diagram]&#40;UML/ERDiagram.jpg&#41;)
 
-* Use Case Diagram
+[//]: # (* Use Case Diagram)
 
-![Use Case Diagram](UML/UseCase.jpg)
+[//]: # (![Use Case Diagram]&#40;UML/UseCase.jpg&#41;)
 
 * Class Diagram
 
