@@ -1,24 +1,11 @@
-FROM maven
+FROM centos:latest
 
-# Set the working directory to /app
-WORKDIR /Event-Manager
+RUN sed -i 's/mirrorlist/#mirrorlist/g' /etc/yum.repos.d/CentOS-*
+RUN sed -i 's|#baseurl=http://mirror.centos.org|baseurl=http://vault.centos.org|g' /etc/yum.repos.d/CentOS-*
+RUN yum install -y java-17-openjdk
 
-# Copy the pom.xml file to the container
-COPY pom.xml .
-
-
-# Copy the source code to the container
-COPY src/ /Event-Manager/src/
-
-# Run mvn dependency:resolve to download the dependencies
-RUN mvn dependency:resolve
-
-# Package the application into a JAR file
-RUN mvn package
-
-
-# Expose port 8080
-EXPOSE 8080
-
-# Run the application
-CMD ["mvn", "spring-boot:run"]
+VOLUME /tmp
+ADD /target/Event-Manager-0.0.1-SNAPSHOT.jar app.jar
+RUN sh -c 'touch /app.jar'
+EXPOSE 27017 3306
+ENTRYPOINT ["java","-jar","app.jar"]
