@@ -16,18 +16,24 @@ Our project is completely built in Java. We have utilised the core concepts of S
 * [Flutter](https://flutter.dev/)
 
 ## how to run
+
+### prerequisite
+```shell
+mvn clean install
+```
+
 ### Docker build:
 ```shell
 docker build -t event-manager-image .
 ```
-### Docker Run
 
+### Docker Run
 #### newtwork is host if you had sql running locally on your host machine, further modify Docker file.
 ```shell
 docker run -p 8080:8080 --network="host" event-manager-image
 ```
-## UML Diagrams
 
+## UML Diagrams
 
 [//]: # (* Entity Relationship Diagram &#40;Soon..&#41;)
 
@@ -40,7 +46,6 @@ docker run -p 8080:8080 --network="host" event-manager-image
 * Class Diagram
 
 ![Class Diagram](UML/classDiagram.png)
-
 
 # Api documentaion (Postman)
 [Attendance API's](https://documenter.getpostman.com/view/25479641/2s93JzMgJJ)
