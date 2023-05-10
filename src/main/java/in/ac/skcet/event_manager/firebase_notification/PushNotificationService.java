@@ -61,8 +61,8 @@ public class PushNotificationService {
            String token = registeredUserService.getTokenByEmail(teacher.getMail()).orElse(null);
            if(token != null){
                Note note = Note.builder()
-                       .content("present - " + present + "/" + total+ "\nabsent - " + absent + " od - " + od)
-                       .subject(teacher.getClassCode() + " " + "Attendance")
+                       .content("present - " + present + "/" + total+ "\nabsent - " + absent + " od - " + od )
+                       .subject(teacher.getClassCode() + " " + "Attendance" + " By - " + teacher.getName())
                        .build();
                firebaseMessagingService.sendNotificationByToken(note, token);
            }

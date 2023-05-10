@@ -15,7 +15,7 @@ import java.util.stream.Collectors;
 @Service
 @AllArgsConstructor
 @Slf4j
-public class AttendanceService {
+public class AttendanceStudentService {
     AttendanceRepository attendanceRepository;
     StudentService studentService;
 
@@ -26,6 +26,7 @@ public class AttendanceService {
             log.warn("------ Invalid period time " + periodNumber + "-----------");
             return;
         }
+        log.info("period number " + periodNumber);
         Student student = studentService.findByID(rollNo);
         BitSet bitSet = new BitSet();
         bitSet.set(periodNumber, status);

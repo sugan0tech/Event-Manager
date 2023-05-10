@@ -1,6 +1,6 @@
 package in.ac.skcet.event_manager.controllers;
 
-import in.ac.skcet.event_manager.attendance.AttendanceService;
+import in.ac.skcet.event_manager.attendance.AttendanceStudentService;
 import in.ac.skcet.event_manager.event.*;
 import in.ac.skcet.event_manager.attendance.AttendanceRepository;
 import in.ac.skcet.event_manager.exception.TeacherNotFoundException;
@@ -30,7 +30,7 @@ public class TeacherController {
     PushNotificationService pushNotificationService;
     StaffEventTimer staffEventTimer;
     OnDutyFormService onDutyFormService;
-    AttendanceService attendanceService;
+    AttendanceStudentService attendanceService;
 
     @PostMapping("/get-class-code/{staffId}")
     public String getClassCode(@PathVariable String staffId) throws TeacherNotFoundException {

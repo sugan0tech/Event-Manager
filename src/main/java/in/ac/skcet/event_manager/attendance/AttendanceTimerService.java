@@ -23,7 +23,7 @@ public class AttendanceTimerService {
     StudentService studentService;
     TeacherService teacherService;
     PushNotificationService pushNotificationService;
-    AttendanceService attendanceService;
+    AttendanceStudentService attendanceService;
 
 //    @Scheduled(fixedDelay = 100000) // for test
     @Scheduled(cron = "0 33 11 * * *") // for 9:30 am

@@ -2,7 +2,7 @@ package in.ac.skcet.event_manager.controllers;
 
 import com.google.firebase.messaging.FirebaseMessagingException;
 import in.ac.skcet.event_manager.attendance.Attendance;
-import in.ac.skcet.event_manager.attendance.AttendanceService;
+import in.ac.skcet.event_manager.attendance.AttendanceStudentService;
 import in.ac.skcet.event_manager.exception.StudentNotFoundException;
 import in.ac.skcet.event_manager.exception.TeacherNotFoundException;
 import in.ac.skcet.event_manager.firebase_notification.PushNotificationService;
@@ -13,7 +13,9 @@ import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.*;
 
+import java.time.LocalDate;
 import java.time.LocalTime;
+import java.time.format.DateTimeFormatter;
 import java.util.*;
 
 
@@ -21,10 +23,10 @@ import java.util.*;
 @AllArgsConstructor
 @Slf4j
 @RequestMapping("/attendance")
-public class AttendanceController {
+public class StudentAttendanceController {
     StudentService studentService;
     TeacherService teacherService;
-    AttendanceService attendanceService;
+    AttendanceStudentService attendanceService;
     PushNotificationService pushNotificationService;
 
 
@@ -46,8 +48,27 @@ public class AttendanceController {
         return studentList;
     }
 
+    @PostMapping("/put-curr/{staffId}")
+    public void addAttendance(@PathVariable String staffId, @RequestBody Map<String, String> attendanceForm ) throws FirebaseMessagingException, TeacherNotFoundException {
+
+        LocalDate currentDate = LocalDate.now();
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+        String date = currentDate.format(formatter);
+
+        final Attendance attendance = attendanceService.findByDate(date);
+
+        attendanceForm.forEach((studentId, status) -> {
+            try {
+                attendanceService.updateAttendance(studentId, attendance, Boolean.valueOf(status));
+            } catch (StudentNotFoundException e) {
+                throw new RuntimeException(e);
+            }
+        });
+        pushNotificationService.attendanceNotificationPerStaff(teacherService.findById(staffId), attendance);
+    }
+
     @PostMapping("/put/{staffId}/{date}")
-    public void addAttendance(@PathVariable String staffId, @PathVariable String date, @RequestBody Map<String, String> attendanceForm ) throws FirebaseMessagingException, TeacherNotFoundException {
+    public void addAttendanceWithDate(@PathVariable String staffId, @PathVariable String date, @RequestBody Map<String, String> attendanceForm ) throws FirebaseMessagingException, TeacherNotFoundException {
 
         final Attendance attendance = attendanceService.findByDate(date);
 
