@@ -2,6 +2,7 @@ package in.ac.skcet.event_manager.firebase_notification;
 
 import com.google.firebase.messaging.FirebaseMessagingException;
 import in.ac.skcet.event_manager.attendance.Attendance;
+import in.ac.skcet.event_manager.attendance.PeriodSet;
 import in.ac.skcet.event_manager.event.Event;
 import in.ac.skcet.event_manager.event.EventStatService;
 import in.ac.skcet.event_manager.student.Student;
@@ -50,8 +51,8 @@ public class PushNotificationService {
 
        int total = studentSet.size();
        int present = (int) studentSet.stream().filter(student -> {
-           if (student.getAttendanceBitSetMap().containsKey(attendance)){
-               return !student.getAttendanceBitSetMap().get(attendance).isEmpty();
+           if (student.getAttendancePeriodSet().containsKey(attendance)){
+               return !(new PeriodSet(student.getAttendancePeriodSet().get(attendance)).isEmpty());
            }
            return false;
        }).count();
@@ -75,8 +76,8 @@ public class PushNotificationService {
 
         int total = studentSet.size();
         int present = (int) studentSet.stream().filter(student -> {
-            if (student.getAttendanceBitSetMap().containsKey(attendance)){
-                return !student.getAttendanceBitSetMap().get(attendance).isEmpty();
+            if (student.getAttendancePeriodSet().containsKey(attendance)){
+                return !(new PeriodSet(student.getAttendancePeriodSet().get(attendance)).isEmpty());
             }
             return false;
         }).count();

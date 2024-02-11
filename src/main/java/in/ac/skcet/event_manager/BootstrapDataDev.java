@@ -2,6 +2,7 @@ package in.ac.skcet.event_manager;
 
 import com.github.javafaker.Faker;
 import in.ac.skcet.event_manager.attendance.Attendance;
+import in.ac.skcet.event_manager.attendance.PeriodSet;
 import in.ac.skcet.event_manager.event.Event;
 import in.ac.skcet.event_manager.attendance.AttendanceRepository;
 import in.ac.skcet.event_manager.event.EventRepository;
@@ -136,8 +137,8 @@ public class BootstrapDataDev implements CommandLineRunner {
         Attendance attendance = Attendance.builder().date(java.sql.Date.valueOf(new SimpleDateFormat("yyyy-MM-dd").format(new Date()))).build();
         attendanceRepository.save(attendance);
 
-        studentOne.addAttendance(attendance, new BitSet(7));
-        studentTwo.addAttendance(attendance, new BitSet(7));
+        studentOne.addAttendance(attendance, new PeriodSet());
+        studentTwo.addAttendance(attendance, new PeriodSet());
 
         eventRepository.save(eventOne);
         eventRepository.save(eventTwo);

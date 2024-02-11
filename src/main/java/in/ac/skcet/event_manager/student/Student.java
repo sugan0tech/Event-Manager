@@ -1,6 +1,7 @@
 package in.ac.skcet.event_manager.student;
 
 import in.ac.skcet.event_manager.attendance.Attendance;
+import in.ac.skcet.event_manager.attendance.PeriodSet;
 import in.ac.skcet.event_manager.event.Event;
 import lombok.*;
 import lombok.extern.slf4j.Slf4j;
@@ -32,16 +33,15 @@ public class Student {
     @ToString.Exclude
     private Set<Event> events = new HashSet<>();
 
-    public Map<Attendance, BitSet> getAttendanceBitSetMap() {
-        if(attendanceBitSetMap == null){
+    public Map<Attendance, Integer> getAttendancePeriodSet() {
+        if(attendancePeriodSetMap == null){
             new HashMap<>();
         }
-        return attendanceBitSetMap;
+        return attendancePeriodSetMap;
     }
 
-    @ElementCollection(fetch = FetchType.EAGER)
-    @ToString.Exclude
-    private Map<Attendance, BitSet> attendanceBitSetMap = new HashMap<>();
+    @ElementCollection
+    private Map<Attendance, Integer> attendancePeriodSetMap = new HashMap<>();
 
     public void addEvent(Event event){
         if(this.events == null){
@@ -53,18 +53,18 @@ public class Student {
     }
 
 
-    public void addAttendance(Attendance attendance, BitSet bitSet){
-        if(this.attendanceBitSetMap == null){
-            this.attendanceBitSetMap = new HashMap<>();
-            this.attendanceBitSetMap.put(attendance, bitSet);
+    public void addAttendance(Attendance attendance, PeriodSet periodSet){
+        if(this.attendancePeriodSetMap == null){
+            this.attendancePeriodSetMap = new HashMap<>();
+            this.attendancePeriodSetMap.put(attendance, periodSet.getValue());
             return;
         }
-        if(attendanceBitSetMap.containsKey(attendance)){
-            bitSet.or(attendanceBitSetMap.get(attendance));
-            attendanceBitSetMap.put(attendance, bitSet);
+        if(attendancePeriodSetMap.containsKey(attendance)){
+            periodSet.or(new PeriodSet(attendancePeriodSetMap.get(attendance)));
+            attendancePeriodSetMap.put(attendance, periodSet.getValue());
         }else{
-            log.info(bitSet.toString());
-            this.attendanceBitSetMap.put(attendance, bitSet);
+            log.info(periodSet.toString());
+            this.attendancePeriodSetMap.put(attendance, periodSet.getValue());
         }
     }
     @Override

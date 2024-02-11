@@ -28,9 +28,9 @@ public class AttendanceStudentService {
         }
         log.info("period number " + periodNumber);
         Student student = studentService.findByID(rollNo);
-        BitSet bitSet = new BitSet();
-        bitSet.set(periodNumber, status);
-        student.addAttendance(attendance, bitSet);
+        PeriodSet periodSet = new PeriodSet();
+        periodSet.setIndex(periodNumber, status);
+        student.addAttendance(attendance, periodSet);
 
         studentService.save(student);
     }
@@ -80,8 +80,8 @@ public class AttendanceStudentService {
 
             int total = studentList.size();
             int present = (int) studentList.stream().filter(student -> {
-                if (student.getAttendanceBitSetMap().containsKey(attendance)){
-                    return !student.getAttendanceBitSetMap().get(attendance).isEmpty();
+                if (student.getAttendancePeriodSet().containsKey(attendance)){
+                    return !(new PeriodSet(student.getAttendancePeriodSet().get(attendance)).isEmpty());
                 }
                 return false;
             }).count();
@@ -116,16 +116,13 @@ public class AttendanceStudentService {
     public Map<String, Map<String, Boolean>> getAttendancePerDayPerStudent(String rollNo, Attendance attendance) throws StudentNotFoundException {
         Map<String, Map<String, Boolean>> periodMap = new TreeMap<>();
         Map<String, Boolean> periods = new TreeMap<>();
-        BitSet bitSet = studentService.findByID(rollNo).getAttendanceBitSetMap().get(attendance);
-        if(bitSet == null){
+        Integer periodInt = studentService.findByID(rollNo).getAttendancePeriodSet().get(attendance);
+        if(periodInt == null){
             return periodMap;
         }
-        for(int period = 0; period <= 9; period++){
-            int convertedPeriod = TimeTableHoursService.convert(period);
-            if(convertedPeriod == -1){
-                continue;
-            }
-            periods.put("Day " + attendance.getId() + " P-" + convertedPeriod, bitSet.get(period));
+        for(int period = 0; period < 7; period++){
+            PeriodSet periodSet = new PeriodSet(periodInt);
+            periods.put("Day " + attendance.getId() + " P-" + period, periodSet.get(period));
         }
         periodMap.put(rollNo, periods);
         return periodMap;
@@ -141,15 +138,15 @@ public class AttendanceStudentService {
 
 
     public Long noOfDaysPresent(Student student, Date startDate, Date endDate){
-        return student.getAttendanceBitSetMap().keySet().stream().filter(attendance -> attendance.getDate().after(startDate) && attendance.getDate().before(endDate)).count();
+        return student.getAttendancePeriodSet().keySet().stream().filter(attendance -> attendance.getDate().after(startDate) && attendance.getDate().before(endDate)).count();
     }
 
     public Long noOfHoursPresent(Student student, Date startDate, Date endDate){
-        List<Attendance> attendanceList = student.getAttendanceBitSetMap().keySet().stream().filter(attendance -> attendance.getDate().after(startDate) && attendance.getDate().before(endDate)).collect(Collectors.toList());
+        List<Attendance> attendanceList = student.getAttendancePeriodSet().keySet().stream().filter(attendance -> attendance.getDate().after(startDate) && attendance.getDate().before(endDate)).collect(Collectors.toList());
         long count = 0;
 
         for (Attendance attendance : attendanceList) {
-            count += student.getAttendanceBitSetMap().get(attendance).length();
+            count += new PeriodSet(student.getAttendancePeriodSet().get(attendance)).length();
         }
         return count;
     }
@@ -176,11 +173,11 @@ public class AttendanceStudentService {
     public Boolean isPresent(String rollNo, String date) throws StudentNotFoundException {
         Student student = studentService.findByID(rollNo);
         Attendance attendance = findByDate(date);
-        if(student.getAttendanceBitSetMap().get(attendance) == null){
-            student.addAttendance(attendance, new BitSet());
+        if(student.getAttendancePeriodSet().get(attendance) == null){
+            student.addAttendance(attendance, new PeriodSet());
         }
         studentService.save(student);
-        return !studentService.findByID(rollNo).getAttendanceBitSetMap().get(findByDate(date)).isEmpty();
+        return !(new PeriodSet(studentService.findByID(rollNo).getAttendancePeriodSet().get(findByDate(date))).isEmpty());
     }
 
 }
