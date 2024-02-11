@@ -1,9 +1,13 @@
 package in.ac.skcet.event_manager;
 
 import in.ac.skcet.event_manager.event.EventService;
+import in.ac.skcet.event_manager.exception.TeacherNotFoundException;
 import in.ac.skcet.event_manager.on_duty.OnDutyForm;
 import in.ac.skcet.event_manager.on_duty.OnDutyFormService;
 import in.ac.skcet.event_manager.student.StudentService;
+import in.ac.skcet.event_manager.teacher.Teacher;
+import in.ac.skcet.event_manager.teacher.TeacherRepository;
+import in.ac.skcet.event_manager.teacher.TeacherService;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.annotation.Profile;
@@ -30,6 +34,7 @@ public class BootstrapDataProd implements CommandLineRunner {
     private ResourceLoader resourceLoader;
     private OnDutyFormService onDutyFormService;
     private EventService eventService;
+    private TeacherService teacherService;
 
 
     @Override
@@ -42,6 +47,13 @@ public class BootstrapDataProd implements CommandLineRunner {
                 });
             }
         });
+        Teacher teacher = Teacher.builder().staffId("srigirit369").classCode("CSE").mail("srigirit369@gmail.com").mobile("9344953235").build();
+        try {
+            teacherService.findById(teacher.getStaffId());
+        }catch (TeacherNotFoundException e){
+            teacherService.save(teacher);
+            log.error(e.toString());
+        }
     }
 
 }
