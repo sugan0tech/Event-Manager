@@ -1,38 +1,33 @@
 package in.ac.skcet.event_manager.on_duty;
 
-import in.ac.skcet.event_manager.teacher.Staff;
-import in.ac.skcet.event_manager.student.Student;
 import lombok.*;
+import org.bson.types.Binary;
+import org.springframework.data.mongodb.core.mapping.Document;
 
 import javax.persistence.*;
 import java.util.Date;
-import java.util.HashSet;
 import java.util.Set;
 
-@Entity
-@AllArgsConstructor
-@NoArgsConstructor
-@Builder
-@Getter
-@Setter
 @ToString
+@Document
+@AllArgsConstructor
+@Builder
+@Data
 public class OnDutyForm {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    private String id;
+
     private String description;
 
-    @Lob
-    @Column(length = 20971520)
-    private byte[] document;
+    private Binary document;
 
-    @ManyToMany
-    @ToString.Exclude
-    private Set<Student> studentSet = new HashSet<>();
+    private Set<String> studentSet;
 
-    @ManyToMany
-    @ToString.Exclude
-    private Set<Staff> mentorSet = new HashSet<>();
+    private Set<String> mentorSet;
+
+    private Set<String> signatures;
+
+    private String canceledBy;
 
     private Date fromDate;
 

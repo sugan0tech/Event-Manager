@@ -1,7 +1,6 @@
 package in.ac.skcet.event_manager.on_duty;
 
-import in.ac.skcet.event_manager.on_duty.OnDutyForm;
-import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.mongodb.repository.MongoRepository;
 
-public interface OnDutyFormRepository extends JpaRepository<OnDutyForm, Long> {
+public interface OnDutyFormRepository extends MongoRepository<OnDutyForm, String> {
 }

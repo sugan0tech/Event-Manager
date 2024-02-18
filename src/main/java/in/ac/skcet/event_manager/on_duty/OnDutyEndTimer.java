@@ -19,9 +19,8 @@ public class OnDutyEndTimer {
             @Override
             public void run() {
                 log.info("removed Od : " + onDutyForm.getDescription());
-                onDutyForm.getStudentSet().forEach(student -> {
-                    student.setOnDuty(false);
-                    studentService.save(student);
+                onDutyForm.getStudentSet().forEach(studentId -> {
+                    studentService.cancelOd(studentId);
                 });
             }
         };

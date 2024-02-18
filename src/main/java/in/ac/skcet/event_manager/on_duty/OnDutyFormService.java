@@ -22,20 +22,24 @@ public class OnDutyFormService {
         return onDutyFormRepository.findAll();
     }
 
-    public OnDutyForm findById(Long id) throws OdFormNotFoundException {
+    public OnDutyForm findById(String id) throws OdFormNotFoundException {
         return onDutyFormRepository.findById(id).orElseThrow(() -> new OdFormNotFoundException("Expected OdForm not found id:" + id));
     }
 
     public OnDutyForm save(OnDutyForm onDutyForm){
-        onDutyForm.getStudentSet().forEach(student -> studentService.updateOd(student));
+        onDutyForm.getStudentSet().forEach(studentId -> studentService.updateOd(studentId));
+        return onDutyFormRepository.save(onDutyForm);
+    }
+
+    public OnDutyForm cancel(OnDutyForm onDutyForm){
+        onDutyForm.getStudentSet().forEach(studentId -> studentService.cancelOd(studentId));
         return onDutyFormRepository.save(onDutyForm);
     }
 
     public List<OnDutyForm> findByClassCode(String classCode){
-
-        return onDutyFormRepository.findAll().stream().filter(onDutyForm -> onDutyForm.getStudentSet().stream().anyMatch(student -> classCodeService.compareCodes(student.getClassCode(), classCode))).collect(Collectors.toList());
+        return onDutyFormRepository.findAll().stream().filter(onDutyForm -> onDutyForm.getStudentSet().stream().anyMatch(studentId -> classCodeService.compareCodes(studentService.getClassCode(studentId), classCode))).collect(Collectors.toList());
     }
-    public void delete(Long id){
+    public void delete(String id){
         onDutyFormRepository.deleteById(id);
     }
 }

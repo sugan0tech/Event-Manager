@@ -7,6 +7,7 @@ import in.ac.skcet.event_manager.event.Event;
 import lombok.*;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.annotation.Id;
+import org.springframework.data.mongodb.core.mapping.DBRef;
 import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.format.annotation.DateTimeFormat;
 
@@ -33,6 +34,7 @@ public class Student {
     private String mail;
     private String mobile;
     private Boolean onDuty = false;
+    @DBRef(lazy = true)
     private Set<Event> events = new HashSet<>();
 
     public Map<Long, Integer> getAttendancePeriodSet() {
@@ -42,6 +44,7 @@ public class Student {
         return attendancePeriodSetMap;
     }
 
+    @DBRef(lazy = true)
     private Map<Long, Integer> attendancePeriodSetMap = new HashMap<>();
 
     public void addEvent(Event event){

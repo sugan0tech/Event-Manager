@@ -50,14 +50,14 @@ public class BootstrapDataProd implements CommandLineRunner {
 //            mongoService.save(studentMongo);
 //        });
 
-        onDutyFormService.findAll().forEach(onDutyForm -> {
-            if(onDutyForm.getEndDate().before(new Date())){
-                onDutyForm.getStudentSet().forEach(student -> {
-                    student.setOnDuty(false);
-                    studentService.save(student);
-                });
-            }
-        });
+//        onDutyFormService.findAll().forEach(onDutyForm -> {
+//            if(onDutyForm.getEndDate().before(new Date())){
+//                onDutyForm.getStudentSet().forEach(student -> {
+//                    student.setOnDuty(false);
+//                    studentService.save(student);
+//                });
+//            }
+//        });
         Teacher teacher = Teacher.builder().staffId("srigirit369").classCode("CSE").mail("srigirit369@gmail.com").mobile("9344953235").build();
         try {
             teacherService.findById(teacher.getStaffId());

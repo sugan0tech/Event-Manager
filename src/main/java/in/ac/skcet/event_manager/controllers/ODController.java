@@ -26,11 +26,10 @@ public class ODController {
     TeacherService teacherService;
 
     @PostMapping("/cancel/{id}")
-    public void cancelOd(@PathVariable Long id) throws OdFormNotFoundException {
+    public void cancelOd(@PathVariable String id) throws OdFormNotFoundException {
         OnDutyForm onDutyForm = onDutyFormService.findById(id);
-        onDutyForm.getStudentSet().forEach(student -> {
-            student.setOnDuty(false);
-            studentService.save(student);
+        onDutyForm.getStudentSet().forEach(studentId -> {
+            studentService.cancelOd(studentId);
         });
         onDutyFormService.delete(id);
     }

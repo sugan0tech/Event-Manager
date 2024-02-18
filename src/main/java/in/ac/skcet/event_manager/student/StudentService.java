@@ -30,12 +30,19 @@ public class StudentService {
         return studentRepository.findAllByClassCode(classCode);
     }
 
-    public void updateOd(Student student){
-        student.setOnDuty(true);
-        studentRepository.insert(student);
+    public void updateOd(String rollNo){
+                studentRepository.updateOnDuty(rollNo, true);
+    }
+
+    public void cancelOd(String rollNo){
+        studentRepository.updateOnDuty(rollNo, false);
     }
 
     public List<Student> findAll(){
         return studentRepository.findAll();
+    }
+
+    public String getClassCode(String rollNo){
+        return studentRepository.findByRollNo(rollNo).getClassCode();
     }
 }

@@ -1,5 +1,6 @@
 package in.ac.skcet.event_manager;
 
+import in.ac.skcet.event_manager.on_duty.OnDutyFormRepository;
 import in.ac.skcet.event_manager.student.StudentMongoRepository;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -9,7 +10,7 @@ import org.springframework.scheduling.annotation.EnableScheduling;
 
 @SpringBootApplication(exclude = {JdbcTemplateAutoConfiguration.class})
 @EnableScheduling
-@EnableMongoRepositories(basePackageClasses = StudentMongoRepository.class)
+@EnableMongoRepositories(basePackageClasses = {StudentMongoRepository.class, OnDutyFormRepository.class})
 public class EventManagerApplication {
 
 	public static void main(String[] args) {

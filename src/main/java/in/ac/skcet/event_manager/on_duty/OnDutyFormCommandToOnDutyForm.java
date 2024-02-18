@@ -24,15 +24,9 @@ public class OnDutyFormCommandToOnDutyForm implements Converter<OnDutyFormComman
     public OnDutyForm convert(OnDutyFormCommand onDutyFormCommand) {
         SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd z hh:mm:ss");
         simpleDateFormat.setTimeZone(TimeZone.getTimeZone("IST"));
-        Set<Student> studentSet = new HashSet<>();
+        Set<String> studentSet = new HashSet<>();
 
-        onDutyFormCommand.getStudentRollNoList().forEach(rollNo -> {
-            try {
-                studentSet.add(studentService.findByID(rollNo));
-            } catch (StudentNotFoundException e) {
-                throw new RuntimeException(e);
-            }
-        });
+        studentSet.addAll(onDutyFormCommand.getStudentRollNoList());
         try {
             return OnDutyForm.builder()
                     .description(onDutyFormCommand.getDescription())
@@ -40,6 +34,11 @@ public class OnDutyFormCommandToOnDutyForm implements Converter<OnDutyFormComman
                     .studentSet(studentSet)
                     .fromDate(simpleDateFormat.parse(onDutyFormCommand.getFromDate()))
                     .endDate(simpleDateFormat.parse(onDutyFormCommand.getEndDate()))
+                    .canceledBy(onDutyFormCommand.getCanceledBy())
+                    .mentorSet(onDutyFormCommand.getMentorNameList())
+                    .signatures(onDutyFormCommand.getSignatures())
+                    .canceledBy(onDutyFormCommand.getCanceledBy())
+                    .studentSet(onDutyFormCommand.getStudentRollNoList())
                     .build();
         } catch (ParseException e) {
             throw new RuntimeException(e);
