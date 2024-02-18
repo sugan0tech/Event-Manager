@@ -19,7 +19,7 @@ public class StudentMongoService {
 
     @Transactional
     public StudentMongo save(StudentMongo student){
-        return studentRepository.insert(student);
+        return studentRepository.save(student);
     }
 
     public StudentMongo findByID(String id) throws StudentNotFoundException {

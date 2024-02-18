@@ -1,5 +1,6 @@
 package in.ac.skcet.event_manager.student;
 
+import com.google.firebase.database.annotations.NotNull;
 import in.ac.skcet.event_manager.attendance.Attendance;
 import in.ac.skcet.event_manager.attendance.PeriodSet;
 import in.ac.skcet.event_manager.event.Event;
@@ -9,6 +10,7 @@ import org.bson.types.ObjectId;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.index.Indexed;
 import org.springframework.data.mongodb.core.mapping.Document;
+import org.springframework.format.annotation.DateTimeFormat;
 
 import java.util.*;
 
@@ -22,9 +24,14 @@ import java.util.*;
 public class StudentMongo {
     @Id
     private String rollNo;
+    @NotNull
     private String name;
+    @NotNull
     private String classCode;
+    @NotNull
+    @DateTimeFormat(pattern = "yyyy-MM-dd")
     private Date dateOfBirth;
+    @NotNull
     private String mail;
     private String mobile;
     private Boolean onDuty = false;

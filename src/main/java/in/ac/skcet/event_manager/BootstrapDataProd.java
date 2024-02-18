@@ -33,35 +33,29 @@ import java.util.stream.Collectors;
 @Order
 @Transactional
 public class BootstrapDataProd implements CommandLineRunner {
-    private EventStatService eventStatService;
     private StudentService studentService;
     private OnDutyFormService onDutyFormService;
-    private EventService eventService;
     private TeacherService teacherService;
     private StudentMongoService mongoService;
 
 
     @Override
     public void run(String... args) throws Exception {
-        Student sugan = studentService.findByID("20eucs147");
-        log.info(sugan.toString());
-        StudentMongo studentMongo = mongoService.findByID("20eucs147");
-        studentMongo.setOnDuty(true);
-        mongoService.save(studentMongo);
+        studentService.findAll().forEach(sugan -> {
+            StudentMongo studentMongo = StudentMongo.builder()
+                    .rollNo(sugan.getRollNo())
+                    .name(sugan.getName())
+                    .attendancePeriodSetMap(sugan.getAttendancePeriodSetMap().entrySet().stream().collect(Collectors.toMap(entry -> entry.getKey().getId(), Map.Entry::getValue)))
+                    .dateOfBirth(sugan.getDateOfBirth()).events(sugan.getEvents())
+                    .classCode(sugan.getClassCode())
+                    .mail(sugan.getMail())
+                    .onDuty(false)
+                    .mobile(sugan.getMobile())
+                    .build();
 
-//        StudentMongo studentMongo = StudentMongo.builder()
-//                .rollNo(sugan.getRollNo())
-//                .name(sugan.getName())
-//                .attendancePeriodSetMap(sugan.getAttendancePeriodSetMap().entrySet().stream().collect(Collectors.toMap(entry -> entry.getKey().getId(), Map.Entry::getValue)))
-//                .dateOfBirth(sugan.getDateOfBirth()).events(sugan.getEvents())
-//                .classCode(sugan.getClassCode())
-//                .mail(sugan.getMail())
-//                .onDuty(sugan.getOnDuty())
-//                .mobile(sugan.getMobile())
-//                .build();
-
-        log.info(studentMongo.toString());
-        mongoService.save(studentMongo);
+            log.info(studentMongo.toString());
+            mongoService.save(studentMongo);
+        });
 
         onDutyFormService.findAll().forEach(onDutyForm -> {
             if(onDutyForm.getEndDate().before(new Date())){
