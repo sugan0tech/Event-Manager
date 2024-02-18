@@ -4,6 +4,9 @@ import in.ac.skcet.event_manager.event.EventService;
 import in.ac.skcet.event_manager.exception.TeacherNotFoundException;
 import in.ac.skcet.event_manager.on_duty.OnDutyForm;
 import in.ac.skcet.event_manager.on_duty.OnDutyFormService;
+import in.ac.skcet.event_manager.student.Student;
+import in.ac.skcet.event_manager.student.StudentMongo;
+import in.ac.skcet.event_manager.student.StudentMongoService;
 import in.ac.skcet.event_manager.student.StudentService;
 import in.ac.skcet.event_manager.teacher.Teacher;
 import in.ac.skcet.event_manager.teacher.TeacherRepository;
@@ -20,6 +23,7 @@ import org.springframework.core.io.ResourceLoader;
 import javax.transaction.Transactional;
 import java.util.Date;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 
 @Slf4j
@@ -31,14 +35,34 @@ import java.util.Map;
 public class BootstrapDataProd implements CommandLineRunner {
     private EventStatService eventStatService;
     private StudentService studentService;
-    private ResourceLoader resourceLoader;
     private OnDutyFormService onDutyFormService;
     private EventService eventService;
     private TeacherService teacherService;
+    private StudentMongoService mongoService;
 
 
     @Override
     public void run(String... args) throws Exception {
+        Student sugan = studentService.findByID("20eucs147");
+        log.info(sugan.toString());
+        StudentMongo studentMongo = mongoService.findByID("20eucs147");
+        studentMongo.setOnDuty(true);
+        mongoService.save(studentMongo);
+
+//        StudentMongo studentMongo = StudentMongo.builder()
+//                .rollNo(sugan.getRollNo())
+//                .name(sugan.getName())
+//                .attendancePeriodSetMap(sugan.getAttendancePeriodSetMap().entrySet().stream().collect(Collectors.toMap(entry -> entry.getKey().getId(), Map.Entry::getValue)))
+//                .dateOfBirth(sugan.getDateOfBirth()).events(sugan.getEvents())
+//                .classCode(sugan.getClassCode())
+//                .mail(sugan.getMail())
+//                .onDuty(sugan.getOnDuty())
+//                .mobile(sugan.getMobile())
+//                .build();
+
+        log.info(studentMongo.toString());
+        mongoService.save(studentMongo);
+
         onDutyFormService.findAll().forEach(onDutyForm -> {
             if(onDutyForm.getEndDate().before(new Date())){
                 onDutyForm.getStudentSet().forEach(student -> {
