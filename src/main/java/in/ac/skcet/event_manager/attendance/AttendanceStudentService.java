@@ -1,5 +1,6 @@
 package in.ac.skcet.event_manager.attendance;
 
+import in.ac.skcet.event_manager.exception.CustomException;
 import in.ac.skcet.event_manager.exception.StudentNotFoundException;
 import in.ac.skcet.event_manager.student.Student;
 import in.ac.skcet.event_manager.student.StudentService;
@@ -139,15 +140,37 @@ public class AttendanceStudentService {
 
 
     public Long noOfDaysPresent(Student student, Date startDate, Date endDate){
-        return student.getAttendancePeriodSet().keySet().stream().filter(attendance -> attendance.getDate().after(startDate) && attendance.getDate().before(endDate)).count();
+        return student.getAttendancePeriodSet().keySet().stream().filter(attendanceId ->
+        {
+            Attendance attendance = null;
+            try {
+                attendance = attendanceRepository.findById(attendanceId).orElseThrow(() -> new CustomException("Attendance Date not found Id: " + attendanceId));
+            } catch (CustomException e) {
+                log.error(e.getMessage());
+                return false;
+            }
+            return attendance.getDate().after(startDate) && attendance.getDate().before(endDate);
+        }).count();
     }
 
     public Long noOfHoursPresent(Student student, Date startDate, Date endDate){
-        List<Attendance> attendanceList = student.getAttendancePeriodSet().keySet().stream().filter(attendance -> attendance.getDate().after(startDate) && attendance.getDate().before(endDate)).collect(Collectors.toList());
+//        attendance.getDate().after(startDate) && attendance.getDate().before(endDate)
+        List<Long> filteredAttendanceIds = student.getAttendancePeriodSet().keySet().stream().filter(attendanceId ->
+        {
+            Attendance attendance = null;
+            try {
+                attendance = attendanceRepository.findById(attendanceId).orElseThrow(() -> new CustomException("Attendance Date not found Id: " + attendanceId));
+            } catch (CustomException e) {
+                log.error(e.getMessage());
+                return false;
+            }
+            return attendance.getDate().after(startDate) && attendance.getDate().before(endDate);
+        }).collect(Collectors.toList());
+
         long count = 0;
 
-        for (Attendance attendance : attendanceList) {
-            count += new PeriodSet(student.getAttendancePeriodSet().get(attendance)).length();
+        for (Long  attendanceId : filteredAttendanceIds) {
+            count += new PeriodSet(student.getAttendancePeriodSet().get(attendanceId)).cardinality();
         }
         return count;
     }
@@ -174,11 +197,11 @@ public class AttendanceStudentService {
     public Boolean isPresent(String rollNo, String date) throws StudentNotFoundException {
         Student student = studentService.findByID(rollNo);
         Attendance attendance = findByDate(date);
-        if(student.getAttendancePeriodSet().get(attendance) == null){
+        if(student.getAttendancePeriodSet().get(attendance.getId()) == null){
             student.addAttendance(attendance, new PeriodSet());
         }
         studentService.save(student);
-        return !(new PeriodSet(studentService.findByID(rollNo).getAttendancePeriodSet().get(findByDate(date))).isEmpty());
+        return !(new PeriodSet(studentService.findByID(rollNo).getAttendancePeriodSet().get(findByDate(date).getId())).isEmpty());
     }
 
 }

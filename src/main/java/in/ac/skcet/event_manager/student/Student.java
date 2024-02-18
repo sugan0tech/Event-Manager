@@ -1,47 +1,48 @@
 package in.ac.skcet.event_manager.student;
 
+import com.google.firebase.database.annotations.NotNull;
 import in.ac.skcet.event_manager.attendance.Attendance;
 import in.ac.skcet.event_manager.attendance.PeriodSet;
 import in.ac.skcet.event_manager.event.Event;
 import lombok.*;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.context.annotation.Lazy;
+import org.springframework.data.annotation.Id;
+import org.springframework.data.mongodb.core.mapping.Document;
+import org.springframework.format.annotation.DateTimeFormat;
 
-import javax.persistence.*;
-import java.sql.Date;
 import java.util.*;
 
-@Entity
 @Getter
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-@Lazy(false)
 @Slf4j
+@Document(collection = "students")
 public class Student {
     @Id
     private String rollNo;
+    @NotNull
     private String name;
+    @NotNull
     private String classCode;
-    @Basic
+    @NotNull
+    @DateTimeFormat(pattern = "yyyy-MM-dd")
     private Date dateOfBirth;
+    @NotNull
     private String mail;
     private String mobile;
     private Boolean onDuty = false;
-    @ManyToMany(fetch = FetchType.EAGER)
-    @ToString.Exclude
     private Set<Event> events = new HashSet<>();
 
-    public Map<Attendance, Integer> getAttendancePeriodSet() {
+    public Map<Long, Integer> getAttendancePeriodSet() {
         if(attendancePeriodSetMap == null){
             new HashMap<>();
         }
         return attendancePeriodSetMap;
     }
 
-    @ElementCollection
-    private Map<Attendance, Integer> attendancePeriodSetMap = new HashMap<>();
+    private Map<Long, Integer> attendancePeriodSetMap = new HashMap<>();
 
     public void addEvent(Event event){
         if(this.events == null){
@@ -56,16 +57,18 @@ public class Student {
     public void addAttendance(Attendance attendance, PeriodSet periodSet){
         if(this.attendancePeriodSetMap == null){
             this.attendancePeriodSetMap = new HashMap<>();
-            this.attendancePeriodSetMap.put(attendance, periodSet.getValue());
+            this.attendancePeriodSetMap.put(attendance.getId(), periodSet.getValue());
             return;
         }
-        if(attendancePeriodSetMap.containsKey(attendance)){
-            periodSet.or(new PeriodSet(attendancePeriodSetMap.get(attendance)));
-            attendancePeriodSetMap.put(attendance, periodSet.getValue());
+        if(attendancePeriodSetMap.containsKey(attendance.getId())){
+            periodSet.or(new PeriodSet(attendancePeriodSetMap.get(attendance.getId())));
+            attendancePeriodSetMap.put(attendance.getId(), periodSet.getValue());
         }else{
             log.info(periodSet.toString());
-            this.attendancePeriodSetMap.put(attendance, periodSet.getValue());
+            this.attendancePeriodSetMap.put(attendance.getId(), periodSet.getValue());
         }
+        log.info(this.attendancePeriodSetMap.toString());
+        log.info("" + periodSet.getValue());
     }
     @Override
     public String toString() {

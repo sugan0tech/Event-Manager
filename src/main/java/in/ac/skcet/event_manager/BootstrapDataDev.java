@@ -7,7 +7,7 @@ import in.ac.skcet.event_manager.event.Event;
 import in.ac.skcet.event_manager.attendance.AttendanceRepository;
 import in.ac.skcet.event_manager.event.EventRepository;
 import in.ac.skcet.event_manager.exception.TeacherNotFoundException;
-import in.ac.skcet.event_manager.student.StudentRepository;
+import in.ac.skcet.event_manager.student.StudentMongoRepository;
 import in.ac.skcet.event_manager.teacher.TeacherRepository;
 import in.ac.skcet.event_manager.student.Student;
 import in.ac.skcet.event_manager.teacher.Teacher;
@@ -22,7 +22,6 @@ import org.springframework.stereotype.Component;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.BitSet;
 import java.util.Date;
 
 
@@ -33,7 +32,7 @@ import java.util.Date;
 public class BootstrapDataDev implements CommandLineRunner {
 
     private EventRepository eventRepository;
-    private StudentRepository studentRepository;
+    private StudentMongoRepository studentRepository;
     private TeacherRepository teacherRepository;
     private AttendanceRepository attendanceRepository;
     private TimeTableStaffService timeTableStaffService;
@@ -155,7 +154,7 @@ public class BootstrapDataDev implements CommandLineRunner {
         studentRepository.save(studentThree);
         studentRepository.save(studentOne2);
 
-        log.info(studentRepository.findByClassCode("III CSE C").toString());
+        log.info(studentRepository.findAllByClassCode("III CSE C").toString());
 
         TimeTableStaff timeTableStaff = TimeTableStaff.builder().staff(teacherTwo)
                 .dayOne(new ArrayList<>(Arrays.asList("Free","Free","Free","Free","Free","Free","Free")))

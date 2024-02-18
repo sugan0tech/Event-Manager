@@ -8,15 +8,13 @@ import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
 import java.util.List;
-import java.util.Set;
-import java.util.stream.Collectors;
 
 @Service
 @Slf4j
 @AllArgsConstructor
 public class StudentService {
 
-    StudentRepository studentRepository;
+    StudentMongoRepository studentRepository;
     ClassCodeService classCodeService;
 
     @Transactional
@@ -25,16 +23,16 @@ public class StudentService {
     }
 
     public Student findByID(String id) throws StudentNotFoundException {
-        return studentRepository.findById(id).orElseThrow(() -> new StudentNotFoundException("Student Not found id :" + id));
+        return studentRepository.findByRollNo(id);
     }
 
     public List<Student> findByClassCode(String classCode){
-        return studentRepository.findAll().stream().filter(student -> classCodeService.compareCodes(student.getClassCode(), classCode)).collect(Collectors.toList());
+        return studentRepository.findAllByClassCode(classCode);
     }
 
     public void updateOd(Student student){
         student.setOnDuty(true);
-        studentRepository.save(student);
+        studentRepository.insert(student);
     }
 
     public List<Student> findAll(){
