@@ -39,7 +39,7 @@ public class TimeTableHoursService {
 
         // Check if time is within clg hours
         if (time.isBefore(DAY_START_TIME) || time.isAfter(DAY_END_TIME)) {
-            return 0; // Return 0 for out of clg hours
+            return -1; // Return -1 for out of clg hours
         }
 
         int sub = 0;

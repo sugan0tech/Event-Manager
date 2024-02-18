@@ -30,6 +30,7 @@ public class AttendanceStudentService {
         Student student = studentService.findByID(rollNo);
         PeriodSet periodSet = new PeriodSet();
         periodSet.setIndex(periodNumber, status);
+        log.info("value : " + periodSet.getValue());
         student.addAttendance(attendance, periodSet);
 
         studentService.save(student);
