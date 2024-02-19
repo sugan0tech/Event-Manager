@@ -65,18 +65,6 @@ public class StudentController {
         eventService.updateEvent(studentId, eventId);
     }
 
-    @PostMapping("/addOd/{studentId}")
-    public void updateOdForm(@ModelAttribute OnDutyFormCommand onDutyFormCommand) {
-        log.info(onDutyFormCommand.toString());
-        onDutyEndTimer.autoEndOdTimer(onDutyFormService.save(onDutyFormCommandToOnDutyForm.convert(onDutyFormCommand)));
-    }
 
-    @PostMapping("/getOd/{studentId}")
-    public List<OnDutyForm> getOdForm(@PathVariable  String studentId) throws StudentNotFoundException {
-        Student student = studentService.findByID(studentId);
-        return onDutyFormService.findAll().stream().filter(onDutyForm ->
-            onDutyForm.getStudentSet().contains(student)
-        ).collect(Collectors.toList());
-    }
 
 }

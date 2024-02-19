@@ -27,6 +27,7 @@ public class OnDutyFormService {
     }
 
     public OnDutyForm save(OnDutyForm onDutyForm){
+        log.info(onDutyForm.toString());
         onDutyForm.getStudentSet().forEach(studentId -> studentService.updateOd(studentId));
         return onDutyFormRepository.save(onDutyForm);
     }
@@ -40,6 +41,7 @@ public class OnDutyFormService {
         return onDutyFormRepository.findAll().stream().filter(onDutyForm -> onDutyForm.getStudentSet().stream().anyMatch(studentId -> classCodeService.compareCodes(studentService.getClassCode(studentId), classCode))).collect(Collectors.toList());
     }
     public void delete(String id){
+        onDutyFormRepository.findById(id).ifPresentOrElse(onDutyForm -> onDutyForm.getStudentSet().forEach(studentId -> studentService.cancelOd(studentId)), () -> log.warn("Od form not found at id:" + id));
         onDutyFormRepository.deleteById(id);
     }
 }

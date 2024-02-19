@@ -19,6 +19,7 @@ import java.util.*;
 @AllArgsConstructor
 @Builder
 @Slf4j
+@ToString
 @Document(collection = "students")
 public class Student {
     @Id
@@ -34,7 +35,6 @@ public class Student {
     private String mail;
     private String mobile;
     private Boolean onDuty = false;
-    @DBRef(lazy = true)
     private Set<Event> events = new HashSet<>();
 
     public Map<Long, Integer> getAttendancePeriodSet() {
@@ -44,7 +44,6 @@ public class Student {
         return attendancePeriodSetMap;
     }
 
-    @DBRef(lazy = true)
     private Map<Long, Integer> attendancePeriodSetMap = new HashMap<>();
 
     public void addEvent(Event event){
@@ -72,17 +71,5 @@ public class Student {
         }
         log.info(this.attendancePeriodSetMap.toString());
         log.info("" + periodSet.getValue());
-    }
-    @Override
-    public String toString() {
-        return "Student{" +
-                "rollNo='" + rollNo + '\'' +
-                ", name='" + name + '\'' +
-                ", classCode='" + classCode + '\'' +
-                ", dateOfBirth=" + dateOfBirth +
-                ", mail='" + mail + '\'' +
-                ", mobile='" + mobile + '\'' +
-                ", onDuty='" + onDuty + '\'' +
-                '}';
     }
 }

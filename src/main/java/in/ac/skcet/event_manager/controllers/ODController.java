@@ -1,19 +1,18 @@
 package in.ac.skcet.event_manager.controllers;
 
 import in.ac.skcet.event_manager.exception.OdFormNotFoundException;
+import in.ac.skcet.event_manager.exception.StudentNotFoundException;
 import in.ac.skcet.event_manager.exception.TeacherNotFoundException;
-import in.ac.skcet.event_manager.on_duty.OnDutyForm;
-import in.ac.skcet.event_manager.on_duty.OnDutyFormService;
+import in.ac.skcet.event_manager.on_duty.*;
+import in.ac.skcet.event_manager.student.Student;
 import in.ac.skcet.event_manager.student.StudentService;
 import in.ac.skcet.event_manager.teacher.TeacherService;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 @RestController
 @Slf4j
@@ -24,6 +23,8 @@ public class ODController {
     StudentService studentService;
     OnDutyFormService onDutyFormService;
     TeacherService teacherService;
+    OnDutyEndTimer onDutyEndTimer;
+    OnDutyFormCommandToOnDutyForm onDutyFormCommandToOnDutyForm;
 
     @PostMapping("/cancel/{id}")
     public void cancelOd(@PathVariable String id) throws OdFormNotFoundException {
@@ -32,6 +33,19 @@ public class ODController {
             studentService.cancelOd(studentId);
         });
         onDutyFormService.delete(id);
+    }
+
+    @PostMapping("student/addOd/{studentId}")
+    public void updateOdForm(@ModelAttribute OnDutyFormCommand onDutyFormCommand) {
+        log.info(onDutyFormCommand.toString());
+        onDutyEndTimer.autoEndOdTimer(onDutyFormService.save(onDutyFormCommandToOnDutyForm.convert(onDutyFormCommand)));
+    }
+
+    @PostMapping("student/getOd/{studentId}")
+    public List<OnDutyForm> getOdForm(@PathVariable  String studentId){
+        return onDutyFormService.findAll().stream().filter(onDutyForm ->
+                onDutyForm.getStudentSet().contains(studentId)
+        ).collect(Collectors.toList());
     }
 
     @PostMapping("/list/{staffId}")

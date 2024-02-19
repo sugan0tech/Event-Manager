@@ -4,6 +4,8 @@ import in.ac.skcet.event_manager.class_code.ClassCodeService;
 import in.ac.skcet.event_manager.exception.StudentNotFoundException;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.cglib.proxy.LazyLoader;
+import org.springframework.data.mongodb.core.convert.LazyLoadingProxy;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
@@ -31,11 +33,23 @@ public class StudentService {
     }
 
     public void updateOd(String rollNo){
-                studentRepository.updateOnDuty(rollNo, true);
+        var student = studentRepository.findByRollNo(rollNo);
+        student.setOnDuty(true);
+        // todo to be implemented after DBref used for junk files
+//        log.info(student.toString());
+//        if (student.getAttendancePeriodSet() instanceof LazyLoadingProxy) {
+//            LazyLoadingProxy lazyLoadingProxy = (LazyLoadingProxy) student.getAttendancePeriodSet();
+//            lazyLoadingProxy.getSource(); // Load the proxy
+//            log.info(lazyLoadingProxy.getTarget().toString());
+//        }
+
+        studentRepository.save(student);
     }
 
     public void cancelOd(String rollNo){
-        studentRepository.updateOnDuty(rollNo, false);
+        var student = studentRepository.findByRollNo(rollNo);
+        student.setOnDuty(false);
+        studentRepository.save(student);
     }
 
     public List<Student> findAll(){

@@ -9,7 +9,4 @@ public interface StudentMongoRepository extends MongoRepository<Student, String>
     Student findByRollNo(String rollNo);
     List<Student> findAllByClassCode(String classCode);
     List<Student> findAll();
-
-    @Query("{'rollNo':?0}")
-    void updateOnDuty(String rollNo, boolean status);
 }
