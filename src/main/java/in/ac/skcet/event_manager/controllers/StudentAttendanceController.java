@@ -106,11 +106,18 @@ public class StudentAttendanceController {
         return attendanceService.getAttendancePercentageDaily(classCode, new Date(Long.parseLong(startDate)), new Date(Long.parseLong(endDate)));
     }
 
+    @PostMapping("/percentage-daily-v2/{classCode}/{startDate}/{endDate}")
+    public Map<String, Double> getAttendancePercentageV2(@PathVariable String classCode, @PathVariable String startDate, @PathVariable String endDate) {
+        Date from = java.sql.Date.valueOf(startDate);
+        Date to = java.sql.Date.valueOf(endDate);
+        return attendanceService.getAttendancePercentageDaily(classCode, from, to);
+    }
+
     @PostMapping("/percentage-hourly/{staffId}/{startDate}/{endDate}")
     public Map<String, Double> getAttendancePercentageHourly(@PathVariable String staffId, @PathVariable String startDate, @PathVariable String endDate) throws TeacherNotFoundException {
         String classCode = teacherService.findById(staffId).getClassCode();
         return attendanceService.getAttendancePercentageHourly(classCode, new Date(Long.parseLong(startDate)), new Date(Long.parseLong(endDate)));
-    }
+    };
     @PostMapping("/percentage-hourly-by-class-code/{classCode}/{startDate}/{endDate}")
     public Map<String, Double> getAttendancePercentageHourlyByClassCode(@PathVariable String classCode, @PathVariable String startDate, @PathVariable String endDate){
         return attendanceService.getAttendancePercentageHourly(classCode, new Date(Long.parseLong(startDate)), new Date(Long.parseLong(endDate)));
