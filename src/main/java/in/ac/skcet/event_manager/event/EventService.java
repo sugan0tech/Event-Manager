@@ -54,6 +54,10 @@ public class EventService {
         if(stu == null || event == null)
             return;
 
+        if (stu.getEvents().contains(event)) {
+            return;
+        }
+
         stu.addEvent(event);
         studentService.save(stu);
     }
