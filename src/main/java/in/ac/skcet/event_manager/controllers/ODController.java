@@ -43,6 +43,13 @@ public class ODController {
     }
 
     @PostMapping("student/getOd/{studentId}")
+    public List<OnDutyForm> getOdFormPost(@PathVariable  String studentId){
+        return onDutyFormService.findAll().stream().filter(onDutyForm ->
+                onDutyForm.getStudentSet().contains(studentId)
+        ).collect(Collectors.toList());
+    }
+
+    @GetMapping("student/{studentId}")
     public List<OnDutyForm> getOdForm(@PathVariable  String studentId){
         return onDutyFormService.findAll().stream().filter(onDutyForm ->
                 onDutyForm.getStudentSet().contains(studentId)
