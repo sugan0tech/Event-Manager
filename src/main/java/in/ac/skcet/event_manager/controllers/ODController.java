@@ -37,6 +37,7 @@ public class ODController {
 
     @PostMapping("student/addOd/{studentId}")
     public void updateOdForm(@ModelAttribute OnDutyFormCommand onDutyFormCommand) {
+        log.info("od data");
         log.info(onDutyFormCommand.toString());
         onDutyEndTimer.autoEndOdTimer(onDutyFormService.save(onDutyFormCommandToOnDutyForm.convert(onDutyFormCommand)));
     }

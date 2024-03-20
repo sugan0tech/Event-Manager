@@ -4,6 +4,7 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.ToString;
 import org.bson.types.Binary;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.*;
 
@@ -12,7 +13,7 @@ import java.util.*;
 @Data
 public class OnDutyFormCommand {
     private String description;
-    private Binary document;
+    private MultipartFile document;
     private Set<String> studentRollNoList;
     private Set<String> mentorNameList;
     private Set<String> signatures;
