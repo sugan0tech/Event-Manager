@@ -6,11 +6,13 @@ import org.springframework.data.mongodb.core.mapping.Document;
 
 import javax.persistence.*;
 import java.util.Date;
+import java.util.HashSet;
 import java.util.Set;
 
 @ToString
 @Document
 @AllArgsConstructor
+@NoArgsConstructor
 @Builder
 @Data
 public class OnDutyForm {
@@ -25,7 +27,7 @@ public class OnDutyForm {
 
     private Set<String> mentorSet;
 
-    private Set<String> signatures;
+    private Set<String> signatures = new HashSet<>();
 
     private String canceledBy;
 

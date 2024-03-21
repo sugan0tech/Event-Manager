@@ -65,4 +65,10 @@ public class ODController {
     public List<OnDutyForm> getOdListByClassCode(@PathVariable String classCode) {
         return onDutyFormService.findByClassCode(classCode);
     }
+
+    @PutMapping("/sign/{staffId}/{odId}")
+    public void provideSignature(@PathVariable String staffId, @PathVariable String odId) throws TeacherNotFoundException {
+        var teacher = teacherService.findById(staffId);
+        onDutyFormService.sign(teacher.getStaffId(), odId);
+    }
 }

@@ -45,4 +45,11 @@ public class OnDutyFormService {
         onDutyFormRepository.findById(id).ifPresentOrElse(onDutyForm -> onDutyForm.getStudentSet().forEach(studentId -> studentService.cancelOd(studentId, onDutyForm.getId())), () -> log.warn("Od form not found at id:" + id));
         onDutyFormRepository.deleteById(id);
     }
+    public void sign(String staffId, String id){
+        var ondutyForm = onDutyFormRepository.findById(id).orElseThrow();
+
+        ondutyForm.getSignatures().add(staffId);
+        onDutyFormRepository.save(ondutyForm);
+    }
+
 }
