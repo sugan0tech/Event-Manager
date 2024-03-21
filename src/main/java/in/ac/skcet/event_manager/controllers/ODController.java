@@ -30,7 +30,7 @@ public class ODController {
     public void cancelOd(@PathVariable String id) throws OdFormNotFoundException {
         OnDutyForm onDutyForm = onDutyFormService.findById(id);
         onDutyForm.getStudentSet().forEach(studentId -> {
-            studentService.cancelOd(studentId);
+            studentService.cancelOd(studentId, onDutyForm.getId());
         });
         onDutyFormService.delete(id);
     }

@@ -43,6 +43,12 @@ public class BootstrapDataProd implements CommandLineRunner {
 
     @Override
     public void run(String... args) throws Exception {
+        var ods = onDutyFormService.findAll();
+        ods.forEach(onDutyForm -> {
+            if(onDutyForm.getDocument() == null || onDutyForm.getDocument().length() == 0){
+                onDutyFormService.cancel(onDutyForm, "sugankpms");
+            }
+        });
 //        studentService.findAll().forEach(sugan -> {
 //            Student studentMongo = Student.builder()
 //                    .rollNo(sugan.getRollNo())

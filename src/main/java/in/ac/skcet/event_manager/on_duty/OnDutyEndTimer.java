@@ -20,7 +20,7 @@ public class OnDutyEndTimer {
             public void run() {
                 log.info("removed Od : " + onDutyForm.getDescription());
                 onDutyForm.getStudentSet().forEach(studentId -> {
-                    studentService.cancelOd(studentId);
+                    studentService.cancelOd(studentId, onDutyForm.getId());
                 });
             }
         };

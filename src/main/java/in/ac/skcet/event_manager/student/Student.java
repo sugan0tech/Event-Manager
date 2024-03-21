@@ -35,6 +35,7 @@ public class Student {
     private String mail;
     private String mobile;
     private Boolean onDuty = false;
+    private Set<String> onDutyIds = new HashSet<>();
     private Set<Event> events = new HashSet<>();
 
     public Map<Long, Integer> getAttendancePeriodSet() {

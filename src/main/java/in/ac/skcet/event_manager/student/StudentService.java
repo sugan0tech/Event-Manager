@@ -10,6 +10,7 @@ import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
 import java.util.List;
+import java.util.Objects;
 
 @Service
 @Slf4j
@@ -46,9 +47,16 @@ public class StudentService {
         studentRepository.save(student);
     }
 
-    public void cancelOd(String rollNo){
+    public void cancelOd(String rollNo, String odId){
         var student = studentRepository.findByRollNo(rollNo);
-        student.setOnDuty(false);
+        var odLists = student.getOnDutyIds();
+
+        student.getOnDutyIds().removeIf(id -> Objects.equals(id, odId));
+
+        if(odLists.isEmpty()) {
+            student.setOnDuty(false);
+        }
+
         studentRepository.save(student);
     }
 

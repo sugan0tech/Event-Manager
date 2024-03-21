@@ -32,16 +32,17 @@ public class OnDutyFormService {
         return onDutyFormRepository.save(onDutyForm);
     }
 
-    public OnDutyForm cancel(OnDutyForm onDutyForm){
-        onDutyForm.getStudentSet().forEach(studentId -> studentService.cancelOd(studentId));
-        return onDutyFormRepository.save(onDutyForm);
+    public void cancel(OnDutyForm onDutyForm, String staffId){
+        onDutyForm.getStudentSet().forEach(studentId -> studentService.cancelOd(studentId, onDutyForm.getId()));
+        onDutyForm.setCanceledBy(staffId);
+        onDutyFormRepository.save(onDutyForm);
     }
 
     public List<OnDutyForm> findByClassCode(String classCode){
         return onDutyFormRepository.findAll().stream().filter(onDutyForm -> onDutyForm.getStudentSet().stream().anyMatch(studentId -> classCodeService.compareCodes(studentService.getClassCode(studentId), classCode))).collect(Collectors.toList());
     }
     public void delete(String id){
-        onDutyFormRepository.findById(id).ifPresentOrElse(onDutyForm -> onDutyForm.getStudentSet().forEach(studentId -> studentService.cancelOd(studentId)), () -> log.warn("Od form not found at id:" + id));
+        onDutyFormRepository.findById(id).ifPresentOrElse(onDutyForm -> onDutyForm.getStudentSet().forEach(studentId -> studentService.cancelOd(studentId, onDutyForm.getId())), () -> log.warn("Od form not found at id:" + id));
         onDutyFormRepository.deleteById(id);
     }
 }
