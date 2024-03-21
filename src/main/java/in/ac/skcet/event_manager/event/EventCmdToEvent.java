@@ -29,6 +29,7 @@ public class EventCmdToEvent implements Converter<EventCommand, Event> {
                     .title(eventCommand.getTitle())
                     .classCode(eventCommand.getClassCode())
                     .description(eventCommand.getDescription())
+                    .location(eventCommand.getLocation())
                     .fromDate(fromDate)
                     .endDate(endDate).build();
         } catch (ParseException e) {

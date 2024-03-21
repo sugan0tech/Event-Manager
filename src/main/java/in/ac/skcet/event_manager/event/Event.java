@@ -18,6 +18,7 @@ public class Event {
     private Integer eventId;
     private String title;
     private String description;
+    private Location location = Location.DEFAULT;
     private Date fromDate;
     private Date endDate;
     private String classCode;

@@ -1,5 +1,6 @@
 package in.ac.skcet.event_manager.on_duty;
 
+import in.ac.skcet.event_manager.event.Event;
 import lombok.*;
 import org.bson.types.Binary;
 import org.springframework.data.mongodb.core.mapping.Document;

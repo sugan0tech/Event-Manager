@@ -12,6 +12,7 @@ public class EventCommand {
     private String title;
     private String description;
     private String classCode;
+    private Location location;
     private String fromDate;
     private String endDate;
 
