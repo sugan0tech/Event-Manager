@@ -62,4 +62,24 @@ public class EventService {
         studentService.save(stu);
     }
 
+    public Map<Location, Boolean> getLocationList(){
+        var usedLocations = eventRepository.findAll().stream()
+                .map(Event::getLocation)
+                .collect(Collectors.toSet());
+
+        Map<Location, Boolean> locationMap = new HashMap<>();
+
+        // Initialize the HashMap with locations and false values
+        locationMap.put(Location.KRISHNA_HALL, usedLocations.contains(Location.KRISHNA_HALL));
+        locationMap.put(Location.BS01, usedLocations.contains(Location.BS01));
+        locationMap.put(Location.BS02, usedLocations.contains(Location.BS02));
+        locationMap.put(Location.BS03, usedLocations.contains(Location.BS03));
+        locationMap.put(Location.BS04, usedLocations.contains(Location.BS04));
+        locationMap.put(Location.SEMINAR_HALL, usedLocations.contains(Location.SEMINAR_HALL));
+        locationMap.put(Location.CONFERENCE_HALL, usedLocations.contains(Location.CONFERENCE_HALL));
+        locationMap.put(Location.JB_LAB, usedLocations.contains(Location.JB_LAB));
+        locationMap.put(Location.AK_LAB, usedLocations.contains(Location.AK_LAB));
+        return locationMap;
+    }
+
 }
