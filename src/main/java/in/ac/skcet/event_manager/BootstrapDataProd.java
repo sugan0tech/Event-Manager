@@ -81,7 +81,7 @@ public class BootstrapDataProd implements CommandLineRunner {
 //
 //        }
 
-        Teacher teacher = Teacher.builder().staffId("srigirit369").classCode("CSE").mail("srigirit369@gmail.com").mobile("9344953235").build();
+        Teacher teacher = Teacher.builder().staffId("yenbinmaster").classCode("CSE").mail("yenbinmaster@gmail.com").mobile("9344953235").build();
         try {
             teacherService.findById(teacher.getStaffId());
         }catch (TeacherNotFoundException e){

@@ -101,7 +101,7 @@ public class EventController {
         return "added";
     }
 
-    @GetMapping("/slots")
+    @PostMapping("/slots")
     public Map<Location, Boolean> getLocations(){
         return eventService.getLocationList();
     }

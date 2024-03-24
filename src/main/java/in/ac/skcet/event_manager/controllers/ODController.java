@@ -26,13 +26,15 @@ public class ODController {
     OnDutyEndTimer onDutyEndTimer;
     OnDutyFormCommandToOnDutyForm onDutyFormCommandToOnDutyForm;
 
-    @PostMapping("/cancel/{id}")
-    public void cancelOd(@PathVariable String id) throws OdFormNotFoundException {
+    @PostMapping("/cancel/{id}/{by}")
+    public void cancelOd(@PathVariable String id, @PathVariable String by) throws OdFormNotFoundException {
         OnDutyForm onDutyForm = onDutyFormService.findById(id);
         onDutyForm.getStudentSet().forEach(studentId -> {
             studentService.cancelOd(studentId, onDutyForm.getId());
         });
-        onDutyFormService.delete(id);
+        onDutyForm.setCanceledBy(by);
+        onDutyFormService.save(onDutyForm);
+        // onDutyFormService.delete(id);
     }
 
     @PostMapping("student/addOd/{studentId}")
