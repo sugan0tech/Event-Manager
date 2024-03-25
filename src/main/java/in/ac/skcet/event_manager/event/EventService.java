@@ -23,6 +23,25 @@ public class EventService {
     ClassCodeService classCodeService;
 
     public Event save(Event event) {
+        var usedLocations = eventRepository.findAll().stream()
+                .map(Event::getLocation)
+                .collect(Collectors.toSet());
+
+//        var eventList = eventRepository.findAll().stream()
+//                .filter(event1 -> event1.getLocation().equals(event.getLocation()))
+//                .collect(Collectors.toList());
+//
+//        var isSlotAvailable = false;
+//        eventList.forEach(event1 -> {
+//            if (event.getEndDate() > event1.getFromDate()  && event1.getEndDate() < event.getEndDate())
+//                return true;
+//            return false;
+//        });
+
+        if(usedLocations.contains(event.getLocation())){
+            log.error("Slot already reserved " + event.getLocation());
+            return null;
+        }
         return eventRepository.save(event);
     }
 
